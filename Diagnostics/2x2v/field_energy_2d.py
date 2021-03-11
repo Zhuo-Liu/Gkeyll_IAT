@@ -221,7 +221,10 @@ def calcOmegabNgammaL():
 
     return intTime, omegaIm[0]
 
+
+def current_vs_electric():
+
 # frame window for frequency calculation
-iTw             = [int((nFrames-1)*0.1), int((nFrames-1)*0.3)]
+iTw = [int((nFrames-1)*0.1), int((nFrames-1)*0.3)]
 modeOmega, _, _ = measureFrequency(iTw)
 times, gamL = calcOmegabNgammaL()
