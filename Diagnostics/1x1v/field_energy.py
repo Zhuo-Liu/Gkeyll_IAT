@@ -4,12 +4,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import sys
-sys.path.insert(0, '/home/zhuol/bin/gkyl-python/pgkylLiu/')
+sys.path.insert(0, '/home/zhuol/bin/gkyl-python/pgkylLiu/1x1v/')
 import pgkylUtil as pgu
 from scipy.optimize import curve_fit
 from scipy.interpolate import griddata
 import matplotlib.transforms as transforms
-import h5py
 
 dataDir = '/home/zhuol/work1/zhuol/IAT/linear/1x1v/lucio1/'
 outDir  = '/home/zhuol/work1/zhuol/IAT/linear/1x1v/lucio1/post/'
@@ -214,11 +213,11 @@ def calcOmegabNgammaL(dataDirIn, outDirIn):
     #    ax3a.axis( (intTime[0],intTime[iTfit[1]]*1.1,1e-9,3e-9) )
     #    ax3a.text( 0.6, 0.4, r'$\omega_r= $'+'{:10.4e}'.format(omegaRe), transform=ax3a.transAxes)
     #    ax3a.text( 0.6, 0.35, r'$\omega_I= $'+'{:10.4e}'.format(omegaIm), transform=ax3a.transAxes)
-        ax3a.text( 0.15+iFit*0.5, 0.8-iFit*0.5, r'$\omega_r= $'+'{:10.4e}'.format(omegaRe), transform=ax3a.transAxes)
+        # ax3a.text( 0.15+iFit*0.5, 0.8-iFit*0.5, r'$\omega_r= $'+'{:10.4e}'.format(omegaRe), transform=ax3a.transAxes)
         ax3a.text( 0.15+iFit*0.5, 0.75-iFit*0.5, r'$\omega_I= $'+'{:10.4e}'.format(omegaIm[iFit]), transform=ax3a.transAxes)
         iFit = iFit+1
 
-    plt.savefig(outDirIn+'omegaMeasuredFromFieldEnergy'+figureFileFormat)
+    plt.savefig(outDirIn+'GrowthRateMeasuredFromFieldEnergy'+figureFileFormat)
     plt.close()
 
 
@@ -342,15 +341,15 @@ def current_vs_electric(frameWindow):
     axs[0].set_ylabel(r'$\langle E_z \rangle$', fontsize=30)
     axs[0].tick_params(labelsize = 26)
 
-    axs[0].plot(time,J_boxavg_z)
-    axs[0].set_xlabel(r'$t \ [\omega_{pe}^{-1}]$', fontsize=30)
-    axs[0].set_ylabel(r'$\langle J_z \rangle$', fontsize=30)
-    axs[0].tick_params(labelsize = 26)
-
-    axs[1].plot(times,E_over_J_rolling)
+    axs[1].plot(time,J_boxavg_z)
     axs[1].set_xlabel(r'$t \ [\omega_{pe}^{-1}]$', fontsize=30)
-    axs[1].set_ylabel(r'$\langle E_z\rangle /\langle\, J_z\rangle \ [\nu_{\mathrm{eff}}/ \omega_{pe}]$', fontsize=30)
+    axs[1].set_ylabel(r'$\langle J_z \rangle$', fontsize=30)
     axs[1].tick_params(labelsize = 26)
+
+    axs[2].plot(time,E_over_J_rolling)
+    axs[2].set_xlabel(r'$t \ [\omega_{pe}^{-1}]$', fontsize=30)
+    axs[2].set_ylabel(r'$\langle E_z\rangle /\langle\, J_z\rangle \ [\nu_{\mathrm{eff}}/ \omega_{pe}]$', fontsize=30)
+    axs[2].tick_params(labelsize = 26)
 
     fig.tight_layout()
     plt.savefig(outDir+'ElectrcField_Current'+figureFileFormat)
