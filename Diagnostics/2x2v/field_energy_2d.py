@@ -86,12 +86,11 @@ x_ion, _, _, _, _ = pgu.getGrid(fName_ion,polyOrder,basisType,location='center')
 #Store needed data from getGrid
 nxIntD2 = nx // 2
 
-print(nxIntD2.shape)
-print(nxIntD2[0]//2)
-print(nxIntD2[1]//2)
-
 lz = lx[0]  #get box length along z, needed for Fourier transform
 ly = lx[1]  #get box length along y
+
+nz = nx[0]
+ny = nx[1]
 
 points_z = np.array(x_elc[0])
 points_y = np.array(x_elc[1])
@@ -125,7 +124,6 @@ def measureFrequency(frameWindow,makeplot=True):
         #.Electric field in x direction at simulation center.
         fName     = fileRoot+'field_'+str(nFr)+'.bp'    #.Complete file name.
         Ez        = pgu.getInterpData(fName,polyOrder,basisType,comp=0)
-        print(Ez.shape) 
         EzMid[cF] = Ez[nxIntD2[0]//2,nxIntD2[1]//2] #Why we are using the electron grid in field???
         EzMid[cF] = (1.0-np.cos(2.0*np.pi*cF/(pFramesN-1)))*EzMid[cF]
 
@@ -173,7 +171,6 @@ def calcOmegabNgammaL():
     fName        = fileRootIn+'fieldEnergy.bp'    #.Complete file name.
     pgData       = pg.GData(fName)    #.Read data with pgkyl.
     fieldEnergy  = pgData.getValues()[:,0]
-    print(fieldEnergy.shape)
     intTime      = pgData.getGrid()[0] #.Time of the simulation.
     nFrames      = len(intTime)
 
@@ -222,9 +219,89 @@ def calcOmegabNgammaL():
     return intTime, omegaIm[0]
 
 
-def current_vs_electric():
+
+def current_vs_electric(frameWindow):
+    #.in the time frame given by frameWindow[0] to frameWindow[1].
+    pFramesN = frameWindow[1]-(frameWindow[0]-1)
+    time     = np.zeros(pFramesN)
+
+    eField_boxavg_z = np.zeros(pFramesN)
+    J_boxavg_z = np.zeros(pFramesN)
+    E_over_J_rolling = np.zeros(pFramesN)
+
+    cF = 0
+    for nFr in np.arange(frameWindow[0],frameWindow[1]+1):
+        #.Extract the time from file.
+        time[cF]  = pgu.getTime(fileRoot+'field_'+str(nFr)+'.bp')
+    
+        #.Electric field in x direction at simulation center.
+        fNameM0_ion = fileRoot+'ion_M0_'+str(nFr)+'.bp'
+        fNameM0_elc = fileRoot+'elc_M0_'+str(nFr)+'.bp'
+        fNameM1_ion = fileRoot+'ion_M1i_'+str(nFr)+'.bp'
+        fNameM1_elc = fileRoot+'elc_M1i_'+str(nFr)+'.bp'
+
+        fName_field = fileRoot+'field_'+str(nFr)+'.bp'    #.Complete file name.
+
+        elcM1_z = np.squeeze(pgu.getInterpData(fNameM1_elc,polyOrder,basisType,comp=0))
+        elcM1_y = np.squeeze(pgu.getInterpData(fNameM1_elc,polyOrder,basisType,comp=1))
+        ionM1_z = np.squeeze(pgu.getInterpData(fNameM1_ion,polyOrder,basisType,comp=0))
+        ionM1_y = np.squeeze(pgu.getInterpData(fNameM1_ion,polyOrder,basisType,comp=1))
+        Ez      = np.squeeze(pgu.getInterpData(fName_field,polyOrder,basisType,comp=0))
+        Ey      = np.squeeze(pgu.getInterpData(fName_field,polyOrder,basisType,comp=1))
+
+        # elcM0 = np.squeeze(pgu.getInterpData(fNameM0_elc,polyOrder,basisType,comp=0)) # don't have to specify the component here
+        # ionM0 = np.squeeze(pgu.getInterpData(fNameM0_ion,polyOrder,basisType,comp=0))
+
+        boxavg_Ez = np.average(Ez)
+        boxavg_Ey = np.average(Ey)
+
+        eField_boxavg_z[cF] = boxavg_Ez
+    
+        Jz = ionM1_z - elcM1_z
+        Jy = ionM1_y - ionM1_y
+
+        J_boxavg_z[cF] = np.sum(Jz)/(nz*ny)
+
+        cF = cF+1
+
+    Navg = 3
+    for n in range(Navg,pFramesN):
+        E_over_J_rolling[n] = np.sum(eField_boxavg_z[n-Navg:n])/np.sum(J_boxavg_z[n-Navg:n])
+    for n in range(Navg):
+        E_over_J_rolling[n] =  E_over_J_rolling[Navg]  #bfill the first Navg values
+
+
+    fig, axs = plt.subplots(1,3,figsize=(30, 10), facecolor='w', edgecolor='k')
+    fig.subplots_adjust(hspace = .5, wspace =.1)
+    axs = axs.ravel()
+
+    axs[0].plot(time,eField_boxavg_z)
+    axs[0].set_xlabel(r'$t \ [\omega_{pe}^{-1}]$', fontsize=30)
+    axs[0].set_ylabel(r'$\langle E_z \rangle$', fontsize=30)
+    axs[0].tick_params(labelsize = 26)
+
+    axs[0].plot(time,J_boxavg_z)
+    axs[0].set_xlabel(r'$t \ [\omega_{pe}^{-1}]$', fontsize=30)
+    axs[0].set_ylabel(r'$\langle J_z \rangle$', fontsize=30)
+    axs[0].tick_params(labelsize = 26)
+
+    axs[1].plot(times,E_over_J_rolling)
+    axs[1].set_xlabel(r'$t \ [\omega_{pe}^{-1}]$', fontsize=30)
+    axs[1].set_ylabel(r'$\langle E_z\rangle /\langle\, J_z\rangle \ [\nu_{\mathrm{eff}}/ \omega_{pe}]$', fontsize=30)
+    axs[1].tick_params(labelsize = 26)
+
+    fig.tight_layout()
+    plt.savefig(outDir+'ElectrcField_Current'+figureFileFormat)
+
+
+
+
+
 
 # frame window for frequency calculation
-iTw = [int((nFrames-1)*0.1), int((nFrames-1)*0.3)]
-modeOmega, _, _ = measureFrequency(iTw)
+iTw_frequency = [int((nFrames-1)*0.1), int((nFrames-1)*0.3)]
+iTw_nu = [int((nFrames-1)*0.1), int((nFrames-1)*0.95)]
+
+modeOmega, _, _ = measureFrequency(iTw_frequency)
 times, gamL = calcOmegabNgammaL()
+current_vs_electric(iTw_nu)
