@@ -62,8 +62,8 @@ local function sponEmissionSource(x_table, t, lx_table, ncells_table, p)
             modE = 0.141421*math.pow(math.random(),2)	--magnitude of J for these mode numbers
             fkIon = tempRatio/(ksquared*math.pow(lambdaDe,2))*(math.sqrt(ksquared)*modE)*(kdotv_omega + math.pow(kdotv_omega,2))*math.cos(2*math.pi*(nx*x/Lx + ny*y/Ly  + math.random() ))
             fkElc = -1.0/(ksquared*math.pow(lambdaDe,2))* (math.sqrt(ksquared)*modE) * (-1.0 )*math.cos(2*math.pi*(nx*x/Lx + ny*y/Ly  + math.random() ))  --one negative sign is from the electron charge; the other is from the simplified form of v/(omega - k.v)
-            fIon = fIon + fkIon
-            fElc = fElc + fkElc
+            fIon = fkIon
+            fElc = fkElc
           end  
        end
     end
