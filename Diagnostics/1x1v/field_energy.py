@@ -321,7 +321,7 @@ def current_vs_electric(frameWindow):
         eField_boxavg_z[cF] = boxavg_Ez
     
         Jz = ionM1_z - elcM1_z
-        J_boxavg_z[cF] = np.sum(Jz)/(nxIntD2[0])
+        J_boxavg_z[cF] = np.sum(Jz)*2/(nxIntD2[0])
 
         cF = cF+1
 
