@@ -11,16 +11,15 @@ tempRatio = 50.0
 -- mass ratio
 massRatio = 25.0  ----modified from 25 
 
-knumberx = 10.0 -- wave-number
-knumbery = 0.0
 perturbation = 1.0e-4 -- distribution function perturbation
+noise = 1.0e-6
 
 omegaPe = 1.0
 omegaPi = omegaPe/math.sqrt(massRatio)
 lambdaDe = vtElc / omegaPe
 
 -- Collision frequencies.
-nuee = 0.0005
+nuee = 0.0001
 nuei = 0.0 --nuee              --RLW 
 nuii = nuee/math.sqrt(massRatio)  --should have been nuee/math.sqrt(massRatio)*math.pow(tempRatio,1.5)
 nuie = 0.0 -- nuee/massRatio
@@ -46,10 +45,7 @@ local function sponEmissionSource(x_table, t, lx_table, ncells_table, p)
     local Ny = ncells_table[2]*(p+1) -- Number of spatial degrees of freedom along y
     local Lx, Ly = lx_table[1], lx_table[2]
     local x, y, vx, vy = x_table[1], x_table[2], x_table[3], x_table[4]
-    local omega = 0.0 
-    local modE = 0.0             -- Initialize |J|.
-    local kdotv_omega = 0.0   -- k \cdot v / omega
-    local fIon, fElc, fkIon, fkElc = 0.0, 0.0, 0.0, 0.0
+    local fIon = 0.0
     local ksquared = 0.0
     math.randomseed(math.floor(1000000*t)) --I want all xs and ys (and vx, vy) to see the same random phase at a given time step.  Since t will be a fraction, need to multiply it so that we don't get the same random number thousands of times.
     for nx = -math.floor(Nx/2), math.floor(Nx/2) do   --need to divied by two because we are including nx and -nx by using sines and cosines
@@ -57,24 +53,18 @@ local function sponEmissionSource(x_table, t, lx_table, ncells_table, p)
          -- kx, ky = {2 pi nx/Lx, 2 pi ny/Ly}
          ksquared = math.pow(2*nx*math.pi /Lx,2) + math.pow(2*ny*math.pi/Ly,2)
          if ksquared > 0.0 then
-            omega = omegaPi / math.sqrt(1.0 + 1.0/(ksquared*lambdaDe^2))
-            kdotv_omega =(2*math.pi*nx*vx/Lx+ 2*math.pi*ny*vy/Ly)/omega 
-            modE = 0.141421*math.pow(math.random(),2)	--magnitude of J for these mode numbers
-            fkIon = tempRatio/(ksquared*math.pow(lambdaDe,2))*(math.sqrt(ksquared)*modE)*(kdotv_omega + math.pow(kdotv_omega,2))*math.cos(2*math.pi*(nx*x/Lx + ny*y/Ly  + math.random() ))
-            fkElc = -1.0/(ksquared*math.pow(lambdaDe,2))* (math.sqrt(ksquared)*modE) * (-1.0 )*math.cos(2*math.pi*(nx*x/Lx + ny*y/Ly  + math.random() ))  --one negative sign is from the electron charge; the other is from the simplified form of v/(omega - k.v)
-            fIon = fIon + fkIon
-            fElc = fElc + fkElc
+            fIon = fIon + math.cos(2*math.pi*(nx*x/Lx + ny*y/Ly  + math.random() ))
           end  
        end
     end
-    return {fIon,fElc}
+    return {fIon}
  end
 
 plasmaApp = Plasma.App {
     logToFile = true,
  
-    tEnd        = 600,          -- End time. RLW: I changed this, but didn't change nFrame below.  So we might get more frames.
-    nFrame      = 300,             -- Number of output frames.  This is 0.5 frames in unit time --> 3 frames every Langmuir period. 
+    tEnd        = 1000,          -- End time. RLW: I changed this, but didn't change nFrame below.  So we might get more frames.
+    nFrame      = 500,             -- Number of output frames.  This is 0.5 frames in unit time --> 3 frames every Langmuir period. 
     nDistFuncFrame = 100,           -- Number of distribution function output frames 
 
     lower       = {0.0,0.0},             -- Configuration space lower left.
@@ -98,24 +88,24 @@ plasmaApp = Plasma.App {
     elc = Plasma.Species {
        charge = -1.0, mass = 1.0,
        -- Velocity space grid.
-       lower = {-6.0*vtElc,-3.0*vtElc},
-       upper = {6.0*vtElc,3.0*vtElc},
-       cells = {96,48},
+       lower = {-6.0*vtElc,-6.0*vtElc},
+       upper = {6.0*vtElc,6.0*vtElc},
+       cells = {96,96},
        decompCuts = {1,1},
        -- initial conditions
        init = function (t, xn)
           local x, y, vx, vy = xn[1], xn[2], xn[3], xn[4]
           local fv = maxwellian2v({vx, vy}, vDriftElc, vtElc)
-          local dfv = sponEmissionSource({x,y,vx,vy},t, lx, nx, pOrder)[2]*maxwellian2v({vx, vy}, vDriftElc, vtElc)
-          return fv + perturbation*dfv
+          --local dfv = sponEmissionSource({x,y,vx,vy},t, lx, nx, pOrder)[2]*maxwellian2v({vx, vy}, vDriftElc, vtElc)
+          return fv
        end,
        evolve = true, -- Evolve species?
  
        diagnosticMoments           = { "M0", "M1i" },
        diagnosticIntegratedMoments = { "intM0", "intM1i"},
        coll = Plasma.LBOCollisions{
-         collideWith = {'elc', 'ion'},
-	 frequencies = {nuee, nuei},
+        collideWith = {'elc', 'ion'},
+	    frequencies = {nuee, nuei},
       }
     },
  
@@ -123,23 +113,28 @@ plasmaApp = Plasma.App {
     ion = Plasma.Species {
        charge = 1.0, mass = massRatio,
        -- Velocity space grid.
-       lower = {-12.0*vtIon,-6.0*vtIon},
-       upper = {12.0*vtIon,6.0*vtIon},
-       cells = {32,16},
+       lower = {-16.0*vtIon,-16.0*vtIon},
+       upper = {16.0*vtIon,16.0*vtIon},
+       cells = {32,32},
        decompCuts = {1,1},
        -- Initial conditions.
        init = function (t, xn)
           local x, y, vx, vy = xn[1], xn[2], xn[3], xn[4]
           local fv = maxwellian2v({vx, vy}, vDriftIon, vtIon)
-          local dfv = sponEmissionSource({x,y,vx,vy},t, lx, nx, pOrder)[1]*maxwellian2v({vx,vy},vDriftIon, vtIon) 
+          local dfv = sponEmissionSource({x,y,vx,vy},t, lx, nx, pOrder)[1]*maxwellian2v({vx, vy}, vDriftIon, vtIon)
           return fv + perturbation*dfv    -- *(1.0 + perturbation*DrandKick({x,y},lx,nx,pOrder) ) RLW: I removed the noise
        end,
+       source = function (t,xn)
+         local x, y, vx, vy = xn[1], xn[2], xn[3], xn[4]
+         local dfv = sponEmissionSource({x,y,vx,vy},t, lx, nx, pOrder)[1]*maxwellian2v({vx,vy},{0.0,0.0}, vtIon) 
+         return noise*dfv
+       end,         
        evolve = true,    -- Evolve species?
  
        diagnosticMoments           = { "M0", "M1i", "M2" },
        diagnosticIntegratedMoments = { "intM0", "intM1i", "intM2Flow", "intM2Thermal", "intL2" },
        coll = Plasma.LBOCollisions{
-         collideWith = {'elc', 'ion'},
+        collideWith = {'elc', 'ion'},
 	 frequencies = {nuie, nuii},
       }
     },
@@ -150,8 +145,15 @@ plasmaApp = Plasma.App {
        evolve = true, -- Evolve field?
        hasMagneticField = false,
     },
- 
+
+    externalField = Plasma.ExternalField {
+      hasMagneticField = false,
+      emFunc = function(t, xn)
+         local extE_x, extE_y, extE_z = -0.00001, 0., 0.
+         return extE_x, extE_y, extE_z
+      end,
+      evolve = false, -- Evolve field?
+   }, 
  }
  -- Run application.
  plasmaApp:run()
- 

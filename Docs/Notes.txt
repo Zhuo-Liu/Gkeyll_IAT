@@ -1,8 +1,3 @@
-
-
-
-
-
 Install
 ./machine/configure.engaging.sh
 ./waf build install -j4
@@ -11,3 +6,23 @@ PostGkeyll
 pgkyl -f .bp interp sel --z1 0.01 --z2 1.0 plot   (z1: y, z2:v_x)
 pgkyl -f simName_elc_M0_[0-9]*.bp interp anim --saveas 'simName_elc_M0.mp4'
 pgkyl -f simName_elc_0.bp interp select --z0 -2. plot
+
+3/15/2021
+Summary
+On the shortcomings of the no-drive problem: Running a simulation with no drive (no E_ext for Vlasov_Poisson and/or no J_ext for Vlasov-Maxwell and/or Vlasov/Maxwell with ghost current) is sort of a bad model problem. The only thing that prevents the current from immediately vanishing is the small electron mass.
+In a real plasma, the current is tied to the poloidal magnetic field and this not only slows the rate of current decay (say in the tokamak context) but can also drive the current to increase (as in any driven reconnection problem or a dynamo).  
+Imagine taking nearly massless electrons in the “bad” model problem: as soon as any resistivity built up the current would immediately vanish.
+It is a cheap simulation to run though, so it is probably worth running to see what can be learned.
+
+On debugging the 1x1v with E_ext simulation: I would try rerunning the 1x1v Vlasov-Poisson solver with E_ext and a larger v_min & v_max (together with an increase in velocity space resolution) to see if you can eliminate that pathological behavior of the electron distribution function at v_max
+Comments on velocity space resolution considerations: The required resolution in velocity space for capturing linear physics will depend on dimensionality and growth rate:
+The hardest waves to resolve are those that are nearly marginal with \gamma << \omega. These waves are very peaked in omega space and so very localized in omega/k space.
+In higher dimensions, the resonant surface is larger for a given wave. In 1D, there is a single point v = v_res = \omega/ k that resonates with a wave. In 2D, there is a 1D surface of points that satisfy the equation omega - k_x v_x - k_y v_y = 0. In 3D, it is a 2D surface of points. Thus the net growth rate is less sensitive to minor errors in the distribution function at any one point on the resonant surface, because it is some sort of averaging/integration that determines the growth rate.
+On the controlling E (in Vlasov-Poisson) vs controlling J (in Vlasov-Maxwell) tradeoff.
+
+Ideally, it seems to me that we would control J, but it shouldn’t make an important difference.
+Really we don’t know the perfect J(t) that we would want to impose: this would come from coupling our problem to a reconnection problem.
+For concreteness, imagine a resistive MHD simulation of a driven current sheet, except instead of the resistivity being fixed, it is determined at each time step by solving a separate gkeyll simulation at each spatial MHD cell for the instantaneous value anomalous resistivity corresponding to that cell’s entire J vs time history.
+Another way of saying this is that the MHD simulation would tell you the drive for the local gkeyll simulation and the gkeyll simulation would tell you the turbulent resistivity…which would in turn alter the MHD dynamics…etc. So they are dynamically coupled systems, but each can be solved semi-autonomously thanks to scale separation. (No thanks to scale separation, putting all of this physics in one big pic simulation is very expensive.)
+I also predict that if one runs a series of simulations with the same starting and ending current, and all of them increase the current slowly, that they will have nearly the same E_z vs J_z plot. (Precisely, I predict that the plot would asymptote to a constant in the case where there is some sort of an effective electron heat sink.) We can check that by effectively controlling the rate of increase of J_z through E_ext.  
+To the extent that I am wrong on this (I am sure there will be some small-but-nonvanishing spread in the E_z vs J_z plots due to the sweeping speed), it would be interesting an instructive to understand what is happening.
