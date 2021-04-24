@@ -1,6 +1,7 @@
 Install
 ./machine/configure.engaging.sh
 ./waf build install -j4
+sbatch --dependency=afterok:[jobid] parallel.sh
 
 PostGkeyll
 pgkyl -f .bp interp sel --z1 0.01 --z2 1.0 plot   (z1: y, z2:v_x)

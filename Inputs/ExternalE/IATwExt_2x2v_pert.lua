@@ -33,6 +33,14 @@ local function maxwellian2v(v, vDrift, vt)
     return 1/(2*math.pi*vt^2)*math.exp(-((v[1]-vDrift[1])^2+(v[2]-vDrift[2])^2)/(2*vt^2))
 end
 
+local function elc_maxwellian2v_truncated(v, vDrift, vt)
+   if -3*vtElc < v[1]-vDrift[1] and v[1]-vDrift[1] < 3*vtElc then 
+      return 1/(2*math.pi*vt^2)*math.exp(-((v[1]-vDrift[1])^2+(v[2]-vDrift[2])^2)/(2*vt^2))
+   else 
+      return 0.0001*1/(2*math.pi*vt^2)*math.exp(-((v[1]-vDrift[1])^2+(v[2]-vDrift[2])^2)/(2*vt^2))
+   end
+end
+
 local function sponEmissionSource(x_table, t, lx_table, ncells_table, p)
     -- x_table = {x, y} are independent variables.
     -- t is the time

@@ -11,11 +11,19 @@ vtIon = 0.000566      ---- modified from 0.001 (use Te = 50 Ti)
 massRatio = 25.0  ----modified from 25 
 
 knumberx = 10.0 -- wave-number
-knumbery = 0.0
+kunmbery = 0.0
 perturbation = 1.0e-4 -- distribution function perturbation
 
 local function maxwellian2v(v, vDrift, vt)
     return 1/(2*math.pi*vt^2)*math.exp(-((v[1]-vDrift[1])^2+(v[2]-vDrift[2])^2)/(2*vt^2))
+end
+
+local function elc_maxwellian2v_truncated(v, vDrift, vt)
+    if -3*vtElc < v[1]-vDrift[1] < 3*vtElc then 
+       return 1/(2*math.pi*vt^2)*math.exp(-((v[1]-vDrift[1])^2+(v[2]-vDrift[2])^2)/(2*vt^2))
+    else 
+       return 0
+    end
 end
 
 plasmaApp = Plasma.App {
