@@ -1,4 +1,7 @@
 -- Gkyl -----------------------------------------------------------------------
+-- Z.Liu 2/10/2021
+-- This input file is for linear benchmarking of Ion acoustic instability
+
 local Plasma = require("App.PlasmaOnCartGrid").VlasovMaxwell()
 
 -- electron parameters

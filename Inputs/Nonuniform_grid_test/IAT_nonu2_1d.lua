@@ -1,4 +1,6 @@
 -- Gkyl -----------------------------------------------------------------------
+-- Z.Liu 4/27/2021
+-- This input file is intended to expand the simulation box in velocity space 4 times as before
 local Plasma = require("App.PlasmaOnCartGrid").VlasovMaxwell()
 
 -- electron parameters
