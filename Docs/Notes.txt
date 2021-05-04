@@ -8,6 +8,27 @@ pgkyl -f .bp interp sel --z1 0.01 --z2 1.0 plot   (z1: y, z2:v_x)
 pgkyl -f simName_elc_M0_[0-9]*.bp interp anim --saveas 'simName_elc_M0.mp4'
 pgkyl -f simName_elc_0.bp interp select --z0 -2. plot
 
+you can try replacing
+# if we are in machines directory, go up a directory before 
+ # executing commands in this script
+ if [ `dirname "$0"` == "." ] 
+   then
+     cd ..
+ fi
+ # Install location... by default, puts gkylsoft directory
+ # on same level as gkyl directory (where we are now, presumably)
+ export GKYLSOFT=$(readlink -f ../gkylsoft)
+with
+# Install location
+ export GKYLSOFT=$(readlink -f ../../gkylsoft)
+ and place
+# if we are in machines directory, go up a directory before executing cmd
+ if [ `dirname "$0"` == "." ] 
+   then
+     cd ..
+ fi
+down around line 38 below EIGEN_INC_DIR
+
 3/15/2021
 Summary
 On the shortcomings of the no-drive problem: Running a simulation with no drive (no E_ext for Vlasov_Poisson and/or no J_ext for Vlasov-Maxwell and/or Vlasov/Maxwell with ghost current) is sort of a bad model problem. The only thing that prevents the current from immediately vanishing is the small electron mass.
