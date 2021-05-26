@@ -308,79 +308,78 @@ def distribution_function_plot(frameWindow):
     
     times = np.zeros(pFramesN)
     for nFr in np.arange(frameWindow[0],frameWindow[1]+1):
-        if nFr % 10 ==0 :
-            fignum = str(nFr).zfill(4)
+        fignum = str(nFr).zfill(4)
 
-            fName_elc = dataDir + fileName+'_elc_'+str(nFr)+'.bp'
-            fName_ion = dataDir + fileName+'_ion_'+str(nFr)+'.bp'
+        fName_elc = dataDir + fileName+'_elc_'+str(nFr)+'.bp'
+        fName_ion = dataDir + fileName+'_ion_'+str(nFr)+'.bp'
 
-            hF         = ad.file(fName_elc)
-            times[nFr] = hF['time'].read()
-            hF.close()
-            time = float('%.3g' % times[nFr])
+        hF         = ad.file(fName_elc)
+        times[nFr] = hF['time'].read()
+        hF.close()
+        time = float('%.3g' % times[nFr])
 
-            elcd = np.squeeze(pgu.getInterpData(fName_elc,polyOrder,basisType))
-            iond = np.squeeze(pgu.getInterpData(fName_ion,polyOrder,basisType))
+        elcd = np.squeeze(pgu.getInterpData(fName_elc,polyOrder,basisType))
+        iond = np.squeeze(pgu.getInterpData(fName_ion,polyOrder,basisType))
 
-            elcd_box_avg = np.average(elcd, axis = (0,1))
-            iond_box_avg = np.average(iond, axis = (0,1))
+        elcd_box_avg = np.average(elcd, axis = (0,1))
+        iond_box_avg = np.average(iond, axis = (0,1))
 
-            elcd_box_avg_z = np.average(elcd,axis= (0,1,3))
-            iond_box_avg_z = np.average(iond,axis= (0,1,3))
+        elcd_box_avg_z = np.average(elcd,axis= (0,1,3))
+        iond_box_avg_z = np.average(iond,axis= (0,1,3))
 
-            fig, axs = plt.subplots(1,2,figsize=(25, 10), facecolor='w', edgecolor='k')
-            fig.subplots_adjust(hspace = .5, wspace =.1)
-            axs = axs.ravel()
+        fig, axs = plt.subplots(1,2,figsize=(25, 10), facecolor='w', edgecolor='k')
+        fig.subplots_adjust(hspace = .5, wspace =.1)
+        axs = axs.ravel()
 
-            pos0 = axs[0].pcolormesh(Vz_elc/cSound0, Vy_elc/cSound0, elcd_box_avg)
-            #xs[0].scatter(boxavg_uElc_z, boxavg_uElc_y, s = 60)
-            axs[0].scatter(np.squeeze(Vz_elc[np.where(elcd_box_avg==np.max(elcd_box_avg))]),np.squeeze(Vy_elc[np.where(elcd_box_avg==np.max(elcd_box_avg))]),s = 40, marker = 'x', alpha = 1)
-            axs[0].set_xlabel(r'$v_z/c_s$', fontsize=30)
-            axs[0].set_ylabel(r'$v_y/c_s$', fontsize=30, labelpad=-1)
-            axs[0].set_title(r'$<F_e(v_z,v_y)>_{z,y},$' + rf't = {time}'+ r' [$\omega_{pe}^{-1}$]', fontsize=26)
-            axs[0].tick_params(labelsize = 26)
-            cbar = fig.colorbar(pos0, ax=axs[0])
-            cbar.ax.tick_params(labelsize=22)
+        pos0 = axs[0].pcolormesh(Vz_elc/cSound0, Vy_elc/cSound0, elcd_box_avg)
+        #xs[0].scatter(boxavg_uElc_z, boxavg_uElc_y, s = 60)
+        axs[0].scatter(np.squeeze(Vz_elc[np.where(elcd_box_avg==np.max(elcd_box_avg))]),np.squeeze(Vy_elc[np.where(elcd_box_avg==np.max(elcd_box_avg))]),s = 40, marker = 'x', alpha = 1)
+        axs[0].set_xlabel(r'$v_z/c_s$', fontsize=30)
+        axs[0].set_ylabel(r'$v_y/c_s$', fontsize=30, labelpad=-1)
+        axs[0].set_title(r'$<F_e(v_z,v_y)>_{z,y},$' + rf't = {time}'+ r' [$\omega_{pe}^{-1}$]', fontsize=26)
+        axs[0].tick_params(labelsize = 26)
+        cbar = fig.colorbar(pos0, ax=axs[0])
+        cbar.ax.tick_params(labelsize=22)
 
-            pos1 = axs[1].pcolormesh(Vz_ion/cSound0, Vy_ion/cSound0, iond_box_avg)
-            axs[1].set_xlabel(r'$v_z/c_s$', fontsize=30)
-            axs[1].set_ylabel(r'$v_y/c_s$', fontsize=30, labelpad=-1)
-            axs[1].set_title(r'$<F_i(v_z,v_y)>_{z,y},$' + rf't = {time}'+ r' [$\omega_{pe}^{-1}$]', fontsize=26)
-            axs[1].tick_params(labelsize = 26)
-            cbar = fig.colorbar(pos1, ax=axs[1])
-            cbar.ax.tick_params(labelsize=22)
+        pos1 = axs[1].pcolormesh(Vz_ion/cSound0, Vy_ion/cSound0, iond_box_avg)
+        axs[1].set_xlabel(r'$v_z/c_s$', fontsize=30)
+        axs[1].set_ylabel(r'$v_y/c_s$', fontsize=30, labelpad=-1)
+        axs[1].set_title(r'$<F_i(v_z,v_y)>_{z,y},$' + rf't = {time}'+ r' [$\omega_{pe}^{-1}$]', fontsize=26)
+        axs[1].tick_params(labelsize = 26)
+        cbar = fig.colorbar(pos1, ax=axs[1])
+        cbar.ax.tick_params(labelsize=22)
 
-            fig.tight_layout()
-            plt.savefig(outfigDir+fileName+rf'_f2D_{fignum}.png', bbox_inches='tight')
-            plt.close()
+        fig.tight_layout()
+        plt.savefig(outfigDir+fileName+rf'_f2D_{fignum}.png', bbox_inches='tight')
+        plt.close()
 
-            fig, axs = plt.subplots(1,2,figsize=(25, 10), facecolor='w', edgecolor='k')
-            fig.subplots_adjust(hspace = .5, wspace =.1)
-            axs = axs.ravel()
+        fig, axs = plt.subplots(1,2,figsize=(25, 10), facecolor='w', edgecolor='k')
+        fig.subplots_adjust(hspace = .5, wspace =.1)
+        axs = axs.ravel()
 
-            pos3 = axs[0].plot(velocitiesz_elc/cSound0, elcd_box_avg_z)
-            axs[0].set_xlabel(r'$v_z/c_s$', fontsize=30)
-            axs[0].set_title(r'$<F_e(v_z)>,$' + rf't = {time}'+ r' [$\omega_{pe}^{-1}$]', fontsize=26)
-            axs[0].tick_params(labelsize = 26)
+        pos3 = axs[0].plot(velocitiesz_elc/cSound0, elcd_box_avg_z)
+        axs[0].set_xlabel(r'$v_z/c_s$', fontsize=30)
+        axs[0].set_title(r'$<F_e(v_z)>,$' + rf't = {time}'+ r' [$\omega_{pe}^{-1}$]', fontsize=26)
+        axs[0].tick_params(labelsize = 26)
 
-            pos4 = axs[1].plot(velocitiesz_ion/cSound0, iond_box_avg_z)
-            axs[1].set_xlabel(r'$v_z/c_s$', fontsize=30)
-            axs[1].set_title(r'$<F_i(v_z)>,$' + rf't = {time}'+ r' [$\omega_{pe}^{-1}$]', fontsize=26)
-            axs[1].tick_params(labelsize = 26)
+        pos4 = axs[1].plot(velocitiesz_ion/cSound0, iond_box_avg_z)
+        axs[1].set_xlabel(r'$v_z/c_s$', fontsize=30)
+        axs[1].set_title(r'$<F_i(v_z)>,$' + rf't = {time}'+ r' [$\omega_{pe}^{-1}$]', fontsize=26)
+        axs[1].tick_params(labelsize = 26)
 
-            fig.tight_layout()
-            plt.savefig(outfigDir+fileName+rf'_f1D_{fignum}.png', bbox_inches='tight')
-            plt.close()
+        fig.tight_layout()
+        plt.savefig(outfigDir+fileName+rf'_f1D_{fignum}.png', bbox_inches='tight')
+        plt.close()
 
 
 
 # frame window for frequency calculation
 iTw_frequency = [int((nFrames-1)*0.1), int((nFrames-1)*0.3)]
-iTw_nu = [int((nFrames-1)*0.1), int((nFrames-1)*0.95)]
-iTw_dis = [int((nFrames-1)*0.5), int((nFrames-1)*0.55)]
+iTw_nu = [int((nFrames-1)*0.1), int((nFrames-1)*0.99)]
+iTw_dis = [int((nFrames-1)*0.05), int((nFrames-1)*0.99)]
 
 #modeOmega, _, _ = measureFrequency(iTw_frequency)
 #times, gamL = calcOmegabNgammaL()
-#current_vs_electric(iTw_nu)
+current_vs_electric(iTw_nu)
 
 distribution_function_plot(iTw_dis) 

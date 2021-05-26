@@ -7,24 +7,40 @@ import numpy as np
 import adios as ad
 import sys
 
-f = ad.file('../IATwExt_2x2v_pert_fieldEnergy.bp')
+simName = 'IAT_E1_wider'
+
+fileName = {'field':'fieldEnergy','ionTemp':'ion_intM2Thermal'}
+
+filePath = '../' + simName +'_'+fileName['ionTemp']+'.bp'
+f = ad.file(filePath)
 times = []
 datas = []
-for i in np.arange(0,1400):
+for i in np.arange(0,1600):
     timeName = 'TimeMesh' + str(i)
     dataName = 'Data' + str(i)
     t = f[timeName][...]
     d = f[dataName][...]
     if np.isscalar(t):
         times.append(t)
-        datas.append(d[0])
+        if np.isscalar(d):
+            datas.append(d)
+        else:
+            datas.append(d[0])
+
     elif t.shape[0] != 1:
         continue
     else:
         times.append(t[0])
         datas.append(d[0][0])
 
-plt.plot(times,datas)
-plt.yscale('log')
-plt.savefig('./fieldEnergy.png')
+savePath = './saved_data/' + fileName['ionTemp'] +'.txt'
+savePatht = './saved_data/' + fileName['ionTemp'] +'_time.txt'
+np.savetxt(savePatht,times)
+np.savetxt(savePath,datas)
+
+
+#plt.plot(times[:],datas[:])
+#plt.yscale('log')
+#plt.ylim(-10e-3,10e-7)
+#plt.savefig('./plots/fieldEnergy.png')
 
