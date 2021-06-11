@@ -1,6 +1,6 @@
 -- Gkyl ------------------------------------------------------------------------
 -- Z.Liu 5/5/2021
--- This input file is based on IAT_E1
+-- This input file is modified from IAT_E1
 -- This input file extended the electron velocity range
 local Plasma = require("App.PlasmaOnCartGrid").VlasovMaxwell()
 
@@ -66,8 +66,8 @@ local function sponEmissionSource(x_table, t, lx_table, ncells_table, p)
 plasmaApp = Plasma.App {
     logToFile = true,
  
-    tEnd        = 3000,          -- End time. RLW: I changed this, but didn't change nFrame below.  So we might get more frames.
-    nFrame      = 1500,             -- Number of output frames.  This is 0.5 frames in unit time --> 3 frames every Langmuir period. 
+    tEnd        = 3200,          -- End time. RLW: I changed this, but didn't change nFrame below.  So we might get more frames.
+    nFrame      = 640,             -- Number of output frames.  This is 0.5 frames in unit time --> 3 frames every Langmuir period. 
     nDistFuncFrame = 100,           -- Number of distribution function output frames 
 
     lower       = {0.0,0.0},             -- Configuration space lower left.
@@ -91,8 +91,8 @@ plasmaApp = Plasma.App {
     elc = Plasma.Species {
        charge = -1.0, mass = 1.0,
        -- Velocity space grid.
-       lower = {-3.0*vtElc,-6.0*vtElc},
-       upper = {12.0*vtElc,6.0*vtElc},
+       lower = {-5.0*vtElc,-6.0*vtElc},
+       upper = {10.0*vtElc,6.0*vtElc},
        cells = {120,96},
        decompCuts = {1,1},
        -- initial conditions
@@ -104,8 +104,8 @@ plasmaApp = Plasma.App {
        end,
        evolve = true, -- Evolve species?
  
-       diagnosticMoments           = { "M0", "M1i" },
-       diagnosticIntegratedMoments = { "intM0", "intM1i"},
+       diagnosticMoments           = { "M0", "M1i"},
+       diagnosticIntegratedMoments = { "intM0", "intM1i","intM2Thermal"},
        coll = Plasma.LBOCollisions{
         collideWith = {'elc', 'ion'},
 	    frequencies = {nuee, nuei},
@@ -116,8 +116,8 @@ plasmaApp = Plasma.App {
     ion = Plasma.Species {
        charge = 1.0, mass = massRatio,
        -- Velocity space grid.
-       lower = {-16.0*vtIon,-16.0*vtIon},
-       upper = {16.0*vtIon,16.0*vtIon},
+       lower = {-12.0*vtIon,-16.0*vtIon},
+       upper = {20.0*vtIon,16.0*vtIon},
        cells = {32,32},
        decompCuts = {1,1},
        -- Initial conditions.
