@@ -7,6 +7,9 @@ from matplotlib import pyplot as plt
 from scipy.interpolate import interp1d
 from scipy.optimize import curve_fit
 
+fileName = {'field':'fieldEnergy','ionTemp':'ion_intM2Thermal','elcTemp':'elc_intM2Thermal','elcJ':'elc_intM1i','ionJ':'ion_intM1i'}
+for name in fileName:
+    print(fileName[name])
 # gamma_list = -1.0*np.array([0.0475188, 0.0472384, 0.0469466, 0.0466454, 0.0463367, 0.0460225, \
 # 0.0457049, 0.045386, 0.0450678, 0.0447526, 0.0441392, 0.0435616, \
 # 0.0430343, 0.0425696, 0.0421773, 0.0414183, 0.0421853, 0.0440303])/0.3
@@ -45,40 +48,70 @@ from scipy.optimize import curve_fit
 # plt.show()
 
 ####### Field Energy Plot #######
-fieldEnergy_z = np.loadtxt('./Diagnostics/local/data/fieldEnergy.txt')
-fieldEnergy_y = np.loadtxt('./Diagnostics/local/data/fieldEnergy_y.txt')
+fieldEnergy_z = np.loadtxt('./Diagnostics/local/E2/data/fieldEnergy.txt')
+#fieldEnergy_y = np.loadtxt('./Diagnostics/local/E2/data/fieldEnergy_y.txt')
 fieldEnergy = fieldEnergy_z + fieldEnergy_z
-time_fieldEnergy = np.loadtxt('./Diagnostics/local/data/fieldEnergy_y_time.txt')
+time_fieldEnergy = np.loadtxt('./Diagnostics/local/E2/data/fieldEnergy_time.txt')
+
+# plt.figure(figsize=(16, 12), dpi=80)
+# plt.plot(time_fieldEnergy,fieldEnergy_z)
+# plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
+# plt.ylabel(r'$\int dydz |\delta E_z|^2 + |\delta E_y|^2$',fontsize=36)
+# plt.yscale('log')
+# #plt.xlim(0,3200)
+# plt.tick_params(labelsize = 28)
+# plt.show()
+
+# ####### Ion Temp Plot #######
+# Iontemp = np.loadtxt('./Diagnostics/local/E2/data/ion_intM2Thermal.txt')
+# time_Iontemp = np.loadtxt('./Diagnostics/local/E2/data/ion_intM2Thermal_time.txt')
+
+# plt.figure(figsize=(16, 12), dpi=80)
+# plt.plot(time_Iontemp[:],Iontemp[1:]/Iontemp[0])
+# plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
+# plt.ylabel(r'$T_i/T_{i0}$',fontsize=36)
+# #plt.yscale('log')
+# #plt.ylim(0,10)
+# plt.tick_params(labelsize = 28)
+# plt.show()
+
+# ####### Elc Temp Plot #######
+# Elctemp = np.loadtxt('./Diagnostics/local/E2/data/elc_intM2Thermal.txt')
+# time_Elctemp = np.loadtxt('./Diagnostics/local/E2/data/elc_intM2Thermal_time.txt')
+
+# plt.figure(figsize=(16, 12), dpi=80)
+# plt.plot(time_Elctemp[:],Elctemp[1:]/Elctemp[0])
+# plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
+# plt.ylabel(r'$T_e/T_{e0}$',fontsize=36)
+# #plt.yscale('log')
+# #plt.ylim(0,10)
+# plt.tick_params(labelsize = 28)
+# plt.show()
+
+####### Current Plot #######
+current = np.loadtxt('./Diagnostics/local/E2/data/elc_intM1i.txt')*2
+time_current = np.loadtxt('./Diagnostics/local/E2/data/elc_intM1i_time.txt')
 
 plt.figure(figsize=(16, 12), dpi=80)
-plt.plot(time_fieldEnergy,fieldEnergy)
-plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
-plt.ylabel(r'$\int dydz |\delta E_z|^2 + |\delta E_y|^2$',fontsize=36)
-plt.yscale('log')
-plt.xlim(0,3200)
-plt.tick_params(labelsize = 28)
-plt.show()
-
-####### Ion Temp Plot #######
-Iontemp = np.loadtxt('./Diagnostics/local/data/Iontemp.txt')
-time_Iontemp = np.loadtxt('./Diagnostics/local/data/Iontemp_times.txt')
-
-plt.figure(figsize=(16, 12), dpi=80)
-plt.plot(time_Iontemp,Iontemp/Iontemp[0])
-plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
-plt.ylabel(r'$T_i/T_{i0}$',fontsize=36)
-plt.yscale('log')
-plt.ylim(0,10)
-plt.tick_params(labelsize = 28)
-plt.show()
-
-current = np.loadtxt('./Diagnostics/local/data/current.txt')
-time_current = np.loadtxt('./Diagnostics/local/data/time_nu.txt')
-
-plt.figure(figsize=(16, 12), dpi=80)
-plt.plot(time_current[time_current!=0],-current[current!=0])
+plt.plot(time_current[:],current[1:])
 plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
 plt.ylabel(r'$|<J_z>|$',fontsize=36)
+plt.tick_params(labelsize = 28)
+plt.show()
+
+####### nu_eff Plot #######
+dJdt = np.zeros(np.size(current)-2)
+nu_eff = np.zeros(np.size(current)-2)
+for i in range(np.size(current)-2):
+    dJdt[i] = (current[i+1] - current[i]) / (time_current[i+1] - time_current[i])
+
+for i in range(np.size(current)-2):
+    nu_eff[i] = (0.00005 - dJdt[i]) / current[i]
+
+plt.figure(figsize=(16, 12), dpi=80)
+plt.plot(time_current[10:],nu_eff[9:])
+plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
+plt.ylabel(r'$<nu_{eff}>$',fontsize=36)
 plt.tick_params(labelsize = 28)
 plt.show()
 
@@ -105,75 +138,78 @@ plt.show()
 # print(times[180])
 # print(np.average(res[180:]))
 
-f_e = np.loadtxt('./Diagnostics/local/data/elc_dist_1615.txt')
-v_z = np.loadtxt('./Diagnostics/local/data/elc_dist_vz_1615.txt')
-f_e_0 = np.loadtxt('./Diagnostics/local/data/elc_dist_0.txt')
-
-def maxwellian(v):
-    t = 1.7
-    A = 83.095*np.sqrt(t)
-    B = 2*0.02**2/t
-    return A*np.exp(-(v-0.004)**2/B)
-
-def maxwellian_0(v):
-    A = 83.095
-    B = 2*0.02**2
-    return A*np.exp(-(v-0.00)**2/B)
-
-def maxwellian_1(v):
-    A = 22.3404
-    B = 0.000657877
-    C = 0.0451935 - 0.008
-
-    return A*np.exp(-(v-C)**2/B)
-
-def maxwellian_2(v):
-    A = 67.31563834802252
-    B = 0.0006571545907741459
-    C = 0.004277912978811665
-
-    return A*np.exp(-(v-C)**2/B)
-
-def maxw(x,A,B,C):
-    return A*np.exp(-(x-C)**2/B)
-
-f_max_0 = np.array([maxwellian_0(v) for v in v_z])
-f_max = np.array([maxwellian(v) for v in v_z])
-f_1 = np.array([maxwellian_1(v) for v in v_z])
-f_2 = np.array([maxwellian_2(v) for v in v_z])
-deltaf = f_e-f_1
-
-# popt, pcov = curve_fit(maxw, v_z, deltaf)
-
-# plt.plot(v_z,f_max_0)    
-#plt.plot(v_z,f_e_0)
-#plt.plot(v_z,f_2,label="marginal unstable maxwellian F_e")    
-plt.plot(v_z,f_e_0,label="F_e (t=3200)",linewidth=1)
-plt.xlabel(r'$V_z$',fontsize=28)
-plt.ylabel('$F_e(V_z)$',fontsize=28)
-plt.vlines(0.004,-10,80,linestyles='--',linewidth=3)
-plt.text(0.006,75,r'$U_{th}$',fontsize=32)
-plt.vlines(0.0451935 - 0.008,-10,40,linestyles='--',linewidth=3)
-plt.text(0.047,35,r'$u $',fontsize=32)
-plt.plot(v_z,f_2,label="bulk",linewidth=3)
-plt.plot(v_z,f_1,label="tail",linewidth=3)
-plt.plot(v_z,f_2+f_1,label="bulk+tail",linewidth=5)
 
 
-# interp = 0
-# f_int1 = 0
-# f_int2 = 0
-# for i in range(359):
-#     deltat = v_z[i+1]-v_z[i]
-#     f = 0.5*(f_e[i]-f_max[i]+f_e[i+1]-f_max[i+1])
-#     interp += deltat*f
-#     f_int1 += deltat*(f_e_0[i]+f_e_0[i+1])*0.5
-#     f_int2 += deltat*(f_max_0[i]+f_max_0[i+1])*0.5
-# print(interp)
-# print(f_int1)
-# print(f_int2)
-#plt.xlim(-0.07,0.15)
-plt.legend(fontsize=36)
-plt.tick_params(labelsize = 28)
-plt.grid()
-plt.show()
+################# 1D distribution function ######################
+# f_e = np.loadtxt('./Diagnostics/local/data/elc_dist_1615.txt')
+# v_z = np.loadtxt('./Diagnostics/local/data/elc_dist_vz_1615.txt')
+# f_e_0 = np.loadtxt('./Diagnostics/local/data/elc_dist_0.txt')
+
+# def maxwellian(v):
+#     t = 1.7
+#     A = 83.095*np.sqrt(t)
+#     B = 2*0.02**2/t
+#     return A*np.exp(-(v-0.004)**2/B)
+
+# def maxwellian_0(v):
+#     A = 83.095
+#     B = 2*0.02**2
+#     return A*np.exp(-(v-0.00)**2/B)
+
+# def maxwellian_1(v):
+#     A = 22.3404
+#     B = 0.000657877
+#     C = 0.0451935 - 0.008
+
+#     return A*np.exp(-(v-C)**2/B)
+
+# def maxwellian_2(v):
+#     A = 67.31563834802252
+#     B = 0.0006571545907741459
+#     C = 0.004277912978811665
+
+#     return A*np.exp(-(v-C)**2/B)
+
+# def maxw(x,A,B,C):
+#     return A*np.exp(-(x-C)**2/B)
+
+# f_max_0 = np.array([maxwellian_0(v) for v in v_z])
+# f_max = np.array([maxwellian(v) for v in v_z])
+# f_1 = np.array([maxwellian_1(v) for v in v_z])
+# f_2 = np.array([maxwellian_2(v) for v in v_z])
+# deltaf = f_e-f_1
+
+# # popt, pcov = curve_fit(maxw, v_z, deltaf)
+
+# # plt.plot(v_z,f_max_0)    
+# #plt.plot(v_z,f_e_0)
+# #plt.plot(v_z,f_2,label="marginal unstable maxwellian F_e")    
+# plt.plot(v_z,f_e_0,label="F_e (t=3200)",linewidth=1)
+# plt.xlabel(r'$V_z$',fontsize=28)
+# plt.ylabel('$F_e(V_z)$',fontsize=28)
+# plt.vlines(0.004,-10,80,linestyles='--',linewidth=3)
+# plt.text(0.006,75,r'$U_{th}$',fontsize=32)
+# plt.vlines(0.0451935 - 0.008,-10,40,linestyles='--',linewidth=3)
+# plt.text(0.047,35,r'$u $',fontsize=32)
+# plt.plot(v_z,f_2,label="bulk",linewidth=3)
+# plt.plot(v_z,f_1,label="tail",linewidth=3)
+# plt.plot(v_z,f_2+f_1,label="bulk+tail",linewidth=5)
+
+
+# # interp = 0
+# # f_int1 = 0
+# # f_int2 = 0
+# # for i in range(359):
+# #     deltat = v_z[i+1]-v_z[i]
+# #     f = 0.5*(f_e[i]-f_max[i]+f_e[i+1]-f_max[i+1])
+# #     interp += deltat*f
+# #     f_int1 += deltat*(f_e_0[i]+f_e_0[i+1])*0.5
+# #     f_int2 += deltat*(f_max_0[i]+f_max_0[i+1])*0.5
+# # print(interp)
+# # print(f_int1)
+# # print(f_int2)
+# #plt.xlim(-0.07,0.15)
+# plt.legend(fontsize=36)
+# plt.tick_params(labelsize = 28)
+# plt.grid()
+# plt.show()

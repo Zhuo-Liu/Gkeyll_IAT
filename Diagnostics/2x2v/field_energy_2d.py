@@ -219,15 +219,19 @@ def calcOmegabNgammaL():
     return intTime, omegaIm[0]
 
 
-
-def current_vs_electric(frameWindow):
+#=====================================================================#
+#=====================Current and Resistivity=========================#
+#=====================================================================#
+def current_vs_electric(frameWindow,E):
     #.in the time frame given by frameWindow[0] to frameWindow[1].
     pFramesN = frameWindow[1]-(frameWindow[0]-1)
     time     = np.zeros(pFramesN)
 
     eField_boxavg_z = np.zeros(pFramesN)
     J_boxavg_z = np.zeros(pFramesN)
+    dJdt = np.zeros(pFramesN)
     E_over_J_rolling = np.zeros(pFramesN)
+    nu_eff = np.zeros(pFramesN)
 
     cF = 0
     for nFr in np.arange(frameWindow[0],frameWindow[1]+1):
@@ -243,33 +247,39 @@ def current_vs_electric(frameWindow):
         fName_field = fileRoot+'field_'+str(nFr)+'.bp'    #.Complete file name.
 
         elcM1_z = np.squeeze(pgu.getInterpData(fNameM1_elc,polyOrder,basisType,comp=0))
-        elcM1_y = np.squeeze(pgu.getInterpData(fNameM1_elc,polyOrder,basisType,comp=1))
+        #elcM1_y = np.squeeze(pgu.getInterpData(fNameM1_elc,polyOrder,basisType,comp=1))
         ionM1_z = np.squeeze(pgu.getInterpData(fNameM1_ion,polyOrder,basisType,comp=0))
-        ionM1_y = np.squeeze(pgu.getInterpData(fNameM1_ion,polyOrder,basisType,comp=1))
+        #ionM1_y = np.squeeze(pgu.getInterpData(fNameM1_ion,polyOrder,basisType,comp=1))
         Ez      = np.squeeze(pgu.getInterpData(fName_field,polyOrder,basisType,comp=0))
-        Ey      = np.squeeze(pgu.getInterpData(fName_field,polyOrder,basisType,comp=1))
+        #Ey      = np.squeeze(pgu.getInterpData(fName_field,polyOrder,basisType,comp=1))
 
         # elcM0 = np.squeeze(pgu.getInterpData(fNameM0_elc,polyOrder,basisType,comp=0)) # don't have to specify the component here
         # ionM0 = np.squeeze(pgu.getInterpData(fNameM0_ion,polyOrder,basisType,comp=0))
 
         boxavg_Ez = np.average(Ez)
-        boxavg_Ey = np.average(Ey)
+        #boxavg_Ey = np.average(Ey)
 
         eField_boxavg_z[cF] = boxavg_Ez
     
         Jz = ionM1_z - elcM1_z
-        Jy = ionM1_y - ionM1_y
+        #Jy = ionM1_y - ionM1_y
 
         J_boxavg_z[cF] = np.sum(Jz)/(nz*ny)
+        dJdt = (J_boxavg_z[cF] - J_boxavg_z[cF-1])/(time[cF]-time[cF-1])
 
         cF = cF+1
 
     Navg = 3
-    for n in range(Navg,pFramesN):
-        E_over_J_rolling[n] = np.sum(eField_boxavg_z[n-Navg:n])/np.sum(J_boxavg_z[n-Navg:n])
-    for n in range(Navg):
-        E_over_J_rolling[n] =  E_over_J_rolling[Navg]  #bfill the first Navg values
+    # for n in range(Navg,pFramesN):
+    #     E_over_J_rolling[n] = np.sum(eField_boxavg_z[n-Navg:n])/np.sum(J_boxavg_z[n-Navg:n])
+    # for n in range(Navg):
+    #     E_over_J_rolling[n] =  E_over_J_rolling[Navg]  #bfill the first Navg values
 
+    for n in range(Navg,pFramesN-Navg-1):
+        for i in range(0,Navg): 
+            nu_eff[n] += 1/Navg * ((E+dJdt[n+i])/J_boxavg_z[n+i])
+    for n in range(Navg):
+            nu_eff[n] += 1/Navg * ((E+dJdt[n])/J_boxavg_z[n])  #bfill the first Navg values
 
     fig, axs = plt.subplots(1,3,figsize=(30, 10), facecolor='w', edgecolor='k')
     fig.subplots_adjust(hspace = .5, wspace =.1)
@@ -285,9 +295,10 @@ def current_vs_electric(frameWindow):
     axs[1].set_ylabel(r'$\langle J_z \rangle$', fontsize=30)
     axs[1].tick_params(labelsize = 26)
 
-    axs[2].plot(time,E_over_J_rolling)
+    axs[2].plot(time,nu_eff)
     axs[2].set_xlabel(r'$t \ [\omega_{pe}^{-1}]$', fontsize=30)
-    axs[2].set_ylabel(r'$\langle E_z\rangle /\langle\, J_z\rangle \ [\nu_{\mathrm{eff}}/ \omega_{pe}]$', fontsize=30)
+    #axs[2].set_ylabel(r'$\langle E_z\rangle /\langle\, J_z\rangle \ [\nu_{\mathrm{eff}}/ \omega_{pe}]$', fontsize=30)
+    axs[2].set_ylabel(r'$\nu_{\mathrm{eff}}/ \omega_{pe}$', fontsize=30)
     axs[2].tick_params(labelsize = 26)
 
     fig.tight_layout()
@@ -380,6 +391,6 @@ iTw_dis = [int((nFrames-1)*0.05), int((nFrames-1)*0.99)]
 
 #modeOmega, _, _ = measureFrequency(iTw_frequency)
 #times, gamL = calcOmegabNgammaL()
-current_vs_electric(iTw_nu)
+current_vs_electric(iTw_nu,0.0001)
 
 distribution_function_plot(iTw_dis) 
