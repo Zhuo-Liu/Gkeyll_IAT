@@ -1,1 +1,4 @@
 Diagnostics/local/
+.ipynb_checkpoints
+__pycache__
+Diagnostics/2x2v/data/
