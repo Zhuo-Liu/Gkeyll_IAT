@@ -116,7 +116,7 @@ local function FluctuatingCurrentDrive(x_table, t, lx_table, ncells_table, p)
       for ny = 1, math.floor(Ny/4) do
         modJ = math.random()*math.sin(2*math.pi*(nx*x/Lx + math.random()))*math.sin(2*math.pi*(ny*y/Ly + math.random()))
 	--magnitude of J for these mode numbers
-        Jx = Jx + modJ * nx/ Lx / math.sqrt(nx/ Lx * nx/ Lx + ny/ Ly * ny/ Ly)  --add the component for this particular (nx,ny)
+        Jx = Jx + mo dJ * nx/ Lx / math.sqrt(nx/ Lx * nx/ Lx + ny/ Ly * ny/ Ly)  --add the component for this particular (nx,ny)
         Jy = Jy + modJ * ny/ Ly / math.sqrt(nx/ Lx * nx/ Lx + ny/ Ly * ny/ Ly) --Note that (delta J)_k should be parallel to k
       end
    end

@@ -7,9 +7,11 @@ from matplotlib import pyplot as plt
 from scipy.interpolate import interp1d
 from scipy.optimize import curve_fit
 
-fileName = {'field':'fieldEnergy','ionTemp':'ion_intM2Thermal','elcTemp':'elc_intM2Thermal','elcJ':'elc_intM1i','ionJ':'ion_intM1i'}
-for name in fileName:
-    print(fileName[name])
+from scipy.special import gamma
+
+# fileName = {'field':'fieldEnergy','ionTemp':'ion_intM2Thermal','elcTemp':'elc_intM2Thermal','elcJ':'elc_intM1i','ionJ':'ion_intM1i'}
+# for name in fileName:
+#     print(fileName[name])
 # gamma_list = -1.0*np.array([0.0475188, 0.0472384, 0.0469466, 0.0466454, 0.0463367, 0.0460225, \
 # 0.0457049, 0.045386, 0.0450678, 0.0447526, 0.0441392, 0.0435616, \
 # 0.0430343, 0.0425696, 0.0421773, 0.0414183, 0.0421853, 0.0440303])/0.3
@@ -48,55 +50,85 @@ for name in fileName:
 # plt.show()
 
 ####### Field Energy Plot #######
-fieldEnergy_z = np.loadtxt('./Diagnostics/local/E2/data/fieldEnergy.txt')
+fieldEnergy_z = np.loadtxt('./Diagnostics/local/E2_nu0.0001_reduced/data/fieldEnergy.txt')
 #fieldEnergy_y = np.loadtxt('./Diagnostics/local/E2/data/fieldEnergy_y.txt')
-fieldEnergy = fieldEnergy_z + fieldEnergy_z
-time_fieldEnergy = np.loadtxt('./Diagnostics/local/E2/data/fieldEnergy_time.txt')
-
-# plt.figure(figsize=(16, 12), dpi=80)
-# plt.plot(time_fieldEnergy,fieldEnergy_z)
-# plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
-# plt.ylabel(r'$\int dydz |\delta E_z|^2 + |\delta E_y|^2$',fontsize=36)
-# plt.yscale('log')
-# #plt.xlim(0,3200)
-# plt.tick_params(labelsize = 28)
-# plt.show()
-
-# ####### Ion Temp Plot #######
-# Iontemp = np.loadtxt('./Diagnostics/local/E2/data/ion_intM2Thermal.txt')
-# time_Iontemp = np.loadtxt('./Diagnostics/local/E2/data/ion_intM2Thermal_time.txt')
-
-# plt.figure(figsize=(16, 12), dpi=80)
-# plt.plot(time_Iontemp[:],Iontemp[1:]/Iontemp[0])
-# plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
-# plt.ylabel(r'$T_i/T_{i0}$',fontsize=36)
-# #plt.yscale('log')
-# #plt.ylim(0,10)
-# plt.tick_params(labelsize = 28)
-# plt.show()
-
-# ####### Elc Temp Plot #######
-# Elctemp = np.loadtxt('./Diagnostics/local/E2/data/elc_intM2Thermal.txt')
-# time_Elctemp = np.loadtxt('./Diagnostics/local/E2/data/elc_intM2Thermal_time.txt')
-
-# plt.figure(figsize=(16, 12), dpi=80)
-# plt.plot(time_Elctemp[:],Elctemp[1:]/Elctemp[0])
-# plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
-# plt.ylabel(r'$T_e/T_{e0}$',fontsize=36)
-# #plt.yscale('log')
-# #plt.ylim(0,10)
-# plt.tick_params(labelsize = 28)
-# plt.show()
-
-####### Current Plot #######
-current = np.loadtxt('./Diagnostics/local/E2/data/elc_intM1i.txt')*2
-time_current = np.loadtxt('./Diagnostics/local/E2/data/elc_intM1i_time.txt')
+#fieldEnergy = fieldEnergy_z + fieldEnergy_z
+time_fieldEnergy = np.loadtxt('./Diagnostics/local/E2_nu0.0001_reduced/data/fieldEnergy_time.txt')
+fieldEnergy_z2 = np.loadtxt('./Diagnostics/local/E2_nu0.0001/data/fieldEnergy.txt')
+#fieldEnergy_y = np.loadtxt('./Diagnostics/local/E2_nu0.0001/data/fieldEnergy_y.txt')
+#fieldEnergy = fieldEnergy_z + fieldEnergy_z
+time_fieldEnergy2 = np.loadtxt('./Diagnostics/local/E2_nu0.0001/data/fieldEnergy_time.txt')
+fieldEnergy_z3 = np.loadtxt('./Diagnostics/local/E2_nu0.00001/data/fieldEnergy.txt')
+time_fieldEnergy3 = np.loadtxt('./Diagnostics/local/E2_nu0.00001/data/fieldEnergy_time.txt')
 
 plt.figure(figsize=(16, 12), dpi=80)
-plt.plot(time_current[:],current[1:])
+plt.plot(time_fieldEnergy[:1020],fieldEnergy_z[:1020],label='low resolution, nu=0.0001')
+plt.plot(time_fieldEnergy2,fieldEnergy_z2,label='high resolution, nu=0.0001')
+plt.plot(time_fieldEnergy3,fieldEnergy_z3,label='high resolution, nu=0.0005')
+plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
+plt.ylabel(r'$\int dydz |\delta E_z|^2 + |\delta E_y|^2$',fontsize=36)
+plt.yscale('log')
+#plt.xlim(0,3200)
+plt.tick_params(labelsize = 28)
+plt.legend(fontsize=28)
+plt.show()
+
+# ####### Ion Temp Plot #######
+Iontemp = np.loadtxt('./Diagnostics/local/E2_nu0.0001_reduced/data/ion_intM2Thermal.txt')
+time_Iontemp = np.loadtxt('./Diagnostics/local/E2_nu0.0001_reduced/data/ion_intM2Thermal_time.txt')
+Iontemp1 = np.loadtxt('./Diagnostics/local/E2_nu0.0001/data/ion_intM2Thermal.txt')
+time_Iontemp1 = np.loadtxt('./Diagnostics/local/E2_nu0.0001/data/ion_intM2Thermal_time.txt')
+Iontemp2 = np.loadtxt('./Diagnostics/local/E2_nu0.0005/data/ion_intM2Thermal.txt')
+time_Iontemp2 = np.loadtxt('./Diagnostics/local/E2_nu0.0005/data/ion_intM2Thermal_time.txt')
+
+plt.figure(figsize=(16, 12), dpi=80)
+plt.plot(time_Iontemp[:1010],Iontemp[:1010]/Iontemp[0],label='low resolution, nu=0.0001')
+plt.plot(time_Iontemp1[:],Iontemp1[1:]/Iontemp1[0],label='high resolution, nu=0.0001')
+plt.plot(time_Iontemp2[:380],Iontemp2[:380]/Iontemp2[0],label='high resolution, nu=0.0005')
+plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
+plt.ylabel(r'$T_i/T_{i0}$',fontsize=36)
+#plt.yscale('log')
+#plt.ylim(0,10)
+plt.tick_params(labelsize = 28)
+plt.legend(fontsize=28)
+plt.show()
+
+# ####### Elc Temp Plot #######
+Elctemp = np.loadtxt('./Diagnostics/local/E2_nu0.0001_reduced/data/elc_intM2Thermal.txt')
+time_Elctemp = np.loadtxt('./Diagnostics/local/E2_nu0.0001_reduced/data/elc_intM2Thermal_time.txt')
+Elctemp1 = np.loadtxt('./Diagnostics/local/E2_nu0.0001/data/elc_intM2Thermal.txt')
+time_Elctemp1 = np.loadtxt('./Diagnostics/local/E2_nu0.0001/data/elc_intM2Thermal_time.txt')
+Elctemp2 = np.loadtxt('./Diagnostics/local/E2_nu0.0005/data/elc_intM2Thermal.txt')
+time_Elctemp2 = np.loadtxt('./Diagnostics/local/E2_nu0.0005/data/elc_intM2Thermal_time.txt')
+
+plt.figure(figsize=(16, 12), dpi=80)
+plt.plot(time_Elctemp[:1010],Elctemp[:1010]/Elctemp[0],label='low resolution, nu=0.0001')
+plt.plot(time_Elctemp1[:],Elctemp1[1:]/Elctemp1[0],label='high resolution, nu=0.0001')
+plt.plot(time_Elctemp2[:380],Elctemp2[:380]/Elctemp2[0],label='high resolution, nu=0.0005')
+plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
+plt.ylabel(r'$T_e/T_{e0}$',fontsize=36)
+#plt.yscale('log')
+#plt.ylim(0,10)
+plt.tick_params(labelsize = 28)
+plt.legend(fontsize=28)
+plt.show()
+
+####### Current Plot #######
+current = np.loadtxt('./Diagnostics/local/E2_nu0.0001_reduced/data/elc_intM1i.txt')*2
+time_current = np.loadtxt('./Diagnostics/local/E2_nu0.0001_reduced/data/elc_intM1i_time.txt')
+current1 = np.loadtxt('./Diagnostics/local/E2_nu0.0001/data/elc_intM1i.txt')*2
+time_current1 = np.loadtxt('./Diagnostics/local/E2_nu0.0001/data/elc_intM1i_time.txt')
+current2 = -np.loadtxt('./Diagnostics/local/E2_nu0.0005/data/elc_z.txt')
+time_current2 = np.loadtxt('./Diagnostics/local/E2_nu0.0005/data/elc_z_time.txt')
+
+plt.figure(figsize=(16, 12), dpi=80)
+plt.plot(time_current[:1020],current[:1020],label='low resolution, nu=0.0001')
+plt.plot(time_current1[:],current1[1:],label='high resolution, nu=0.0001')
+plt.plot(time_current2[:380],current2[:380],label='high resolution, nu=0.0005')
 plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
 plt.ylabel(r'$|<J_z>|$',fontsize=36)
 plt.tick_params(labelsize = 28)
+plt.legend(fontsize=28)
 plt.show()
 
 ####### nu_eff Plot #######
@@ -108,11 +140,25 @@ for i in range(np.size(current)-2):
 for i in range(np.size(current)-2):
     nu_eff[i] = (0.00005 - dJdt[i]) / current[i]
 
+nu_eff_smooth = np.zeros(np.size(current)-2)
+for i in range(np.size(current)-50):
+    nu_eff_smooth[i] = np.average(nu_eff[i:i+48])
+dJdt1 = np.zeros(np.size(current1)-2)
+nu_eff1 = np.zeros(np.size(current1)-2)
+for i in range(np.size(current1)-2):
+    dJdt1[i] = (current1[i+1] - current1[i]) / (time_current1[i+1] - time_current1[i])
+
+for i in range(np.size(current1)-2):
+    nu_eff1[i] = (0.00005 - dJdt1[i]) / current1[i]
+
 plt.figure(figsize=(16, 12), dpi=80)
-plt.plot(time_current[10:],nu_eff[9:])
+plt.plot(time_current[10:1020],nu_eff[10:1020],label='low resolution')
+#plt.plot(time_current[10:1020],nu_eff_smooth[10:1020])
+plt.plot(time_current1[10:],nu_eff1[9:],label='high resolution')
 plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
 plt.ylabel(r'$<nu_{eff}>$',fontsize=36)
 plt.tick_params(labelsize = 28)
+#plt.legend(fontsize=28)
 plt.show()
 
 # res = np.loadtxt('./Diagnostics/local/resistivity.txt')
@@ -212,4 +258,84 @@ plt.show()
 # plt.legend(fontsize=36)
 # plt.tick_params(labelsize = 28)
 # plt.grid()
+# plt.show()
+
+##########
+# def maxwellian_2d(vthe, udrift):
+#     return 1/(2*np.pi*vthe**2)*np.exp(-((vthe[0]-udrift[0])**2+(vthe[1]-udrift[1])**2)/(2*vthe**2))
+
+def maxwellian_1d(v, vthe, udrift):
+    return 1/(2*np.pi*vthe**2)*np.exp(-((v-udrift)**2)/(2*vthe**2))
+
+C = np.sqrt(4*np.pi)
+
+tempamp = 1.0
+vte = 0.02*tempamp
+v0 = 0.02
+massratio = 25
+tempratio = 50
+cs = 0.02/np.sqrt(massratio)
+nuee = 0.0001
+betap = 0.18
+beta0 = 0.3
+E = 0.00005
+
+nuE = np.sqrt(9*np.pi/8)*E/cs
+ENL = 0.004*50/6/np.pi * C
+KN = E/ENL
+K = KN/(np.sqrt(KN+1)-1)
+vM = vte * (9*np.pi*nuee*vte**2/(betap*K*nuE*cs**2))**(1/6)
+tNL = tempratio/E/100
+
+nuee_crit = nuE/tempratio * (beta0/K + betap*K/np.pi/9)
+
+print(nuee_crit)
+print(vM)
+
+def fe_1(v):
+    exp1 = np.exp(-vM**2/2/vte**2 * (1/6*np.log((v**2+vM**2)**2/(v**4-v**2*vM**2+vM**4)+ 1/np.sqrt(3)*np.arctan(np.sqrt(3)*v**2/(2*vM**2-v**2))) ))
+    exp2 = np.exp(-np.pi*vM**2 / (3*np.sqrt(3)*vte**2))
+    if v<=0.041:
+        return maxwellian_1d(v,vte,0)*(exp1-exp2) + 84.2
+    else:
+        return maxwellian_1d(v,vte,0)*(exp1-exp2)
+    #return 10*(exp1-exp2)
+
+def tau1(t):
+    Be = beta0*nuE*cs**2*v0**3/K
+    return Be*t
+
+def fe_2(v,t):
+    return 1/4/np.pi/gamma(3/5)*(5*tau1(t)**3)**(-0.2)*np.exp(-(v-0.1)**5/25/tau1(t)) / 40 /10
+
+v = np.arange(0.06,0.26,0.001)
+f1 = np.array([fe_1(it) for it in v])
+f2 = np.array([fe_2(it,1000) for it in v])
+fM = np.array([maxwellian_1d(it,vte,0) for it in v])
+
+
+# plt.plot(v,f2,label='relaxation')
+# # plt.plot(v,f2,label='1')
+# # plt.plot(v,f3,label='2')
+# plt.plot(v/cs,fM,label='Maxwellian')
+# plt.xlabel('$v/c_s$',fontsize=28)
+# plt.legend(fontsize=28)
+# plt.tick_params(labelsize = 28)
+# plt.show()
+
+# f_e = np.loadtxt('./Diagnostics/local/elc_dist_360.txt')[:]
+# v_z = np.loadtxt('./Diagnostics/local/elc_dist_vz_360.txt')[:]
+
+# def fefit(x,A,B,C):
+#     return A*np.exp(-(x-B)**5/C)
+
+# ff = np.array([fefit(it,32,0.036,0.000006) for it in v])
+
+# #popt, pcov = curve_fit(fefit, v_z, f_e)
+# #print(popt)
+
+# plt.plot(v_z,f_e,label = 't=1800')
+# plt.plot(v,ff,label='$\sim exp(-v^5)$')
+# plt.legend(fontsize=28)
+# plt.tick_params(labelsize = 28)
 # plt.show()
