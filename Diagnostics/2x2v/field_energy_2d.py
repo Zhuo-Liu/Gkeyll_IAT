@@ -1,6 +1,7 @@
 #.Make plots from Gkyl data.
 #.Manaure Francisquez (base) and Lucio Milanese (updates and extensions).
 #.Spring 2019.
+from re import I
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -69,7 +70,7 @@ figureFileFormat = '.png'
 #.component of the momentum density.
 compZero = 0
 
-    #..................... NO MORE USER INPUTS BELOW (maybe) ....................#
+#..................... NO MORE USER INPUTS BELOW (maybe) ....................#
 
 nFrames = 1+pgu.findLastFrame(dataDir+fileName+'_field_','bp')
 fileRoot = dataDir+fileName+'_'
@@ -92,8 +93,16 @@ ly = lx[1]  #get box length along y
 nz = nx[0]
 ny = nx[1]
 
+print(nz)
+dz = lz/nz
+dy = ly/ny
+
 points_z = np.array(x_elc[0])
 points_y = np.array(x_elc[1])
+
+kz_plot   = 2.0*3.14159*np.linspace(-int(nz/2), int(nz/2-1), nz)/lz
+ky_plot  = 2.0*3.14159*np.linspace(-int(ny/2), int(ny/2-1), ny)/ly
+K_z, K_y = np.meshgrid(kz_plot, ky_plot, indexing = 'xy')
 
 def lineFunc(x,a,b):
   #.Compute the function y = a*x + b.
@@ -125,10 +134,13 @@ def measureFrequency(frameWindow,makeplot=True):
         fName     = fileRoot+'field_'+str(nFr)+'.bp'    #.Complete file name.
         Ez        = pgu.getInterpData(fName,polyOrder,basisType,comp=0)
         EzMid[cF] = Ez[nxIntD2[0]//2,nxIntD2[1]//2] #Why we are using the electron grid in field???
-        EzMid[cF] = (1.0-np.cos(2.0*np.pi*cF/(pFramesN-1)))*EzMid[cF]
+        #EzMid[cF] = (1.0-np.cos(2.0*np.pi*cF/(pFramesN-1)))*EzMid[cF]
 
         cF = cF+1
 
+    np.savetxt("./Ez.txt",EzMid)
+    np.savetxt("./Ez_time.txt",time)
+    
     #.Compute the FFT of mid-point electric field in time.
     EzMidw      = np.fft.rfft(EzMid)
     absEzMidwSq = np.power(np.absolute(EzMidw),2)
@@ -218,6 +230,132 @@ def calcOmegabNgammaL():
 
     return intTime, omegaIm[0]
 
+#=====================================================================#
+#===============Perturbed Electric field Spectrum=====================#
+#=====================================================================#
+def get_field_data(nFr):
+    fName = fileRoot + 'field_' + str(nFr) + '.bp'
+    phi = pgu.getInterpData(fName,polyOrder,basisType)[:,:,0]
+    field_E_z, field_E_y = np.gradient(phi)
+    field_E_y = field_E_y/dy
+    field_E_z = field_E_z/dz
+    
+    return field_E_z, field_E_y    
+
+def get_current(nFr):
+    fNameM1_ion = fileRoot+'ion_M1i_'+str(nFr)+'.bp'
+    fNameM1_elc = fileRoot+'elc_M1i_'+str(nFr)+'.bp'    
+    elcM1_z = np.squeeze(pgu.getInterpData(fNameM1_elc,polyOrder,basisType,comp=0))
+    ionM1_z = np.squeeze(pgu.getInterpData(fNameM1_ion,polyOrder,basisType,comp=0))
+    elcM1_y = np.squeeze(pgu.getInterpData(fNameM1_elc,polyOrder,basisType,comp=1))
+    ionM1_y = np.squeeze(pgu.getInterpData(fNameM1_ion,polyOrder,basisType,comp=1))
+    Jz = ionM1_z - elcM1_z
+    Jy = ionM1_y - elcM1_y
+    return Jz, Jy
+
+def plot_spec(nFr,frameWindow=None,singleShot=True):
+    if singleShot == True:
+        fignum = str(nFr).zfill(4)
+        fName_ion = dataDir + fileName+'_ion_'+str(nFr)+'.bp'
+        hF         = ad.file(fName_ion)
+        time = float('%.4g' % hF['time'].read())
+        hF.close()
+
+        field_E_z, field_E_y = get_field_data(nFr)
+        field_E_fluct_z_k = np.fft.fftn(field_E_z - np.average(field_E_z)) 
+        field_E_fluct_y_k = np.fft.fftn(field_E_y - np.average(field_E_y)) 
+
+        Jz, Jy = get_current(nFr)
+        J_fluct_z_k = np.fft.fftn(Jz - np.average(Jz))
+        J_fluct_y_k = np.fft.fftn(Jy - np.average(Jy))
+
+        JdotE_k = np.abs(np.transpose(np.fft.fftshift(J_fluct_z_k*field_E_fluct_z_k + J_fluct_y_k*field_E_fluct_y_k) ) )
+        field_E_fluct_square_K = np.abs(np.transpose(np.fft.fftshift(field_E_fluct_z_k**2 + field_E_fluct_y_k**2) ) )  
+
+
+        fig, axs = plt.subplots(1,2,figsize=(45, 20), facecolor='w', edgecolor='k')
+        fig.subplots_adjust(hspace = .5, wspace =.1)
+        axs = axs.ravel()
+
+        pos0 = axs[0].contourf(K_z, K_y, field_E_fluct_square_K)
+        axs[0].set_xlabel(r'$k_z \lambda_{De0}$', fontsize=30)
+        axs[0].set_ylabel(r'$k_y \lambda_{De0}$', fontsize=30, labelpad=-1)
+        axs[0].set_title(rf'$|\delta E^2|_k$, t = {time}'+ r'[$\omega_{pe}^{-1}$]', fontsize=30)
+        axs[0].tick_params(labelsize = 26)
+        axs[0].set_xlim([-100,100])
+        axs[0].set_ylim([-100,100])
+        cbar = fig.colorbar(pos0, ax=axs[0])
+        cbar.ax.tick_params(labelsize=22)
+
+        pos1 = axs[1].contourf(K_z, K_y, JdotE_k)
+        axs[1].set_xlabel(r'$k_z \lambda_{De0}$', fontsize=30)
+        axs[1].set_ylabel(r'$k_y \lambda_{De0}$', fontsize=30, labelpad=-1)
+        axs[1].set_title(rf'$(\delta J \cdot \delta E)_k$, t = {time}'+ r'[$\omega_{pe}^{-1}$]', fontsize=30)
+        axs[1].tick_params(labelsize = 26)
+        axs[1].set_xlim([-100,100])
+        axs[1].set_ylim([-100,100])
+        cbar = fig.colorbar(pos1, ax=axs[1])
+        cbar.ax.tick_params(labelsize=22)
+
+        fig.tight_layout()
+        plt.savefig(outfigDir+fileName+rf'_fft_{fignum}.png', bbox_inches='tight')
+        plt.close()
+
+        return
+
+    else:
+        pFramesN = frameWindow[1] - (frameWindow[0] - 1)
+        times = []
+
+        for nfr in np.arange(frameWindow[0],frameWindow[1]):
+            if nfr%5 == 0:
+                fignum = str(nfr).zfill(4)
+
+                fName_ion = dataDir + fileName+'_ion_'+str(nfr)+'.bp'
+                hF         = ad.file(fName_ion)
+                the_time = hF['time'].read()
+                hF.close()
+                time = float('%.3g' % the_time)     
+                times.append(time)       
+
+                field_E_z, field_E_y = get_field_data(nfr)
+                field_E_fluct_z_k = np.fft.fftn(field_E_z - np.average(field_E_z)) 
+                field_E_fluct_y_k = np.fft.fftn(field_E_y - np.average(field_E_y)) 
+
+                Jz, Jy = get_current(nfr)
+                J_fluct_z_k = np.fft.fftn(Jz - np.average(Jz))
+                J_fluct_y_k = np.fft.fftn(Jy - np.average(Jy))
+
+                JdotE_k = np.abs(np.transpose(np.fft.fftshift(J_fluct_z_k*field_E_fluct_z_k + J_fluct_y_k*field_E_fluct_y_k) ) )
+                field_E_fluct_square_K = np.abs(np.transpose(np.fft.fftshift(field_E_fluct_z_k**2 + field_E_fluct_y_k**2) ) )  
+
+
+                fignum = str(nfr).zfill(4)
+                fig, axs = plt.subplots(1,2,figsize=(45, 20), facecolor='w', edgecolor='k')
+                fig.subplots_adjust(hspace = .5, wspace =.1)
+                axs = axs.ravel()
+
+                pos0 = axs[0].contourf(K_z, K_y, field_E_fluct_square_K)
+                axs[0].set_xlabel(r'$k_z \lambda_{De0}$', fontsize=30)
+                axs[0].set_ylabel(r'$k_y \lambda_{De0}$', fontsize=30, labelpad=-1)
+                axs[0].set_title(rf'$|\delta E^2|_k$, t = {time}'+ r'[$\omega_{pe}^{-1}$]', fontsize=30)
+                axs[0].tick_params(labelsize = 26)
+                cbar = fig.colorbar(pos0, ax=axs[0])
+                cbar.ax.tick_params(labelsize=22)
+
+                pos1 = axs[1].contourf(K_z, K_y, JdotE_k)
+                axs[1].set_xlabel(r'$k_z \lambda_{De0}$', fontsize=30)
+                axs[1].set_ylabel(r'$k_y \lambda_{De0}$', fontsize=30, labelpad=-1)
+                axs[1].set_title(rf'$(\delta J \cdot \delta E)_k$, t = {time}'+ r'[$\omega_{pe}^{-1}$]', fontsize=30)
+                axs[1].tick_params(labelsize = 26)
+                cbar = fig.colorbar(pos1, ax=axs[1])
+                cbar.ax.tick_params(labelsize=22)
+
+                fig.tight_layout()
+                plt.savefig(outfigDir+fileName+rf'_fft_{fignum}.png', bbox_inches='tight')
+                plt.close()
+            
+        return times
 
 #=====================================================================#
 #=====================Current and Resistivity=========================#
