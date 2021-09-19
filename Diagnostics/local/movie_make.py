@@ -17,6 +17,7 @@ for filename in file_array:
  
 out = cv2.VideoWriter('./output_video_e1_1d.mp4',cv2.VideoWriter_fourcc(*'DIVX'), 5, size)
  
-for i in range(len(img_array)):
-    out.write(img_array[i])
+for image in img_array:
+    out.write(image)
+cv2.destroyAllWindows()
 out.release()
