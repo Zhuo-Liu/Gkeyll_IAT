@@ -114,8 +114,8 @@ from scipy.special import gamma
 
 
 # ####### Field Energy Plot #######
-# fieldEnergy1 = np.loadtxt('./Diagnostics/local/Cori/Low/saved_data/fieldEnergy.txt')
-# time_fieldEnergy1 = np.loadtxt('./Diagnostics/local/Cori/Low/saved_data/fieldEnergy_time.txt')
+fieldEnergy1 = np.loadtxt('./Diagnostics/local/Cori/Low/saved_data/fieldEnergy.txt')
+time_fieldEnergy1 = np.loadtxt('./Diagnostics/local/Cori/Low/saved_data/fieldEnergy_time.txt')
 # fieldEnergy2 = np.loadtxt('./Diagnostics/local/Ratio/mass100/saved_data/fieldEnergy.txt')
 # time_fieldEnergy2 = np.loadtxt('./Diagnostics/local/Ratio/mass100/saved_data/fieldEnergy_time.txt')
 # fieldEnergy3 = np.loadtxt('./Diagnostics/local/Ratio/mass400/saved_data/fieldEnergy.txt')
@@ -124,6 +124,10 @@ from scipy.special import gamma
 # time_fieldEnergy4 = np.loadtxt('./Diagnostics/local/Ratio/temp200/saved_data/fieldEnergy_time.txt')
 # fieldEnergy5 = np.loadtxt('./Diagnostics/local/Ratio/temp1/saved_data/fieldEnergy.txt')
 # time_fieldEnergy5 = np.loadtxt('./Diagnostics/local/Ratio/temp1/saved_data/fieldEnergy_time.txt')
+fieldEnergy6 = np.loadtxt('./Diagnostics/local/E_external/E1/saved_data/fieldEnergy.txt')
+time_fieldEnergy6 = np.loadtxt('./Diagnostics/local/E_external/E1/saved_data/fieldEnergy_time.txt')
+fieldEnergy7 = np.loadtxt('./Diagnostics/local/E_external/E3/saved_data/fieldEnergy.txt')
+time_fieldEnergy7 = np.loadtxt('./Diagnostics/local/E_external/E3/saved_data/fieldEnergy_time.txt')
 
 
 # # fieldEnergy2 = np.loadtxt('./Diagnostics/local/E2_nu0.0001_check/E2_0.0001_2/saved_data/fieldEnergy.txt')
@@ -135,7 +139,8 @@ from scipy.special import gamma
 # # fieldEnergy5 = np.loadtxt('./Diagnostics/local/E2_nu0.0001_check/E2_0.0001_recheck/saved_data/fieldEnergy.txt')
 # # time_fieldEnergy5 = np.loadtxt('./Diagnostics/local/E2_nu0.0001_check/E2_0.0001_recheck/saved_data/fieldEnergy_time.txt')
 
-# plt.figure(figsize=(16, 12), dpi=80)
+plt.figure(figsize=(16, 12), dpi=80)
+
 # #plt.plot(time_fieldEnergy2[:],fieldEnergy_z2[:],linewidth=5,label='high resolution, old')
 # plt.plot(time_fieldEnergy1[:],fieldEnergy1[:],label='mass=25,temp=50')
 # plt.plot(time_fieldEnergy2[:],fieldEnergy2[:],label='mass=100,temp=50')
@@ -143,13 +148,17 @@ from scipy.special import gamma
 # # plt.plot(time_fieldEnergy4[:],fieldEnergy4[:],label='mass=25,temp=200')
 # # plt.plot(time_fieldEnergy5[:],fieldEnergy5[:],label='mass=25,temp=1')
 
-# plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
-# plt.ylabel(r'$\int dydz |\delta E_z|^2 + |\delta E_y|^2$',fontsize=36)
-# plt.yscale('log')
-# #plt.xlim(0,3200)
-# plt.tick_params(labelsize = 28)
-# plt.legend(fontsize=24)
-# plt.show()
+plt.plot(time_fieldEnergy6[:],fieldEnergy6[:],label='E1')
+plt.plot(time_fieldEnergy1[:],fieldEnergy1[:],label='E2')
+plt.plot(time_fieldEnergy7[:],fieldEnergy7[:],label='E3')
+
+plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
+plt.ylabel(r'$\int dydz |\delta E_z|^2 + |\delta E_y|^2$',fontsize=36)
+plt.yscale('log')
+#plt.xlim(0,3200)
+plt.tick_params(labelsize = 28)
+plt.legend(fontsize=24)
+plt.show()
 
 # # ####### Ion Temp Plot #######
 # # Iontemp1 = np.loadtxt('./Diagnostics/local/E2_nu0.0001/data/ion_intM2Thermal.txt')
@@ -258,9 +267,14 @@ time_current4 = np.loadtxt('./Diagnostics/local/Ratio/temp200/saved_data/elc_int
 current5 = np.loadtxt('./Diagnostics/local/Ratio/temp1/saved_data/elc_intM1i.txt')*2
 time_current5 = np.loadtxt('./Diagnostics/local/Ratio/temp1/saved_data/elc_intM1i_time.txt')
 
-print(current1.shape)
-print(current2.shape)
-print(current3.shape)
+current6 = np.loadtxt('./Diagnostics/local/E_external/E1/saved_data/elc_intM1i.txt')*2
+time_current6 = np.loadtxt('./Diagnostics/local/E_external/E1/saved_data/elc_intM1i_time.txt')
+current7 = np.loadtxt('./Diagnostics/local/E_external/E3/saved_data/elc_intM1i.txt')*2
+time_current7 = np.loadtxt('./Diagnostics/local/E_external/E3/saved_data/elc_intM1i_time.txt')
+
+# print(current1.shape)
+# print(current2.shape)
+# print(current3.shape)
 
 def lineFunc(x,a,b):
   #.Compute the function y = a*x + b.
@@ -276,12 +290,16 @@ poptMaxima3, _ = curve_fit(lineFunc, time_current3[130:180], current3[130:180])
 plt.figure(figsize=(16, 12), dpi=80)
 # plt.plot(time_current3[:],vte_2,linewidth=2,label='vthe, high resolution',color='red',linestyle='--')
 # plt.plot(time_current4[:],vte_3,linewidth=2,label='vthe, low resolution',color='blue',linestyle='--')
-plt.plot(time_current1[:550],current1[:550],label='mass=25,temp=50')
-plt.plot(time_current2[:],current2[:],label='mass=100,temp=50')
-plt.plot(time_current3[:300],current3[:300],label='mass=400,temp=50')
+# plt.plot(time_current1[:550],current1[:550],label='mass=25,temp=50')
+# plt.plot(time_current2[:],current2[:],label='mass=100,temp=50')
+# plt.plot(time_current3[:300],current3[:300],label='mass=400,temp=50')
 # plt.hlines(0.019,0,2000,linestyles='--')
 #plt.plot(time_current4[:],current4[:],label='mass=25,temp=200')
 #plt.plot(time_current5[:],current5[:],label='mass=25,temp=1')
+
+plt.plot(time_current6[:],current6[:],label='E=1e-5')
+# plt.plot(time_current7[:],current7[:],label='E=2.5e-5')
+# plt.plot(time_current1[:],current1[:],label='E=5e-5')
 
 # plt.plot(time_current1[120:160],lineFunc(time_current1[120:160],*poptMaxima1),label='fit1',linestyle='None',marker='o',markersize=4,markevery=2)
 # plt.plot(time_current2[90:120],lineFunc(time_current2[90:120],*poptMaxima2),label='fit2',linestyle='None',marker='o',markersize=4,markevery=2)
