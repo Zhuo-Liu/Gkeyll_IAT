@@ -473,8 +473,8 @@ plt.show()
 # f_2 = np.array([maxwellian_2(v) for v in v_z])
 # deltaf = f_e-f_1
 
-f_e = np.loadtxt('./Diagnostics/local/E_external/E1/saved_data/elc_dist_150.txt')
-v_z = np.loadtxt('./Diagnostics/local/E_external/E1/saved_data/elc_dist_vz_150.txt')
+f_e = np.loadtxt('./Diagnostics/local/Cori/Low/saved_data/elc_dist_80.txt')
+v_z = np.loadtxt('./Diagnostics/local/Cori/Low/saved_data/elc_dist_vz_80.txt')
 #f_e_0 = np.loadtxt('./Diagnostics/local/Ratio/mass400/saved_data/elc_dist_0.txt')
 
 def maxwellian(v):
@@ -489,14 +489,14 @@ def maxwellian_0(v):
     return A*np.exp(-(v-0.00)**2/B)
 
 def maxwellian_1(v):
-    A = 45.0
-    B = 2*0.016**2
-    C = 0.028
+    A = 46.3
+    B = 2*0.019**2
+    C = 0.038
 
     return A*np.exp(-(v-C)**2/B)
 
 def maxwellian_2(v):
-    A = 60.0
+    A = 50.3
     B = 2*0.015**2
     C = 0.00
 
@@ -516,17 +516,17 @@ deltaf = f_e-f_1
 # plt.plot(v_z,f_max_0)    
 #plt.plot(v_z,f_e_0)
 #plt.plot(v_z,f_2,label="marginal unstable maxwellian F_e")    
-plt.plot(v_z,f_e,label="F_e (t=1500)",linewidth=3)
+plt.plot(v_z,f_e,label="F_e (t=400)",linewidth=3)
 plt.xlabel(r'$V_z$',fontsize=28)
 plt.ylabel('$F_e(V_z)$',fontsize=28)
 # plt.vlines(0.004,-10,80,linestyles='--',linewidth=3)
 # plt.text(0.006,75,r'$U_{th}$',fontsize=32)
 # plt.vlines(0.0451935 - 0.008,-10,40,linestyles='--',linewidth=3)
 # plt.text(0.047,35,r'$u $',fontsize=32)
-plt.plot(v_z,f_2,label="bulk",linewidth=2)
-plt.plot(v_z,f_1,label="tail",linewidth=2)
-plt.plot(v_z,f_2+f_1,label="bulk+tail",linewidth=2)
-plt.legend()
+# plt.plot(v_z,f_2,label="bulk",linewidth=2)
+# plt.plot(v_z,f_1,label="tail",linewidth=2)
+# plt.plot(v_z,f_2+f_1,label="bulk+tail",linewidth=2)
+plt.legend(fontsize=28)
 plt.xlim(-0.1,0.15)
 plt.grid()
 plt.show()
