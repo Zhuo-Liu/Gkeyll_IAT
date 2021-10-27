@@ -200,6 +200,7 @@ plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
 plt.ylabel(r'$T_i/T_{i0}$',fontsize=36)
 # #plt.yscale('log')
 # #plt.ylim(0,10)
+plt.xlim(0,2000)
 plt.tick_params(labelsize = 28)
 plt.legend(fontsize=24)
 plt.show()
@@ -294,8 +295,8 @@ def lineFunc(x,a,b):
   return np.add(np.multiply(x,a),b)
 
 poptMaxima1, _ = curve_fit(lineFunc, time_current1[120:200], current1[120:200])
-poptMaxima2, _ = curve_fit(lineFunc, time_current6[85:125], current6[85:125])
-poptMaxima3, _ = curve_fit(lineFunc, time_current7[135:175], current7[135:175])
+poptMaxima2, _ = curve_fit(lineFunc, time_current7[100:150], current7[100:150])
+poptMaxima3, _ = curve_fit(lineFunc, time_current6[150:350], current6[150:350])
 
 # print(poptMaxima1)
 # print(poptMaxima2)
@@ -315,19 +316,19 @@ plt.plot(time_current1[:],current1[:],label='$E=5e-5$')
 plt.plot(time_current7[:],current7[:],label='$E=2.5e-5$')
 plt.plot(time_current6[:],current6[:],label='$E=1e-5$')
 
-# plt.plot(time_current1[120:200],lineFunc(time_current1[120:200],*poptMaxima1),linestyle='None',marker='o',markersize=4,markevery=2)
-# plt.plot(time_current2[85:125],lineFunc(time_current2[85:125],*poptMaxima2),linestyle='None',marker='o',markersize=4,markevery=2)
-# plt.plot(time_current3[135:175],lineFunc(time_current3[135:175],*poptMaxima3),linestyle='None',marker='o',markersize=4,markevery=2)
-# plt.text(300,0.025,"$dJ/dt=${:.2e}".format(poptMaxima1[0]),fontsize=24)
-# plt.text(900,0.02,"$dJ/dt=${:.2e}".format(poptMaxima2[0]),fontsize=24)
-# plt.text(1550,0.022,"$dJ/dt=${:.2e}".format(poptMaxima3[0]),fontsize=24)
+plt.plot(time_current1[120:200],lineFunc(time_current1[120:200],*poptMaxima1),linestyle='None',marker='o',markersize=4,markevery=2)
+plt.plot(time_current7[100:150],lineFunc(time_current7[100:150],*poptMaxima2),linestyle='None',marker='o',markersize=4,markevery=2)
+plt.plot(time_current6[150:350],lineFunc(time_current6[150:350],*poptMaxima3),linestyle='None',marker='o',markersize=4,markevery=2)
+plt.text(300,0.025,"$dJ/dt=${:.2e}".format(poptMaxima1[0]),fontsize=24)
+plt.text(900,0.02,"$dJ/dt=${:.2e}".format(poptMaxima2[0]),fontsize=24)
+plt.text(2000,0.017,"$dJ/dt=${:.2e}".format(poptMaxima3[0]),fontsize=24)
 # plt.hlines(0.019,0,3000,linestyles='--')
 # plt.hlines(0.0152,0,1200,linestyles='--')
 # plt.hlines(0.012,0,1600,linestyles='--')
 plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
 plt.ylabel(r'$|<J_z>|$',fontsize=36)
-#plt.xlim(0,2200)
-#plt.ylim(0,0.05)
+plt.xlim(0,3000)
+plt.ylim(0,0.03)
 plt.title('Electron current traces for different $E_{ext}$',fontsize=28)
 plt.tick_params(labelsize = 28)
 plt.legend(fontsize=24)
@@ -384,47 +385,48 @@ for i in range(np.size(current1)-2):
 # for i in range(np.size(current4)-51):
 #     nu_eff_smooth4[i] = np.average(nu_eff4[i:i+50])
 
-# dJdt6 = np.zeros(np.size(current6)-1)
-# nu_eff6 = np.zeros(np.size(current6)-1)
-# for i in range(np.size(current6)-1):
-#     dJdt6[i] = (current6[i+1] - current6[i]) / (time_current6[i+1] - time_current6[i])
+dJdt6 = np.zeros(np.size(current6)-1)
+nu_eff6 = np.zeros(np.size(current6)-1)
+for i in range(np.size(current6)-1):
+    dJdt6[i] = (current6[i+1] - current6[i]) / (time_current6[i+1] - time_current6[i])
 
-# for i in range(np.size(current6)-2):
-#     nu_eff6[i] = (0.00001 - dJdt6[i]) / current6[i]
+for i in range(np.size(current6)-2):
+    nu_eff6[i] = (0.00001 - dJdt6[i]) / current6[i]
 
-# # nu_eff_smooth1 = np.zeros(np.size(current1)-2)
-# # for i in range(np.size(current1)-50):
-# #     nu_eff_smooth1[i] = np.average(nu_eff1[i:i+48])
+# nu_eff_smooth1 = np.zeros(np.size(current1)-2)
+# for i in range(np.size(current1)-50):
+#     nu_eff_smooth1[i] = np.average(nu_eff1[i:i+48])
     
-# dJdt7 = np.zeros(np.size(current7)-1)
-# nu_eff7 = np.zeros(np.size(current7)-1)
-# for i in range(np.size(current7)-1):
-#     dJdt7[i] = (current7[i+1] - current7[i]) / (time_current7[i+1] - time_current7[i])
+dJdt7 = np.zeros(np.size(current7)-1)
+nu_eff7 = np.zeros(np.size(current7)-1)
+for i in range(np.size(current7)-1):
+    dJdt7[i] = (current7[i+1] - current7[i]) / (time_current7[i+1] - time_current7[i])
 
-# for i in range(np.size(current7)-1):
-#     nu_eff7[i] = (0.000025 - dJdt7[i]) / current7[i]
+for i in range(np.size(current7)-1):
+    nu_eff7[i] = (0.000025 - dJdt7[i]) / current7[i]
 
 # nu_eff_smooth1 = np.zeros(np.size(current1)-2)
 # for i in range(np.size(current1)-50):
 #     nu_eff_smooth1[i] = np.average(nu_eff1[i:i+48])
 
-# plt.figure(figsize=(16, 12), dpi=80)
-# plt.title('$\\nu_{eff}$',fontsize=28)
-# #plt.plot(time_current1[10:],nu_eff1[9:],label='high resolution, nu=0.0001')
-# #plt.plot(time_current[10:1020],nu_eff_smooth[10:1020])
-# plt.plot(time_current1[9:],nu_eff1[8:],label='$M/m=25$')
+plt.figure(figsize=(16, 12), dpi=80)
+plt.title('$\\nu_{eff}$',fontsize=28)
+#plt.plot(time_current1[10:],nu_eff1[9:],label='high resolution, nu=0.0001')
+#plt.plot(time_current[10:1020],nu_eff_smooth[10:1020])
+plt.plot(time_current1[9:],nu_eff1[8:],label='$E=5.0e-5$')
 # plt.plot(time_current2[9:],nu_eff2[8:],label='$M/m=100$')
 # plt.plot(time_current3[9:250],nu_eff3[9:250],label='$M/m=400$')
-# # plt.plot(time_current4[9:],nu_eff4[8:],label='mass=25,temp=200')
-# # plt.plot(time_current7[9:],nu_eff7[8:],label='$E=2.5e-5$')
-# # plt.plot(time_current6[9:],nu_eff6[8:],label='$E=1.0e-5$')
-# #plt.hlines(0.0002,0,3500,linestyles='--')
-# #plt.text(100,0.00025,'0.0002',fontsize=28)
-# plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
-# plt.ylabel(r'$<nu_{eff}>$',fontsize=36)
-# plt.tick_params(labelsize = 28)
-# plt.legend(fontsize=28)
-# plt.show()
+# plt.plot(time_current4[9:],nu_eff4[8:],label='mass=25,temp=200')
+plt.plot(time_current7[9:],nu_eff7[8:],label='$E=2.5e-5$')
+plt.plot(time_current6[9:],nu_eff6[8:],label='$E=1.0e-5$')
+#plt.hlines(0.0002,0,3500,linestyles='--')
+#plt.text(100,0.00025,'0.0002',fontsize=28)
+plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
+plt.ylabel(r'$<nu_{eff}>$',fontsize=36)
+plt.tick_params(labelsize = 28)
+plt.legend(fontsize=28)
+plt.xlim(0,2500)
+plt.show()
 
 
 ########################## E/J plot #############################
