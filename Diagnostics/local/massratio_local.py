@@ -114,8 +114,8 @@ from scipy.special import gamma
 
 
 # # ####### Field Energy Plot #######
-fieldEnergy1 = np.loadtxt('./Diagnostics/local/Cori/Low/saved_data/fieldEnergy.txt')
-time_fieldEnergy1 = np.loadtxt('./Diagnostics/local/Cori/Low/saved_data/fieldEnergy_time.txt')
+fieldEnergy1 = np.loadtxt('./Diagnostics/local/E_external/Cori/Low/saved_data/fieldEnergy.txt')
+time_fieldEnergy1 = np.loadtxt('./Diagnostics/local/E_external/Cori/Low/saved_data/fieldEnergy_time.txt')
 fieldEnergy2 = np.loadtxt('./Diagnostics/local/Ratio/mass100/saved_data/fieldEnergy.txt')
 time_fieldEnergy2 = np.loadtxt('./Diagnostics/local/Ratio/mass100/saved_data/fieldEnergy_time.txt')
 fieldEnergy3 = np.loadtxt('./Diagnostics/local/Ratio/mass400/saved_data/fieldEnergy.txt')
@@ -140,7 +140,7 @@ time_fieldEnergy3 = np.loadtxt('./Diagnostics/local/Ratio/mass400/saved_data/fie
 # # # time_fieldEnergy5 = np.loadtxt('./Diagnostics/local/E2_nu0.0001_check/E2_0.0001_recheck/saved_data/fieldEnergy_time.txt')
 
 plt.figure(figsize=(16, 12), dpi=80)
-plt.title("perturbed electric field energy",fontsize=28)
+plt.title("perturbed electric field energy",fontsize=32)
 
 # #plt.plot(time_fieldEnergy2[:],fieldEnergy_z2[:],linewidth=5,label='high resolution, old')
 plt.plot(time_fieldEnergy1[:],fieldEnergy1[:],label='$M/m=25$',linewidth=5)
@@ -159,7 +159,8 @@ plt.yscale('log')
 #plt.xlim(0,3200)
 plt.tick_params(labelsize = 28)
 plt.legend(fontsize=24)
-plt.show()
+#plt.show()
+plt.savefig('./Diagnostics/local/field.pdf')
 
 # # # ####### Ion Temp Plot #######
 # # # Iontemp1 = np.loadtxt('./Diagnostics/local/E2_nu0.0001/data/ion_intM2Thermal.txt')
@@ -170,8 +171,8 @@ plt.show()
 # # # time_Iontemp3 = np.loadtxt('./Diagnostics/local/E2_nu0.0001_Cori/low/data/ion_intM2Thermal_time.txt')
 # # # Iontemp4 = np.loadtxt('./Diagnostics/local/reduced_cost/spaceyzionelc/E2_nu0.0001/data/ion_intM2Thermal.txt')
 # # # time_Iontemp4 = np.loadtxt('./Diagnostics/local/reduced_cost/spaceyzionelc/E2_nu0.0001/data/ion_intM2Thermal_time.txt')
-Iontemp1 = np.loadtxt('./Diagnostics/local/Cori/Low/saved_data/ion_intM2Thermal.txt')
-time_Iontemp1 = np.loadtxt('./Diagnostics/local/Cori/Low/saved_data/ion_intM2Thermal_time.txt')
+Iontemp1 = np.loadtxt('./Diagnostics/local/E_external/Cori/Low/saved_data/ion_intM2Thermal.txt')
+time_Iontemp1 = np.loadtxt('./Diagnostics/local/E_external/Cori/Low/saved_data/ion_intM2Thermal_time.txt')
 Iontemp2 = np.loadtxt('./Diagnostics/local/Ratio/mass100/saved_data/ion_intM2Thermal.txt')
 time_Iontemp2 = np.loadtxt('./Diagnostics/local/Ratio/mass100/saved_data/ion_intM2Thermal_time.txt')
 Iontemp3 = np.loadtxt('./Diagnostics/local/Ratio/mass400/saved_data/ion_intM2Thermal.txt')
@@ -186,7 +187,7 @@ time_Iontemp3 = np.loadtxt('./Diagnostics/local/Ratio/mass400/saved_data/ion_int
 # time_Iontemp7 = np.loadtxt('./Diagnostics/local/E_external/E3/saved_data/ion_intM2Thermal_time.txt')
 
 plt.figure(figsize=(16, 12), dpi=80)
-plt.title("ion temperature ratio",fontsize=28)
+plt.title("ion temperature",fontsize=32)
 
 # #plt.plot(time_Iontemp[:],Iontemp[1:]/Iontemp[0],linewidth=5,label='high resolution, old')
 plt.plot(time_Iontemp1[:],Iontemp1[:]/Iontemp1[0],label='$M/m=25$',linewidth=5)
@@ -202,7 +203,7 @@ plt.ylabel(r'$T_i/T_{i0}$',fontsize=36)
 # #plt.ylim(0,10)
 plt.tick_params(labelsize = 28)
 plt.legend(fontsize=24)
-plt.show()
+plt.savefig('./Diagnostics/local/iontemp.pdf')
 
 # # # ####### Elc Temp Plot #######
 # # # Elctemp1 = np.loadtxt('./Diagnostics/local/E2_nu0.0001/data/elc_intM2Thermal.txt')
@@ -269,8 +270,8 @@ plt.show()
 # time_current3 = np.loadtxt('./Diagnostics/local/E2_nu0.0001_Cori/low/data/elc_intM1i_time.txt')
 # current3 = np.loadtxt('./Diagnostics/local/reduced_cost/spaceyzionelc/E2_nu0.0001/data/elc_intM1i.txt')*2
 # time_current3 = np.loadtxt('./Diagnostics/local/reduced_cost/spaceyzionelc/E2_nu0.0001/data/elc_intM1i_time.txt')
-current1 = np.loadtxt('./Diagnostics/local/Cori/Low/saved_data/elc_intM1i.txt')*2
-time_current1 = np.loadtxt('./Diagnostics/local/Cori/Low/saved_data/elc_intM1i_time.txt')
+current1 = np.loadtxt('./Diagnostics/local/E_external/Cori/Low/saved_data/elc_intM1i.txt')*2
+time_current1 = np.loadtxt('./Diagnostics/local/E_external/Cori/Low/saved_data/elc_intM1i_time.txt')
 current2 = np.loadtxt('./Diagnostics/local/Ratio/mass100/saved_data/elc_intM1i.txt')*2
 time_current2 = np.loadtxt('./Diagnostics/local/Ratio/mass100/saved_data/elc_intM1i_time.txt')
 current3 = np.loadtxt('./Diagnostics/local/Ratio/mass400/saved_data/elc_intM1i.txt')*2
@@ -301,13 +302,13 @@ poptMaxima3, _ = curve_fit(lineFunc, time_current3[135:175], current3[135:175])
 # print(poptMaxima2)
 # print(poptMaxima3)
 plt.figure(figsize=(16, 12), dpi=80)
-plt.title("electron current",fontsize=28)
+plt.title("electron current",fontsize=32)
 
 # plt.plot(time_current3[:],vte_2,linewidth=2,label='vthe, high resolution',color='red',linestyle='--')
 # plt.plot(time_current4[:],vte_3,linewidth=2,label='vthe, low resolution',color='blue',linestyle='--')
-plt.plot(time_current1[:],current1[:],label='$M/m=25$',linewidth=5)
-plt.plot(time_current2[:],current2[:],label='$M/m=100$',linewidth=5)
-plt.plot(time_current3[:250],current3[:250],label='$M/m=400$',linewidth=5)
+plt.plot(time_current1[:],current1[:]/0.02,label='$M/m=25$',linewidth=5)
+plt.plot(time_current2[:],current2[:]/0.02,label='$M/m=100$',linewidth=5)
+plt.plot(time_current3[:250],current3[:250]/0.02,label='$M/m=400$',linewidth=5)
 #plt.plot(time_current4[:],current4[:],label='mass=25,temp=200')
 #plt.plot(time_current5[:],current5[:],label='mass=25,temp=1')
 
@@ -325,14 +326,14 @@ plt.plot(time_current3[:250],current3[:250],label='$M/m=400$',linewidth=5)
 # plt.hlines(0.0152,0,1200,linestyles='--')
 # plt.hlines(0.012,0,1600,linestyles='--')
 plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
-plt.ylabel(r'$|<J_z>|$',fontsize=36)
+plt.ylabel(r'$<J_z>/(en_0 v_{the})$',fontsize=36)
 #plt.xlim(0,2200)
 #plt.ylim(0,0.05)
-plt.title('Electron current traces for different $E_{ext}$',fontsize=28)
+#plt.title('Electron current traces for different $E_{ext}$',fontsize=28)
 plt.tick_params(labelsize = 28)
 plt.legend(fontsize=24)
-plt.show()
-
+#plt.show()
+plt.savefig('./Diagnostics/local/current.pdf')
 
 
 # ####### nu_eff Plot #######
@@ -409,7 +410,7 @@ for i in range(np.size(current3)-2):
 #     nu_eff_smooth1[i] = np.average(nu_eff1[i:i+48])
 
 plt.figure(figsize=(16, 12), dpi=80)
-plt.title('$\\nu_{eff}$',fontsize=28)
+plt.title('effective collision frequency',fontsize=32)
 #plt.plot(time_current1[10:],nu_eff1[9:],label='high resolution, nu=0.0001')
 #plt.plot(time_current[10:1020],nu_eff_smooth[10:1020])
 plt.plot(time_current1[9:],nu_eff1[8:],label='$M/m=25$',linewidth=3)
@@ -421,10 +422,10 @@ plt.plot(time_current3[9:250],nu_eff3[9:250],label='$M/m=400$',linewidth=3)
 #plt.hlines(0.0002,0,3500,linestyles='--')
 #plt.text(100,0.00025,'0.0002',fontsize=28)
 plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
-#plt.ylabel(r'$\nu_{eff}$',fontsize=36)
+plt.ylabel(r'$\omega_{pe}$',fontsize=36)
 plt.tick_params(labelsize = 28)
 plt.legend(fontsize=28)
-plt.show()
+plt.savefig('./Diagnostics/local/nueff.pdf')
 
 
 ########################## E/J plot #############################
