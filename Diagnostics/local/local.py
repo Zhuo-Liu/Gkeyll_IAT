@@ -3,7 +3,10 @@
 # Auxiliary for crash data files
 
 import numpy as np
-from matplotlib import pyplot as plt
+#from matplotlib import pyplot as plt
+import matplotlib
+matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 from scipy.optimize import curve_fit
 
@@ -86,19 +89,20 @@ from scipy.special import gamma
 # plt.ylim(0,0.06)
 # plt.show()
 
-# f = interp1d(k_list, gamma_list_2,kind='cubic')
-# us = np.arange(0.2,4,0.01)
-# #us = np.arange(10,100,1)
-# fs = f(us)
+f = interp1d(k_list, gamma_list_2,kind='cubic')
+us = np.arange(0.2,4,0.01)
+#us = np.arange(10,100,1)
+fs = f(us)
 
-# plt.plot(us,fs)
-# plt.title(r'$u_e = 0.01$')
-# plt.xlabel(r'$k\lambda_{De}$',fontsize=16)
-# plt.ylabel('$\gamma/k$',fontsize=16)
-# plt.xlim(0,2.0)
-# plt.ylim(0,0.04)
-# #plt.hlines(0,0.2,4,linestyles='--')
-# plt.show()
+#plt.plot(us,fs)
+plt.plot(k_list,gamma_list_2)
+plt.title(r'$u_e = 0.01$')
+plt.xlabel(r'$k\lambda_{De}$',fontsize=16)
+plt.ylabel('$\gamma/k$',fontsize=16)
+#plt.xlim(0,2.0)
+#plt.ylim(0,0.04)
+#plt.hlines(0,0.2,4,linestyles='--')
+plt.show()
 
 # Ez = np.loadtxt('./Diagnostics/local/E2_nu0.0001_Cori/high/data/Ez.txt')
 # time_Ez = np.loadtxt('./Diagnostics/local/E2_nu0.0001_Cori/high/data/Ez_time.txt')
@@ -150,7 +154,7 @@ plt.plot(time_fieldEnergy2[:],fieldEnergy2[:],label='$E=5e-5$')
 # plt.plot(time_fieldEnergy3[:95],fieldEnergy3[:95],label='$M/m=400$')
 # # plt.plot(time_fieldEnergy4[:],fieldEnergy4[:],label='mass=25,temp=200')
 # # plt.plot(time_fieldEnergy5[:],fieldEnergy5[:],label='mass=25,temp=1')
-plt.plot(time_fieldEnergy2[:],fieldEnergy2[:],label='$E=8e-6$')
+plt.plot(time_fieldEnergy8[:],fieldEnergy8[:],label='$E=8e-6$')
 
 # plt.plot(time_fieldEnergy1[:],fieldEnergy1[:],label='E=5e-5')
 # plt.plot(time_fieldEnergy7[:],fieldEnergy7[:],label='E=2.5e-5')
@@ -207,7 +211,7 @@ plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
 plt.ylabel(r'$T_i/T_{i0}$',fontsize=36)
 # #plt.yscale('log')
 # #plt.ylim(0,10)
-plt.xlim(0,5000)
+#plt.xlim(0,5000)
 plt.tick_params(labelsize = 28)
 plt.legend(fontsize=24)
 plt.show()
@@ -294,7 +298,7 @@ current7 = np.loadtxt('./Diagnostics/local/E_external/E3/saved_data/elc_intM1i.t
 time_current7 = np.loadtxt('./Diagnostics/local/E_external/E3/saved_data/elc_intM1i_time.txt')
 
 current8 = np.loadtxt('./Diagnostics/local/mass100/Erec/saved_data/elc_intM1i.txt')*2
-time_current8 = np.loadtxt('./Diagnostics/local/mass100/Erec/saved_data/elc_intM1i.txt')
+time_current8 = np.loadtxt('./Diagnostics/local/mass100/Erec/saved_data/elc_intM1i_time.txt')
 
 # print(current1.shape)
 # print(current2.shape)
@@ -307,8 +311,8 @@ def lineFunc(x,a,b):
 # poptMaxima1, _ = curve_fit(lineFunc, time_current1[120:200], current1[120:200])
 # poptMaxima2, _ = curve_fit(lineFunc, time_current7[100:150], current7[100:150])
 # poptMaxima3, _ = curve_fit(lineFunc, time_current6[150:350], current6[150:350])
-poptMaxima4, _ = curve_fit(lineFunc, time_current2[120:200], current2[120:200])
-poptMaxima5, _ = curve_fit(lineFunc, time_current8[100:150], current8[100:150])
+poptMaxima4, _ = curve_fit(lineFunc, time_current2[85:120], current2[85:120])
+poptMaxima5, _ = curve_fit(lineFunc, time_current8[280:370], current8[280:370])
 
 
 # print(poptMaxima1)
@@ -334,22 +338,22 @@ plt.plot(time_current8[:],current8[:],label='$E=8e-6$')
 # plt.plot(time_current1[120:200],lineFunc(time_current1[120:200],*poptMaxima1),linestyle='None',marker='o',markersize=4,markevery=2)
 # plt.plot(time_current7[100:150],lineFunc(time_current7[100:150],*poptMaxima2),linestyle='None',marker='o',markersize=4,markevery=2)
 # plt.plot(time_current6[150:350],lineFunc(time_current6[150:350],*poptMaxima3),linestyle='None',marker='o',markersize=4,markevery=2)
-plt.plot(time_current2[100:150],lineFunc(time_current2[100:150],*poptMaxima4),linestyle='None',marker='o',markersize=4,markevery=2)
-plt.plot(time_current8[150:350],lineFunc(time_current8[150:350],*poptMaxima5),linestyle='None',marker='o',markersize=4,markevery=2)
+plt.plot(time_current2[85:120],lineFunc(time_current2[85:120],*poptMaxima4),linestyle='None',marker='o',markersize=4,markevery=2)
+plt.plot(time_current8[280:370],lineFunc(time_current8[280:370],*poptMaxima5),linestyle='None',marker='o',markersize=4,markevery=2)
 
 # plt.text(300,0.025,"$dJ/dt=${:.2e}".format(poptMaxima1[0]),fontsize=24)
 # plt.text(900,0.02,"$dJ/dt=${:.2e}".format(poptMaxima2[0]),fontsize=24)
 # plt.text(2000,0.017,"$dJ/dt=${:.2e}".format(poptMaxima3[0]),fontsize=24)
-plt.text(300,0.025,"$dJ/dt=${:.2e}".format(poptMaxima4[0]),fontsize=24)
-plt.text(900,0.02,"$dJ/dt=${:.2e}".format(poptMaxima5[0]),fontsize=24)
+plt.text(500,0.025,"$dJ/dt=${:.2e}".format(poptMaxima4[0]),fontsize=24)
+plt.text(1500,0.02,"$dJ/dt=${:.2e}".format(poptMaxima5[0]),fontsize=24)
 
 # plt.hlines(0.019,0,3000,linestyles='--')
 # plt.hlines(0.0152,0,1200,linestyles='--')
 # plt.hlines(0.012,0,1600,linestyles='--')
 plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
 plt.ylabel(r'$|<J_z>|$',fontsize=36)
-plt.xlim(0,5000)
-plt.ylim(0,0.03)
+# plt.xlim(0,5000)
+# plt.ylim(0,0.03)
 plt.title('Electron current traces for different $E_{ext}$',fontsize=28)
 plt.tick_params(labelsize = 28)
 plt.legend(fontsize=24)
@@ -358,25 +362,25 @@ plt.show()
 
 
 # ####### nu_eff Plot #######
-dJdt1 = np.zeros(np.size(current1)-1)
-nu_eff1 = np.zeros(np.size(current1)-1)
-for i in range(np.size(current1)-1):
-    dJdt1[i] = (current1[i+1] - current1[i]) / (time_current1[i+1] - time_current1[i])
+# dJdt1 = np.zeros(np.size(current1)-1)
+# nu_eff1 = np.zeros(np.size(current1)-1)
+# for i in range(np.size(current1)-1):
+#     dJdt1[i] = (current1[i+1] - current1[i]) / (time_current1[i+1] - time_current1[i])
 
-for i in range(np.size(current1)-2):
-    nu_eff1[i] = (0.00005 - dJdt1[i]) / current1[i]
+# for i in range(np.size(current1)-2):
+#     nu_eff1[i] = (0.00005 - dJdt1[i]) / current1[i]
 
 # # nu_eff_smooth1 = np.zeros(np.size(current1)-2)
 # # for i in range(np.size(current1)-50):
 # #     nu_eff_smooth1[i] = np.average(nu_eff1[i:i+48])
 
-# dJdt2 = np.zeros(np.size(current2)-1)
-# nu_eff2 = np.zeros(np.size(current2)-1)
-# for i in range(np.size(current2)-1):
-#     dJdt2[i] = (current2[i+1] - current2[i]) / (time_current2[i+1] - time_current2[i])
+dJdt2 = np.zeros(np.size(current2)-1)
+nu_eff2 = np.zeros(np.size(current2)-1)
+for i in range(np.size(current2)-1):
+    dJdt2[i] = (current2[i+1] - current2[i]) / (time_current2[i+1] - time_current2[i])
 
-# for i in range(np.size(current2)-1):
-#     nu_eff2[i] = (0.00005 - dJdt2[i]) / current2[i]
+for i in range(np.size(current2)-1):
+    nu_eff2[i] = (0.00005 - dJdt2[i]) / current2[i]
 
 # # nu_eff_smooth2 = np.zeros(np.size(current2)-1-50)
 # # for i in range(np.size(current2)-51):
@@ -426,6 +430,14 @@ for i in range(np.size(current7)-1):
 for i in range(np.size(current7)-1):
     nu_eff7[i] = (0.000025 - dJdt7[i]) / current7[i]
 
+dJdt8 = np.zeros(np.size(current8)-1)
+nu_eff8 = np.zeros(np.size(current8)-1)
+for i in range(np.size(current8)-1):
+    dJdt8[i] = (current8[i+1] - current8[i]) / (time_current8[i+1] - time_current8[i])
+
+for i in range(np.size(current8)-1):
+    nu_eff8[i] = (0.000008 - dJdt8[i]) / current8[i]
+
 # nu_eff_smooth1 = np.zeros(np.size(current1)-2)
 # for i in range(np.size(current1)-50):
 #     nu_eff_smooth1[i] = np.average(nu_eff1[i:i+48])
@@ -434,19 +446,20 @@ plt.figure(figsize=(16, 12), dpi=80)
 plt.title('$\\nu_{eff}$',fontsize=28)
 #plt.plot(time_current1[10:],nu_eff1[9:],label='high resolution, nu=0.0001')
 #plt.plot(time_current[10:1020],nu_eff_smooth[10:1020])
-plt.plot(time_current1[9:],nu_eff1[8:],label='$E=5.0e-5$')
-# plt.plot(time_current2[9:],nu_eff2[8:],label='$M/m=100$')
+#plt.plot(time_current1[9:],nu_eff1[8:],label='$E=5.0e-5$')
+plt.plot(time_current2[9:],nu_eff2[8:],label='$E=5e-5$')
 # plt.plot(time_current3[9:250],nu_eff3[9:250],label='$M/m=400$')
 # plt.plot(time_current4[9:],nu_eff4[8:],label='mass=25,temp=200')
-plt.plot(time_current7[9:],nu_eff7[8:],label='$E=2.5e-5$')
-plt.plot(time_current6[9:],nu_eff6[8:],label='$E=1.0e-5$')
+#plt.plot(time_current7[9:],nu_eff7[8:],label='$E=2.5e-5$')
+#plt.plot(time_current6[9:],nu_eff6[8:],label='$E=1.0e-5$')
+plt.plot(time_current8[9:],nu_eff8[8:],label='$E=8.0e-6$')
 #plt.hlines(0.0002,0,3500,linestyles='--')
 #plt.text(100,0.00025,'0.0002',fontsize=28)
 plt.xlabel(r'$t [\omega_{pe}^-1]$',fontsize=36)
 plt.ylabel(r'$<nu_{eff}>$',fontsize=36)
 plt.tick_params(labelsize = 28)
 plt.legend(fontsize=28)
-plt.xlim(0,2500)
+#plt.xlim(0,2500)
 plt.show()
 
 
