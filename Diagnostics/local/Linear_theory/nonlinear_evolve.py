@@ -55,7 +55,7 @@ def mass25():
     axs[0,1].tick_params(labelsize = 28)
     axs[0,1].legend(fontsize=24)
 
-    axs[1,0].set_title("perturbed electric field energy",fontsize=28)
+    axs[1,0].set_title("current",fontsize=28)
     axs[1,0].plot(time_current1[:400],current1[:400]/0.02,label='#0',linewidth=5)
     axs[1,0].plot(time_current2[:400],current2[:400]/0.02,label='#2',linewidth=5)
     axs[1,0].set_xlabel(r'$t [\omega_{pe}^-1]$',fontsize=32)
@@ -69,6 +69,8 @@ def mass25():
     axs[1,1].plot(time_current2[9:401],nu_eff2[8:400],label='#2',linewidth=5)
     axs[1,1].set_xlabel(r'$t [\omega_{pe}^-1]$',fontsize=32)
     axs[1,1].set_ylabel(r'$\nu_{eff} [\omega_{pe}^{-1}]$',fontsize=32)
+    axs[1,1].hlines(0.0006,0,2000,linestyle='--')
+    axs[1,1].text(1200,0.0007,'quasi-linear \n estimation',fontsize=24)
     axs[1,1].set_xlim(0,2000)
     axs[1,1].tick_params(labelsize = 28)
     axs[1,1].legend(fontsize=24)
