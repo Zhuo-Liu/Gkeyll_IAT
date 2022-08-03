@@ -461,14 +461,14 @@ def current_vs_electric(frameWindow,E):
 #=====================================================================#
 #=====================Distribution Funcion============================#
 #=====================================================================#
-def get_grid():
+def save_velocity_grid():
     velocitiesz_elc = np.array(x_elc[2])  #attempt!!
     velocitiesy_elc = np.array(x_elc[3])  #attempt!!
     velocitiesz_ion = np.array(x_ion[2])  #attempt!!
     velocitiesy_ion = np.array(x_ion[3])  #attempt!!
 
-    elc_grid = np.array([velocitiesz_elc,velocitiesy_elc])
-    ion_grid = np.array([velocitiesz_ion,velocitiesy_ion])
+    elc_grid = np.concatenate((velocitiesz_elc,velocitiesy_elc))
+    ion_grid = np.concatenate((velocitiesz_ion,velocitiesy_ion))
 
     np.savetxt('./dist_function/elc_velocities.txt',elc_grid)
     np.savetxt('./dist_function/ion_velocities.txt',ion_grid)
@@ -480,7 +480,6 @@ def save_distribution_function(nFr):
     hF         = ad.file(fName_elc)
     time = hF['time'].read()
     time = float('%.3g' % time)
-    time = str(time)
 
     elcd = np.squeeze(pgu.getInterpData(fName_elc,polyOrder,basisType))
     iond = np.squeeze(pgu.getInterpData(fName_ion,polyOrder,basisType))
@@ -491,10 +490,10 @@ def save_distribution_function(nFr):
     elcd_box_avg_z = np.average(elcd,axis= (0,1,3))
     iond_box_avg_z = np.average(iond,axis= (0,1,3))
 
-    save_name_elc_2d = './dist_function/' + time + '_elc_2d.txt'
-    save_name_elc_1d = './dist_function/' + time + '_elc_1d.txt'
-    save_name_ion_2d = './dist_function/' + time + '_ion_2d.txt'
-    save_name_ion_1d = './dist_function/' + time + '_ion_1d.txt'
+    save_name_elc_2d = './dist_function/' + rf'{time}' + '_elc_2d.txt'
+    save_name_elc_1d = './dist_function/' + rf'{time}' + '_elc_1d.txt'
+    save_name_ion_2d = './dist_function/' + rf'{time}' + '_ion_2d.txt'
+    save_name_ion_1d = './dist_function/' + rf'{time}' + '_ion_1d.txt'
 
     np.savetxt(save_name_elc_2d,elcd_box_avg)
     np.savetxt(save_name_elc_1d, elcd_box_avg_z)
