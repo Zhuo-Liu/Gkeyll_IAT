@@ -91,3 +91,18 @@ for name in fileName:
 #plt.ylim(-10e-3,10e-7)
 #plt.savefig('./plots/fieldEnergy.png')
 
+def a():
+    for name in fileName:
+        print(fileName[name])
+        filePath = '../' + simName +'_'+fileName[name]+'.bp'
+        f = ad.file(filePath)
+        times = []
+        datas = []
+        if name == 'field':
+            for i in np.arange(0,nFrames):
+                timeName = 'TimeMesh' + str(i)
+                dataName = 'Data' + str(i)
+                t = f[timeName][...]
+                d = f[dataName][...]
+                times.append(t)
+                datas.append(d)

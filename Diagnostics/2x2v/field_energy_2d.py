@@ -21,12 +21,14 @@ fileName   = 'IAT_E2'    #.Root name of files to process.
 dataDir = '../'
 outDir  = './'
 outfigDir = './dist_function/'
+outfieldDir = './field/'
 
 fourier_transform = True
 auto_loading      = False
 #creating the directory for plots if it does not exist yet
 pgu.checkMkdir(outDir)
 pgu.checkMkdir(outfigDir)
+pgu.checkMkdir(outfieldDir)
 
 polyOrder  = 2
 basisType  = 'ms'
@@ -357,6 +359,19 @@ def plot_spec(nFr,frameWindow=None,singleShot=True):
             
         return times
 
+def save_field(frameWindow):
+    pFramesN = frameWindow[1] - (frameWindow[0] - 1)
+    times = []
+    
+    for nfr in np.arange(frameWindow[0],frameWindow[1]):
+        if nfr%40 == 0:
+            num = str(nfr).zfill(4)
+            fName = fileRoot + 'field_' + str(nfr) + '.bp'
+            phi = pgu.getInterpData(fName,polyOrder,basisType)[:,:,0]
+            
+            np.savetxt(outfieldDir+fileName+rf'_field_{num}.txt',phi)
+
+
 #=====================================================================#
 #=====================Current and Resistivity=========================#
 #=====================================================================#
@@ -403,7 +418,7 @@ def current_vs_electric(frameWindow,E):
         #Jy = ionM1_y - ionM1_y
 
         J_boxavg_z[cF] = np.sum(Jz)/(nz*ny)
-        dJdt = (J_boxavg_z[cF] - J_boxavg_z[cF-1])/(time[cF]-time[cF-1])
+        dJdt[cF] = (J_boxavg_z[cF] - J_boxavg_z[cF-1])/(time[cF]-time[cF-1])
 
         cF = cF+1
 
@@ -415,9 +430,9 @@ def current_vs_electric(frameWindow,E):
 
     for n in range(Navg,pFramesN-Navg-1):
         for i in range(0,Navg): 
-            nu_eff[n] += 1/Navg * ((E+dJdt[n+i])/J_boxavg_z[n+i])
+            nu_eff[n] += 1/Navg * ((E-dJdt[n+i])/J_boxavg_z[n+i])
     for n in range(Navg):
-            nu_eff[n] += 1/Navg * ((E+dJdt[n])/J_boxavg_z[n])  #bfill the first Navg values
+            nu_eff[n] += 1/Navg * ((E-dJdt[n])/J_boxavg_z[n])  #bfill the first Navg values
 
     fig, axs = plt.subplots(1,3,figsize=(30, 10), facecolor='w', edgecolor='k')
     fig.subplots_adjust(hspace = .5, wspace =.1)
@@ -442,6 +457,50 @@ def current_vs_electric(frameWindow,E):
     fig.tight_layout()
     plt.savefig(outDir+'ElectrcField_Current'+figureFileFormat)
     plt.close()
+
+#=====================================================================#
+#=====================Distribution Funcion============================#
+#=====================================================================#
+def get_grid():
+    velocitiesz_elc = np.array(x_elc[2])  #attempt!!
+    velocitiesy_elc = np.array(x_elc[3])  #attempt!!
+    velocitiesz_ion = np.array(x_ion[2])  #attempt!!
+    velocitiesy_ion = np.array(x_ion[3])  #attempt!!
+
+    elc_grid = np.array([velocitiesz_elc,velocitiesy_elc])
+    ion_grid = np.array([velocitiesz_ion,velocitiesy_ion])
+
+    np.savetxt('./dist_function/elc_velocities.txt',elc_grid)
+    np.savetxt('./dist_function/ion_velocities.txt',ion_grid)
+
+def save_distribution_function(nFr):
+    fName_elc = dataDir + fileName+'_elc_'+str(nFr)+'.bp'
+    fName_ion = dataDir + fileName+'_ion_'+str(nFr)+'.bp'
+
+    hF         = ad.file(fName_elc)
+    time = hF['time'].read()
+    time = float('%.3g' % time)
+    time = str(time)
+
+    elcd = np.squeeze(pgu.getInterpData(fName_elc,polyOrder,basisType))
+    iond = np.squeeze(pgu.getInterpData(fName_ion,polyOrder,basisType))
+
+    elcd_box_avg = np.average(elcd, axis = (0,1))
+    iond_box_avg = np.average(iond, axis = (0,1))
+
+    elcd_box_avg_z = np.average(elcd,axis= (0,1,3))
+    iond_box_avg_z = np.average(iond,axis= (0,1,3))
+
+    save_name_elc_2d = './dist_function/' + time + '_elc_2d.txt'
+    save_name_elc_1d = './dist_function/' + time + '_elc_1d.txt'
+    save_name_ion_2d = './dist_function/' + time + '_ion_2d.txt'
+    save_name_ion_1d = './dist_function/' + time + '_ion_1d.txt'
+
+    np.savetxt(save_name_elc_2d,elcd_box_avg)
+    np.savetxt(save_name_elc_1d, elcd_box_avg_z)
+    np.savetxt(save_name_ion_2d,iond_box_avg)
+    np.savetxt(save_name_ion_1d, iond_box_avg_z)
+
 
 def distribution_function_plot(frameWindow):
 

@@ -53,7 +53,7 @@ def make_time_traces_plot(name_list,cutoff=0):
         elcCurrent_list.append(elcCurrent)
         Current_time_list.append(Current_time)
 
-
+    elcCurrent_list[0] = 2.0*elcCurrent_list[0]
 
     fig, axs = plt.subplots(2,2,figsize=(30, 25), facecolor='w', edgecolor='k')
     fig.subplots_adjust(hspace = .5, wspace =.2)
@@ -88,6 +88,7 @@ def make_time_traces_plot(name_list,cutoff=0):
     axs[1,1].set_xlabel(r'$t [\omega_{pe}^-1]$',fontsize=30)
     axs[1,1].set_ylabel(r'$J_z$',fontsize=30)
     axs[1,1].tick_params(labelsize = 26)
+    axs[1,1].set_xlim(1,1200)
     axs[1,1].legend(fontsize=30)
 
     #fig.tight_layout()
@@ -96,6 +97,8 @@ def make_time_traces_plot(name_list,cutoff=0):
 
 if __name__ == '__main__':
     #name_list = ['./mass100/Erec/highres/','./mass100/Erec/lowres/']
-    name_list = ['./Cori/mass400/highres/','./Cori/mass400/lowres/']
+    #name_list = ['./Cori/mass400/highres/','./Cori/mass400/lowres/']
     #name_list = ['./Cori/mass25/High/','./Cori/mass25/Low/','./Cori/mass25/lowcol/']
+    name_list = ['./Diagnostics/local/E_external/E1/0/','./Diagnostics/local/Cori/mass25/rescheck/4/', './Diagnostics/local/Cori/mass25/rescheck/3/']
+    #name_list = ['./Diagnostics/local/Cori/mass25/rescheck/4/', './Diagnostics/local/E_external/E2/1D/']
     make_time_traces_plot(name_list)
