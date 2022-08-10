@@ -45,7 +45,7 @@ K_z, K_y = np.meshgrid(kz_plot, ky_plot, indexing = 'xy')
 K_z = np.transpose(K_z)
 K_y = np.transpose(K_y)
 
-phi = np.loadtxt('/Users/liuzhuo/Desktop/Gkeyll_IAT/Diagnostics/local/Cori/mass25/rescheck/4/field/M25_E2_3_field_0160.txt')
+phi = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/field/M25_E2_3_field_0160.txt')
 
 E_z, E_y = np.gradient(phi)
 E_z = E_z/dz
@@ -133,7 +133,7 @@ def k_dependence(N):
 
     plt.plot(np.arange(48*N)/N,E_k/450)
     plt.plot(k_list,N_k)
-    plt.xlim(0,12)
+    plt.xlim(0,40)
     plt.show()
     plt.clf()
 
@@ -194,9 +194,9 @@ def test():
 if __name__ == '__main__':
     #plot_E()
 
-    #theta_dependence(15)
+    theta_dependence(100)
 
-    E_k = k_dependence(2)
+    #E_k = k_dependence(2)
 
     # plt.plot(np.arange(48*100)/100,E_k)
     # plt.xlim(0,10)

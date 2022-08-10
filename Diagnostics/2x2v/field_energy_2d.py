@@ -467,11 +467,9 @@ def save_velocity_grid():
     velocitiesz_ion = np.array(x_ion[2])  #attempt!!
     velocitiesy_ion = np.array(x_ion[3])  #attempt!!
 
-    elc_grid = np.concatenate((velocitiesz_elc,velocitiesy_elc))
-    ion_grid = np.concatenate((velocitiesz_ion,velocitiesy_ion))
 
-    np.savetxt('./dist_function/elc_velocities.txt',elc_grid)
-    np.savetxt('./dist_function/ion_velocities.txt',ion_grid)
+    np.savez('./dist_function/elc_velocities.txt',velocitiesz_elc, velocitiesy_elc)
+    np.savez('./dist_function/ion_velocities.txt',velocitiesz_ion, velocitiesy_ion)
 
 def save_distribution_function(nFr):
     fName_elc = dataDir + fileName+'_elc_'+str(nFr)+'.bp'
