@@ -498,6 +498,37 @@ def save_distribution_function(nFr):
     np.savetxt(save_name_ion_2d,iond_box_avg)
     np.savetxt(save_name_ion_1d, iond_box_avg_z)
 
+def save_distribution_function_window(frameWindow):
+
+    pFramesN = frameWindow[1] - (frameWindow[0] - 1)
+
+    for nFr in np.arange(frameWindow[0], frameWindow[1]+1):
+        if nFr%25 ==0:
+            fName_elc = dataDir + fileName+'_elc_'+str(nFr)+'.bp'
+            fName_ion = dataDir + fileName+'_ion_'+str(nFr)+'.bp'
+
+            hF         = ad.file(fName_elc)
+            time = hF['time'].read()
+            time = float('%.3g' % time)
+
+            elcd = np.squeeze(pgu.getInterpData(fName_elc,polyOrder,basisType))
+            iond = np.squeeze(pgu.getInterpData(fName_ion,polyOrder,basisType))
+
+            elcd_box_avg = np.average(elcd, axis = (0,1))
+            iond_box_avg = np.average(iond, axis = (0,1))
+
+            elcd_box_avg_z = np.average(elcd,axis= (0,1,3))
+            iond_box_avg_z = np.average(iond,axis= (0,1,3))
+
+            save_name_elc_2d = './dist_function/' + rf'{time}' + '_elc_2d.txt'
+            save_name_elc_1d = './dist_function/' + rf'{time}' + '_elc_1d.txt'
+            save_name_ion_2d = './dist_function/' + rf'{time}' + '_ion_2d.txt'
+            save_name_ion_1d = './dist_function/' + rf'{time}' + '_ion_1d.txt'
+
+            np.savetxt(save_name_elc_2d,elcd_box_avg)
+            np.savetxt(save_name_elc_1d, elcd_box_avg_z)
+            np.savetxt(save_name_ion_2d,iond_box_avg)
+            np.savetxt(save_name_ion_1d, iond_box_avg_z)
 
 def distribution_function_plot(frameWindow):
 
