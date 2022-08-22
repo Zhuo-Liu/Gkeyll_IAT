@@ -53,7 +53,11 @@ E_y = E_y/dy
 
 Ez_k = np.abs(np.fft.fftshift(np.fft.fftn(E_z)))
 Ey_k = np.abs(np.fft.fftshift(np.fft.fftn(E_y)))
+phi_k = np.abs(np.fft.fftshift(np.fft.fft2(phi)))
 
+# plt.contourf(K_z,K_y, phi_k)
+# plt.colorbar()
+# plt.show()
 def plot_phi():
     plt.contourf(ZZ, YY, np.transpose(phi))
     plt.xlabel(r'$z$',fontsize=30)
