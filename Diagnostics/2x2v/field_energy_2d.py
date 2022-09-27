@@ -616,7 +616,44 @@ def distribution_function_plot(frameWindow):
         plt.savefig(outfigDir+fileName+rf'_f1D_{fignum}.png', bbox_inches='tight')
         plt.close()
 
+def phase_space_plot(frameWindow):
 
+    pFramesN = frameWindow[1]-(frameWindow[0]-1)
+
+    velocitiesz_elc = np.array(x_elc[2])  #attempt!!
+
+    zz, vv = np.meshgrid(points_z,velocitiesz_elc,indexing='ij')
+    
+    times = np.zeros(pFramesN)
+
+    fName_elc0 = dataDir + fileName+'_elc_0.bp'
+    elcd0 = np.squeeze(pgu.getInterpData(fName_elc0,polyOrder,basisType))
+    elcd_box_avg_z0 = np.average(elcd0,axis= (1,3))
+
+    for nFr in np.arange(frameWindow[0],frameWindow[1]+1):
+        fignum = str(nFr).zfill(4)
+
+        fName_elc = dataDir + fileName+'_elc_'+str(nFr)+'.bp'
+
+        hF         = ad.file(fName_elc)
+        times[nFr] = hF['time'].read()
+        hF.close()
+        time = float('%.3g' % times[nFr])
+
+        elcd = np.squeeze(pgu.getInterpData(fName_elc,polyOrder,basisType))
+        elcd_box_avg_z = np.average(elcd,axis= (1,3)) 
+
+        plt.pcolormesh(zz, vv/0.02, elcd_box_avg_z,cmap='inferno')
+        plt.xlabel(r'$z /d_e$', fontsize=36)
+        plt.ylabel(r'$v_z /c_{s0}$', fontsize=36, labelpad=-1)
+        plt.ylim(-4,10)
+        plt.tick_params(labelsize = 26)
+        #plt.grid()
+        cbar = plt.colorbar()
+        cbar.ax.tick_params(labelsize=22)
+
+        plt.savefig(outfigDir+fileName+rf'_elcps_{fignum}.png', bbox_inches='tight')
+        plt.close()
 
 # frame window for frequency calculation
 iTw_frequency = [int((nFrames-1)*0.1), int((nFrames-1)*0.3)]

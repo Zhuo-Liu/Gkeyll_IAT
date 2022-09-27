@@ -26,24 +26,9 @@ K_z, K_y = np.meshgrid(kz_plot, ky_plot, indexing = 'xy')
 K_z = np.transpose(K_z)
 K_y = np.transpose(K_y)
 
-def k_dependence(Ez_k,Ey_k):
-    E_k = np.zeros(49)
-    for i in range(nz):
-        for j in range(ny):
-            k_square = (i-int(nz/2))**2 + (j-int(ny/2))**2
-            k_star = np.sqrt(k_square)
-            if k_star <= 48:
-                decimal = k_star - int(k_star)
-                #app_inx = int(decimal * N)
-                Ek_square = Ez_k[i,j]**2 + Ey_k[i,j]**2
-                if decimal >= 0.5:
-                    E_k[int(k_star)+1] += Ek_square
-                else:
-                    E_k[int(k_star)] += Ek_square
-    
-    return E_k
 
-def theta_dependence(Ez,Ey,N=100):
+def real_theta_dependence(Ez,Ey,N=100):
+
     E_theta = np.zeros(N+1)
     for z in range(nz):
         for y in range(ny):
@@ -56,37 +41,28 @@ def theta_dependence(Ez,Ey,N=100):
 
     return E_theta
 
-def new_theta_dependence(Ezk,Eyk,N=100):
-    E_theta = np.zeros(101)
-    for i in range(nz):
-        for j in range(ny):
-            kz = i-int(nz/2)
-            ky = j-int(ny/2)
-            k_square = kz**2 + ky**2
-            k_star = int(np.sqrt(k_square))
-            if k_star < 48:
-                if Ezk[kz,int(ny/2)] > 0.1 and Eyk[int(nz/2),ky] > 0.1:
-                    Ek_square = Ezk[kz,int(ny/2)]**2 + Eyk[int(nz/2),ky]**2
-                else:
-                    Ek_square = 0
-
-                if kz ==0:
-                    theta = np.pi/2
-                else:
-                    theta = np.abs(np.arctan(ky/kz))
-
-                theta_num = int(theta/(np.pi/2/100))
-
-                E_theta[theta_num] += Ek_square 
-    
-    return E_theta
-
 def load_phi():
     Ez_k_list=[]
     Ey_k_list=[]
     Ez_list = []
     Ey_list = []
-    for i in range(25,481):
+    phi_list = []
+    # for i in range(200,3798):
+    #     fignum = str(i).zfill(4)
+    #     filename = './Diagnostics/local/Cori/mass25/rescheck/1/field/M25_E2_0_field_' + fignum + '.txt'
+    #     phi = np.loadtxt(filename)
+    #     E_z, E_y = np.gradient(phi)
+    #     E_z = E_z/dz
+    #     E_y = E_y/dy
+    #     Ez_k = np.abs(np.fft.fftshift(np.fft.fftn(E_z)))
+    #     Ey_k = np.abs(np.fft.fftshift(np.fft.fftn(E_y)))
+    #     Ez_k_list.append(Ez_k)
+    #     Ey_k_list.append(Ey_k)
+    #     Ez_list.append(E_z)
+    #     Ey_list.append(E_y)
+    #     phi_list.append(phi)
+
+    for i in range(25,493):
         fignum = str(i).zfill(4)
         filename = './Diagnostics/local/Cori/mass25/rescheck/4/field/M25_E2_3_field_' + fignum + '.txt'
         phi = np.loadtxt(filename)
@@ -99,8 +75,25 @@ def load_phi():
         Ey_k_list.append(Ey_k)
         Ez_list.append(E_z)
         Ey_list.append(E_y)
+        phi_list.append(phi)
+
+    # for i in range(25,493):
+    #     fignum = str(i).zfill(4)
+    #     filename = './Diagnostics/local/massRatio/25/field/M25_E2_3_field_' + fignum + '.txt'
+    #     phi = np.loadtxt(filename)
+    #     E_z, E_y = np.gradient(phi)
+    #     E_z = E_z/dz
+    #     E_y = E_y/dy
+    #     Ez_k = np.abs(np.fft.fftshift(np.fft.fftn(E_z)))
+    #     Ey_k = np.abs(np.fft.fftshift(np.fft.fftn(E_y)))
+    #     Ez_k_list.append(Ez_k)
+    #     Ey_k_list.append(Ey_k)
+    #     Ez_list.append(E_z)
+    #     Ey_list.append(E_y)
+    #     phi_list.append(phi)
+
     
-    return np.array(Ez_k_list), np.array(Ey_k_list), np.array(Ez_list), np.array(Ey_list)
+    return np.array(Ez_k_list), np.array(Ey_k_list), np.array(Ez_list), np.array(Ey_list), np.array(phi_list)
 
 def phi_plot():
     phi = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/field/M25_E2_3_field_0480.txt')
@@ -124,20 +117,64 @@ def phi_plot():
     plt.show()
 
 def k_omega():
-    _,_,Ez,Ey = load_phi()
-    Ez1 = np.transpose(Ez[:50,:,24])
-    Ez1fft = np.fft.fftshift(np.fft.rfft2(Ez1))
+    _,_,Ez0, Ey, phi = load_phi()
 
-    omegas = np.fft.rfftfreq(50,d=(250)/(50-1))
-    ks = np.linspace(-48,47,96)
+    Ez0 = np.transpose(Ez0[500:3500,:,12])
+    ts = np.arange(700,3700)/2
+    zs = np.linspace(0,1.0,48)
+    tt, zzt = np.meshgrid(ts, zs, indexing= 'xy')
+    #tt = np.transpose(tt)
+    #zzt = np.transpose(zzt)
 
-    zz,yy = np.meshgrid(ks,omegas,indexing='xy')
+    plt.figure(figsize=(10,3))
+    plt.contourf(tt,zzt,Ez0)
+    plt.colorbar()
+    plt.savefig('./gg.jpg')
+    plt.show()
+
+    #Ez1 = np.transpose(Ey[:800,:,12])
+    #Ez1fft = np.fft.fftshift(np.fft.rfft2(Ez1))
+    Ez = np.transpose(Ez0[3000:3600,:,0]) # 48 x 400
+    Ezw = np.fft.rfft2(Ez) # 48 x 400
+    Ezw2 = np.zeros_like(Ezw)
+    for i in range(Ezw.shape[1]):
+        Ezw2[:,i] = np.fft.fftshift(Ezw[:,i])
+    absEzw = np.power(np.absolute(Ezw2),2)[:,:]  
+    omegas = np.fft.rfftfreq(600,d=(300)/(600-1)) * 2.0 * np.pi
+    ks = np.linspace(-24,23,48)
+
+
+    Ez_real = Ez[:,500]
+    Ez_time = Ez[24,:]
+
+    Ezk = np.fft.rfft(Ez_real)
+    Ezw1 = np.fft.rfft(Ez_time)
+
+    # plt.plot(omegas,np.abs(Ezw1))
+    # plt.xlim(0,1.0)
+    # plt.show()
+    # plt.clf()
+
+    # plt.plot(ks,np.abs(Ezk[1:]))
+    # plt.show()
+    # plt.clf()
+
+    #fig = plt.gcf()
+    #ax = fig.add_subplot(111)
+    zz,yy = np.meshgrid(ks,omegas[:100],indexing='xy')
     zz = np.transpose(zz)
     yy = np.transpose(yy)
+    absEzw = np.log(absEzw)
+    absEzw[absEzw<-3] = -3
+    #levels = [1e-9,1e-6,1e-3,1e-2,1e-1,1,3]
 
-    plt.contourf(zz,yy,np.abs(Ez1fft))
+    #plt.ylim(0,2.0)
+    #plt.clim(vmin=-10,vmax=30)
+    levels = np.linspace(-3,3,21)
+    plt.contourf(zz,yy,absEzw[:,:100],levels=levels)
     plt.colorbar()
-    plt.show()
+    #plt.show()
+    plt.savefig('./out.jpg')
 
     # ez1d = Ez[80,:,24]
     # ez1dfft = np.fft.fft(ez1d)
@@ -156,8 +193,23 @@ def fit(Ek,x):
     return newek
     
 
-def k_main():
-    Ez_k_list, Ey_k_list,_,_ = load_phi()
+def k_main(Ez_k_list,Ey_k_list):
+    def k_dependence(Ez_k,Ey_k):
+        E_k = np.zeros(nz//2+1)
+        for i in range(nz):
+            for j in range(ny):
+                k_square = (i-int(nz/2))**2 + (j-int(ny/2))**2
+                k_star = np.sqrt(k_square)
+                if k_star <= nz//2:
+                    decimal = k_star - int(k_star)
+                    Ek_square = Ez_k[i,j]**2 + Ey_k[i,j]**2
+                    if decimal >= 0.5:
+                        E_k[int(k_star)+1] += Ek_square
+                    else:
+                        E_k[int(k_star)] += Ek_square
+        
+        return E_k
+
     Ez_k_400 = Ez_k_list[80-25,:,:]
     Ey_k_400 = Ey_k_list[80-25,:,:]
     Ez_k_500 = Ez_k_list[100-25,:,:]
@@ -190,7 +242,7 @@ def k_main():
     plt.plot(k_plot_2,Ek_400,label=r'$\omega_{pe}t=400$',linewidth=3)
     #plt.plot(k_plot_2,Ek_500,label=r'\omega_{pe}t=500$')
     plt.plot(k_plot_2,Ek_750,label=r'$\omega_{pe}t=750$',linewidth=3)
-    #plt.plot(k_plot_2,Ek_1200,label=r'\omega_{pe}t=1200$')
+    plt.plot(k_plot_2,Ek_1200,label=r'$\omega_{pe}t=1200$',linewidth=3)
     plt.plot(k_plot_2,Ek_1800,label=r'$\omega_{pe}t=1600$',linewidth=3)
     plt.plot(k_plot_2,Ek_2400,label=r'$\omega_{pe}t=2400$',linewidth=3)
     plt.plot(k_list,N_k*700,label='theory',linewidth=3,linestyle = '--')
@@ -206,60 +258,73 @@ def k_main():
     plt.show()
 
 
-
-def theta_main():
+def theta_main(Ez_k_list,Ey_k_list, N=6):
     def phi(x):
         return (4*x**2 - 3*x**3) / (1-x + 0.003)**2
     
+    def theta_dependence(Ezk,Eyk,N=6):
+        E_theta = np.zeros((N+1))
+        delta_theta = np.pi/2/N
+        for i in range(nz):
+            for j in range(ny):
+                kz = i-int(nz/2)
+                ky = j-int(ny/2)
+                Ek_square = Ezk[i,j]**2 + Eyk[i,j]**2
+
+                if kz ==0:
+                    theta_num = N-1
+                else:
+                    theta = np.abs(np.arctan(ky/kz))
+                    theta_num = int(theta/delta_theta)
+                    decimal = (theta - delta_theta*theta_num) / delta_theta
+                    if decimal >= 0.5:
+                        theta_num = theta_num + 1
+
+                E_theta[theta_num] += Ek_square 
+        
+        return E_theta
+
     theta = np.arange(0.1,np.pi/2,0.01)
     cos_theta = np.cos(theta)
     N_theta = np.array([phi(cos) for cos in cos_theta])
+    Ezk_400 = Ez_k_list[80-25,:,:]
+    Eyk_400 = Ey_k_list[80-25,:,:]
+    Ezk_750 = Ez_k_list[150-25,:,:]
+    Eyk_750 = Ey_k_list[150-25,:,:]
+    Ezk_1200 = Ez_k_list[240-25,:,:]
+    Eyk_1200 = Ey_k_list[240-25,:,:]
+    Ezk_1600 = Ez_k_list[320-25,:,:]
+    Eyk_1600 = Ey_k_list[320-25,:,:]
+    Ezk_2400 = Ez_k_list[480-25,:,:]
+    Eyk_2400 = Ey_k_list[480-25,:,:]
 
-    Ez_k_list, Ey_k_list, Ez_list, Ey_list = load_phi()
-    Ez_400 = Ez_list[80-25,:,:]
-    Ey_400 = Ey_list[80-25,:,:]
-    Ez_500 = Ez_list[120-25,:,:]
-    Ey_500 = Ey_list[120-25,:,:]
-    Ez_800 = Ez_list[160-25,:,:]
-    Ey_800 = Ey_list[160-25,:,:]
-    Ez_1200 = Ez_list[180-25,:,:]
-    Ey_1200 = Ey_list[180-25,:,:]
-    Ez_1600 = Ez_list[360-25,:,:]
-    Ey_1600 = Ey_list[360-25,:,:]
-    Ez_2400 = Ez_list[480-25,:,:]
-    Ey_2400 = Ey_list[480-25,:,:]
-    Ezk_750 = Ez_k_list[160-25,:,:]
-    Eyk_750 = Ey_k_list[160-25,:,:]
+    E_400 = theta_dependence(Ezk_400,Eyk_400,N)
+    E_750 = theta_dependence(Ezk_750,Eyk_750,N)
+    E_1200 = theta_dependence(Ezk_1200,Eyk_1200,N)
+    E_1600 = theta_dependence(Ezk_1600,Eyk_1600,N)
+    E_2400 = theta_dependence(Ezk_2400,Eyk_2400,N)
 
-    E_400 = theta_dependence(Ez_400,Ey_400,50)
-    E_500 = theta_dependence(Ez_500,Ey_500,50)
-    E_800 = theta_dependence(Ez_800,Ey_800,50)
-    E_1200 = theta_dependence(Ez_1200,Ey_1200,50)
-    E_1600 = theta_dependence(Ez_1600,Ey_1600,50)
-    E_2400 = theta_dependence(Ez_2400,Ey_2400,50)
-    E_400_f = fit(E_400,np.arange(51)*90/50)
-    E_500_f = fit(E_500,np.arange(51)*90/50)
-    E_800_f = fit(E_800,np.arange(51)*90/50)
-    E_1200_f = fit(E_1200,np.arange(51)*90/50)
-    E_1600_f = fit(E_1600,np.arange(51)*90/50)
-    E_2400_f = fit(E_2400,np.arange(51)*90/50)
-
+    # E_400_f = fit(E_400,np.arange(51)*90/50)
+    # E_500_f = fit(E_500,np.arange(51)*90/50)
+    # E_800_f = fit(E_800,np.arange(51)*90/50)
+    # E_1200_f = fit(E_1200,np.arange(51)*90/50)
+    # E_1600_f = fit(E_1600,np.arange(51)*90/50)
+    # E_2400_f = fit(E_2400,np.arange(51)*90/50)
     #E_750_new = new_theta_dependence(Ezk_750,Eyk_750)
 
 
-    theta_plot = np.arange(51)*90/50
+    theta_plot = np.arange(N+1)*90/N
 
     plt.figure(figsize=(8,6))
     #plt.plot(theta/np.pi*2*90, N_theta/1e4,label='theory')
-    plt.plot(theta_plot,E_400_f/E_400_f[0],label=r'$\omega_{pe}t=400$')
-    plt.plot(theta_plot,E_500_f/E_500_f[0],label=r'$\omega_{pe}t=600$')
+    #plt.plot(theta_plot,E_2400/E_2400[0],label=r'$\omega_{pe}t=400$')
+    #plt.plot(theta_plot,E_500/E_500[0],label=r'$\omega_{pe}t=600$')
     #plt.plot(k_plot_2,Ek_500,label=r'$\omega_{pe}t=500$')
-    #plt.plot(theta_plot,E_750,label=r'$\omega_{pe}t=750$')
-    plt.plot(theta_plot,E_800_f/E_800_f[0],label=r'$\omega_{pe}t=800$')
-    #plt.plot(theta_plot,E_750_new/E_750_new[0],label=r'$\omega_{pe}t=750 new$')
-    plt.plot(theta_plot,E_1200_f/E_1200_f[0],label=r'$\omega_{pe}t=900$')
-    plt.plot(theta_plot,E_1600_f/E_1600_f[0],label=r'$\omega_{pe}t=1800$')
-    #plt.plot(theta_plot,E_2400_f/E_2400_f[0],label=r'$\omega_{pe}t=2400$')
+    plt.plot(theta_plot,E_400/E_400[0],label=r'$\omega_{pe}t=400$',linewidth=3)
+    plt.plot(theta_plot,E_750/E_750[0],label=r'$\omega_{pe}t=750$',linewidth=3)
+    plt.plot(theta_plot,E_1200/E_1200[0],label=r'$\omega_{pe}t=1200$',linewidth=3)
+    plt.plot(theta_plot,E_1600/E_1600[0],label=r'$\omega_{pe}t=1600$',linewidth=3)
+    plt.plot(theta_plot,E_2400/E_2400[0],label=r'$\omega_{pe}t=2400$',linewidth=3)
     # plt.plot(theta_list,N_k*700,label='theory')
     # plt.plot(theta_list,N_k*200,label='theory2')
     #plt.plot(kf,N_k_full*900,label='theory2')
@@ -268,66 +333,144 @@ def theta_main():
     #plt.ylim(1e-4,100)
     plt.xlabel(r'$\theta ^\circ$',fontsize=20)
     plt.ylabel(r'$N(\theta) / N(0)$',fontsize=20)
+    plt.xlim(0,90)
     plt.tick_params(labelsize=14)
     plt.show()
 
+
+def k_theta_main(Ez_k_list, Ey_k_list, N_t, N_k):
+    def k_theta_dependence(Ezk,Eyk, N_theta=6, N_k = 48):
+        W_k_theta = np.zeros((N_k+1,N_theta+1))
+
+        delta_theta = np.pi/2/N_theta
+        delta_k = 48/N_k
+
+        for i in range(nz):
+            for j in range(ny):
+                kz = i-int(nz/2)
+                ky = j-int(ny/2)
+                k_square = kz**2 + ky**2
+                k_star = np.sqrt(k_square)
+                if k_star<48:
+                    #Ek_square = Ezk[i,j]**2 + Eyk[i,j]**2
+                    Ek_square = Ezk[i,j]**2
+                    
+                    k_num = int(k_star/delta_k)
+                    decimal_k = (k_star - delta_k*k_num) / delta_k
+                    if decimal_k >=0.5:
+                        k_num = k_num+1
+
+                    # if decimal_k >= 0.5:
+                    #     k_num = int(k_star) + 1
+                    # else:
+                    #     k_num = int(k_star)
+
+                    if kz == 0:
+                        theta_num = N_theta
+                    else:
+                        theta = np.abs(np.arctan(ky/kz))
+                        theta_num = int(theta/delta_theta)
+                        decimal = (theta - delta_theta*theta_num) / delta_theta
+                        if decimal >= 0.5:
+                            theta_num = theta_num + 1
+                    
+                    W_k_theta[k_num, theta_num] += Ek_square
+
+        return W_k_theta
+
+    Ez_k_400 = Ez_k_list[60-25,:,:]
+    Ey_k_400 = Ey_k_list[60-25,:,:]
+    Ez_k_500 = Ez_k_list[100-25,:,:]
+    Ey_k_500 = Ey_k_list[100-25,:,:]
+    Ez_k_800 = Ez_k_list[160-25,:,:]
+    Ey_k_800 = Ey_k_list[160-25,:,:]
+    Ez_k_1200 = Ez_k_list[240-25,:,:]
+    Ey_k_1200 = Ey_k_list[240-25,:,:]
+    Ez_k_1800 = Ez_k_list[360-25,:,:]
+    Ey_k_1800 = Ey_k_list[360-25,:,:]
+    Ez_k_2400 = Ez_k_list[480-25,:,:]
+    Ey_k_2400 = Ey_k_list[480-25,:,:]
+
+    W_ktheta_400 = k_theta_dependence(Ez_k_400,Ey_k_400, N_t, N_k)
+
+    ks = np.arange(N_k+1)/N_k*48
+    ts = np.arange(N_t+1)/N_t*90
+
+    kk, tt = np.meshgrid(ks,ts,indexing='xy')
+    kk = np.transpose(kk)
+    tt = np.transpose(tt)
+
+    plt.contourf(kk[:N_k//4,],tt[:N_k//4,],W_ktheta_400[:N_k//4,])
+    #plt.contourf(kk,tt,W_ktheta_400)
+    plt.colorbar()
+    plt.show()
+
+
 def test():
-    kz  = 2.0*np.pi*np.linspace(-int(48/2), int(48/2-1), 48)
+    kz  = 2.0*np.pi*np.linspace(-int(96/2), int(96/2-1), 96)
     ky  = 2.0*np.pi*np.linspace(-int(48/2), int(48/2-1), 48)
     KZ, KY = np.meshgrid(kz, ky, indexing = 'xy')
     KZ = np.transpose(KZ)
     KY = np.transpose(KY)
 
-    myEz = np.zeros((48,48))
-    myEy = np.zeros((48,48))
-    phi = np.zeros((48,48))
-    for i in range(48):
+    myEz = np.zeros((96,48))
+    myEy = np.zeros((96,48))
+    phi = np.zeros((96,48))
+    for i in range(96):
         for j in range(48):
-            myEz[i,j] = np.cos(2*np.pi*3*i/48.0)
-            myEy[i,j] = np.cos(2*np.pi*3*j/48.0)
-            phi[i,j] = np.sin(2*np.pi*2*i/48) + np.sin(2*np.pi*j/48)
+            myEz[i,j] = 2*np.cos(2*np.pi*(2*i/96.0+j/48.0)) + np.cos(2*np.pi*(3*i/96.0+3*j/48.0))
+            myEy[i,j] = np.cos(2*np.pi*(2*i/96.0+j/48.0))
+            #phi[i,j] = np.sin(2*np.pi*2*i/48) + np.sin(2*np.pi*j/48)
+            phi[i,j] = np.sin(2*np.pi*(2*i/96.0+j/48.0))
     
     myEzk = np.abs(np.fft.fftshift(np.fft.fftn(myEz)))
     myEyk = np.abs(np.fft.fftshift(np.fft.fftn(myEy)))
-    #plt.contourf(KZ/2/np.pi,KY/2/np.pi,myEzk)
-    # plt.contourf(KZ/2/np.pi,KY/2/np.pi,myEyk)
-    # #plt.contourf(KZ/2/np.pi,KY/2/np.pi,phi)
-    # #phik = np.fft.fftshift(np.fft.fft2(phi))
-    # #plt.contourf(KZ/2/np.pi,KY/2/np.pi,phik)
-
+    # plt.contourf(KZ/2/np.pi,KY/2/np.pi,myEzk)
+    # plt.xlim(-5,5)
+    # plt.ylim(-5,5)
     # plt.show()
+    # plt.clf()
+    # plt.contourf(KZ/2/np.pi,KY/2/np.pi,myEyk)
+    # plt.show()
+    # plt.clf()
+    #plt.contourf(KZ/2/np.pi,KY/2/np.pi,myEz)
+    #phik = np.fft.fftshift(np.fft.fft2(phi))
+    #plt.contourf(KZ/2/np.pi,KY/2/np.pi,phik)
+
+    plt.show()
 
     E_theta = np.zeros((101))
-    for i in range(48):
+    for i in range(96):
         for j in range(48):
-            kz = i-int(48/2)
+            kz = i-int(96/2)
             ky = j-int(48/2)
             k_square = kz**2 + ky**2
             k_star = int(np.sqrt(k_square))
-            if k_star < 48:
-                if myEzk[kz,24] > 1 and myEyk[24,ky] > 1:
-                    Ek_square = myEzk[kz,24]**2 + myEyk[24,ky]**2
-                else:
-                    Ek_square = 0
+            Ek_square = myEzk[i,j]**2 + myEyk[i,j]**2
 
-                if kz ==0:
-                    theta = np.pi/2
-                else:
-                    theta = np.abs(np.arctan(ky/kz))
+            if kz ==0:
+                theta = np.pi/2
+            else:
+                theta = np.abs(np.arctan(ky/kz))
 
-                theta_num = int(theta/(np.pi/2/100))
+            theta_num = int(theta/(np.pi/2/100))
 
-                E_theta[theta_num] += Ek_square 
+            E_theta[theta_num] += Ek_square 
 
 
     plt.plot(np.arange(101)/100*90,E_theta)
     plt.show()
 
+def smooth(stock_col,WSZ):
+    out0 = np.convolve(stock_col,np.ones(WSZ,dtype=int),'valid')/WSZ
+    r = np.arange(1,WSZ-1,2)
+    start = np.cumsum(stock_col[:WSZ-1])[::2]/r
+    stop = (np.cumsum(stock_col[:-WSZ:-1])[::2]/r)[::-1]
+    return np.concatenate((start,out0,stop))
 
 if __name__ == '__main__':
-    #main()
-    phi_plot()
-    #k_main()
-    #theta_main()
-    #test()
-    #k_omega()
+    Ez_k_list, Ey_k_list,_,_,_ = load_phi()
+
+    theta_main(Ez_k_list, Ey_k_list,6)
+    #k_main(Ez_k_list,Ey_k_list)
+    #k_theta_main(Ez_k_list,Ey_k_list,100,400)
