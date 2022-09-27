@@ -8,7 +8,7 @@ from scipy.optimize import curve_fit
 
 from scipy.special import gamma
 
-def make_time_traces_plot(name_list,cutoff=0):
+def make_time_traces_plot(name_list,timecut, cutoff=0):
     elcTemp_list = []
     elcTemp_time_list = []
     ionTemp_list = []
@@ -18,6 +18,10 @@ def make_time_traces_plot(name_list,cutoff=0):
     elcCurrent_list = []
     Current_time_list = []
 
+    label_list = []
+    for name in name_list:
+        label = name.rsplit('/',2)[1]
+        label_list.append(label)
 
     for name in name_list:
 
@@ -60,14 +64,38 @@ def make_time_traces_plot(name_list,cutoff=0):
 
     #cut = int((1-cutoff)*(ionTemp_time.shape[0]))
     #cut_field = int((1-cutoff)*(fieldEnergy_time.shape[0]))
+
+    ####
+    #determine the range for each run
+    ####
+    timecut_energy_list = []
+    timecut_list = []
     for i in range(len(name_list)):
-        axs[0,0].plot(ionTemp_time_list[i][0:],ionTemp_list[i][0:]/ionTemp_list[i][0],label=name_list[i])
+        #for field energy
+        time_list = fieldEnergy_time_list[i]
+        for j in range(len(time_list)):
+            if time_list[j] > timecut:
+                timecut_energy_list.append(j)
+                break
+        
+        #for other quantity
+        time_list = elcTemp_time_list[i]
+        for j in range(len(time_list)):
+            if time_list[j] > timecut:
+                timecut_list.append(j)
+                break
 
-        axs[0,1].plot(elcTemp_time_list[i][0:],elcTemp_list[i][0:],label=name_list[i])
+    for i in range(len(name_list)):
+        axs[0,0].plot(ionTemp_time_list[i][0:timecut_list[i]],ionTemp_list[i][0:timecut_list[i]]/ionTemp_list[i][0],label=label_list[i])
 
-        axs[1,0].plot(fieldEnergy_time_list[i][0:],fieldEnergy_list[i][0:],label=name_list[i])
+        axs[0,1].plot(elcTemp_time_list[i][0:timecut_list[i]],elcTemp_list[i][0:timecut_list[i]],label=label_list[i])
 
-        axs[1,1].plot(Current_time_list[i][0:],elcCurrent_list[i][0:],label=name_list[i])
+        axs[1,0].plot(fieldEnergy_time_list[i][0:timecut_energy_list[i]],fieldEnergy_list[i][0:timecut_energy_list[i]],label=label_list[i])
+        
+        if i > 0:
+            axs[1,1].plot(Current_time_list[i][0:timecut_list[i]],elcCurrent_list[i][0:timecut_list[i]]*2.0,label=label_list[i])
+        else:
+            axs[1,1].plot(Current_time_list[i][0:timecut_list[i]],elcCurrent_list[i][0:timecut_list[i]],label=label_list[i])
 
 
     axs[0,0].set_xlabel(r'$t [\omega_{pe}^-1]$',fontsize=30)
@@ -88,7 +116,7 @@ def make_time_traces_plot(name_list,cutoff=0):
     axs[1,1].set_xlabel(r'$t [\omega_{pe}^-1]$',fontsize=30)
     axs[1,1].set_ylabel(r'$J_z$',fontsize=30)
     axs[1,1].tick_params(labelsize = 26)
-    axs[1,1].set_xlim(1,1200)
+    #axs[1,1].set_xlim(1,1200)
     axs[1,1].legend(fontsize=30)
 
     #fig.tight_layout()
@@ -99,6 +127,7 @@ if __name__ == '__main__':
     #name_list = ['./mass100/Erec/highres/','./mass100/Erec/lowres/']
     #name_list = ['./Cori/mass400/highres/','./Cori/mass400/lowres/']
     #name_list = ['./Cori/mass25/High/','./Cori/mass25/Low/','./Cori/mass25/lowcol/']
-    name_list = ['./Diagnostics/local/E_external/E1/0/','./Diagnostics/local/Cori/mass25/rescheck/4/', './Diagnostics/local/Cori/mass25/rescheck/3/']
+    #name_list = ['./Diagnostics/local/E_external/E1/0/','./Diagnostics/local/Cori/mass25/rescheck/4/', './Diagnostics/local/Cori/mass25/rescheck/3/']
     #name_list = ['./Diagnostics/local/Cori/mass25/rescheck/4/', './Diagnostics/local/E_external/E2/1D/']
-    make_time_traces_plot(name_list)
+    name_list = ['./Diagnostics/local/massRatio/mass100/E1/','./Diagnostics/local/massRatio/mass100/E1-low1/','./Diagnostics/local/massRatio/mass100/E1-low2/','./Diagnostics/local/massRatio/mass100/E1-low3/']
+    make_time_traces_plot(name_list,2000)
