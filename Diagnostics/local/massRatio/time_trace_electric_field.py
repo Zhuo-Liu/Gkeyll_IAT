@@ -7,10 +7,10 @@ import numpy as np
 # fieldEnergy4 = np.loadtxt('./massRatio/25/saved_data/fieldEnergy.txt')
 # time_fieldEnergy4 = np.loadtxt('./massRatio/25/saved_data/fieldEnergy_time.txt')
 
-Iontemp1 = np.loadtxt('./massRatio/mass25/saved_data/ion_intM2Thermal.txt')*25
-time_Iontemp1 = np.loadtxt('./massRatio/mass25/saved_data/ion_intM2Thermal_time.txt')
-Elctemp1= np.loadtxt('./massRatio/mass25/saved_data/elc_intM2Thermal.txt')
-time_Elctemp1 = np.loadtxt('./massRatio/mass25/saved_data/elc_intM2Thermal_time.txt')
+Iontemp1 = np.loadtxt('./massRatio/mass25/E1/saved_data/ion_intM2Thermal.txt')*25
+time_Iontemp1 = np.loadtxt('./massRatio/mass25/E1/saved_data/ion_intM2Thermal_time.txt')
+Elctemp1= np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM2Thermal.txt')
+time_Elctemp1 = np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM2Thermal_time.txt')
 Iontemp2 = np.loadtxt('./massRatio/mass100/E1/saved_data/ion_intM2Thermal.txt')*100
 time_Iontemp2 = np.loadtxt('./massRatio/mass100/E1/saved_data/ion_intM2Thermal_time.txt')
 Elctemp2 = np.loadtxt('./massRatio/mass100/E1/saved_data/elc_intM2Thermal.txt')
@@ -20,12 +20,16 @@ time_Iontemp3 = np.loadtxt('./massRatio/mass400/E1/saved_data/ion_intM2Thermal_t
 Elctemp3 = np.loadtxt('./massRatio/mass400/E1/saved_data/elc_intM2Thermal.txt')
 time_Elctemp3 = np.loadtxt('./massRatio/mass400/E1/saved_data/elc_intM2Thermal_time.txt')
 
-current1 = np.loadtxt('./massRatio/mass25/saved_data/elc_intM1i.txt')*2
-time_current1 = np.loadtxt('./massRatio/mass25/saved_data/elc_intM1i_time.txt') + 300
-current2 = np.loadtxt('./massRatio/mass100/E1/saved_data/elc_intM1i.txt')*2
-time_current2 = np.loadtxt('./massRatio/mass100/E1/saved_data/elc_intM1i_time.txt') + 160
-current3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM1i.txt')*2
-time_current3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM1i_time.txt') + 80
+current1 = np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM1i.txt')*2
+time_current1 = np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM1i_time.txt') + 300
+current2 = np.loadtxt('./massRatio/mass25/E2/saved_data/elc_intM1i.txt')*2
+time_current2 = np.loadtxt('./massRatio/mass25/E2/saved_data/elc_intM1i_time.txt') + 150
+current3 = np.loadtxt('./massRatio/mass25/E3/saved_data/elc_intM1i.txt')*2
+time_current3 = np.loadtxt('./massRatio/mass25/E3/saved_data/elc_intM1i_time.txt') + 100
+current4 = np.loadtxt('./massRatio/mass25/E4/saved_data/elc_intM1i.txt')*2
+time_current4 = np.loadtxt('./massRatio/mass25/E4/saved_data/elc_intM1i_time.txt') + 75
+current5 = np.loadtxt('./massRatio/mass25/E5/saved_data/elc_intM1i.txt')*2
+time_current5 = np.loadtxt('./massRatio/mass25/E5/saved_data/elc_intM1i_time.txt')
 
 dJdt1 = np.zeros(np.size(current1)-1)
 nu_eff1 = np.zeros(np.size(current1)-1)
@@ -39,69 +43,28 @@ nu_eff2 = np.zeros(np.size(current2)-1)
 for i in range(np.size(current2)-1):
     dJdt2[i] = (current2[i+1] - current2[i]) / (time_current2[i+1] - time_current2[i])
 for i in range(np.size(current2)-1):
-    nu_eff2[i] = (0.00001 - dJdt2[i]) / current2[i]
+    nu_eff2[i] = (0.00002 - dJdt2[i]) / current2[i]
 
 dJdt3 = np.zeros(np.size(current3)-1)
 nu_eff3 = np.zeros(np.size(current3)-1)
 for i in range(np.size(current3)-1):
     dJdt3[i] = (current3[i+1] - current3[i]) / (time_current3[i+1] - time_current3[i])
 for i in range(np.size(current3)-1):
-    nu_eff3[i] = (0.00001 - dJdt3[i]) / current3[i]
+    nu_eff3[i] = (0.00003 - dJdt3[i]) / current3[i]
 
-# fig      = plt.figure(figsize=(12.5,7.5))
-# ax      = fig.add_axes([0.16, 0.16, 0.82, 0.75])
-# #ax.set_title("perturbed electric field energy",fontsize=16)
-# ax.plot(time_fieldEnergy4,fieldEnergy4,label='#4',linewidth=5)
-# ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=36)
-# ax.set_ylabel(r'$\epsilon_0 \int (|\delta E_z|^2 + |\delta E_y|^2) dydz / n_0 T_{e0}$',fontsize=24,color='red')
-# ax.vlines(350,0,1e-5,linestyle='--',linewidth=2,color='black')
-# ax.vlines(750,0,1e-5,linestyle='--',linewidth=2,color='black')
-# ax.vlines(1100,0,1e-5,linestyle='--',linewidth=2,color='black')
-# ax.vlines(1800,0,1e-5,linestyle='--',linewidth=2,color='black')
-# ax.set_yscale('log')
-# ax.set_xlim(0,650)
-# ax.set_ylim(1e-11,1e-5)
-# ax.tick_params(labelsize = 28)
-# #plt.savefig('./Cori/figure_temp/field_energy.jpg')
-# plt.show()
-# # ax.legend(fontsize=14)
-# # plt.savefig('./Cori/figure_temp/field_energy.jpg')
-# # plt.clf()
+dJdt4 = np.zeros(np.size(current4)-1)
+nu_eff4 = np.zeros(np.size(current4)-1)
+for i in range(np.size(current4)-1):
+    dJdt4[i] = (current4[i+1] - current4[i]) / (time_current4[i+1] - time_current4[i])
+for i in range(np.size(current4)-1):
+    nu_eff4[i] = (0.00004 - dJdt4[i]) / current4[i]
 
-# fig      = plt.figure(figsize=(6.5,5.5))
-# ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
-# #ax.set_title("perturbed electric field energy",fontsize=16)
-# ax.plot(time_Iontemp4,Iontemp4,label='#4',linewidth=5)
-# ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=16)
-# ax.set_ylabel(r'$T_i/T_{i0}$',fontsize=16)
-# ax.set_xlim(0,2000)
-# ax.tick_params(labelsize = 14)
-# plt.savefig('./Cori/figure_temp/ion_temp.jpg')
-# plt.clf()
-
-# fig      = plt.figure(figsize=(6.5,5.5))
-# ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
-# #ax.set_title("perturbed electric field energy",fontsize=16)
-# ax.plot(time_Elctemp4,Elctemp4/Elctemp4[0],label='#4',linewidth=5)
-# ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=16)
-# ax.set_ylabel(r'$T_e/T_{e0}$',fontsize=16)
-# ax.set_xlim(0,2000)
-# ax.tick_params(labelsize = 14)
-# plt.savefig('./Cori/figure_temp/elc_temp.jpg')
-# plt.clf()
-
-# fig      = plt.figure(figsize=(6.5,5.5))
-# ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
-# #ax.set_title("perturbed electric field energy",fontsize=16)
-# ax.plot(time_Iontemp4,Iontemp4/Iontemp4[0],label='#4',linewidth=5)
-# ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=16)
-# ax.set_ylabel(r'$T_i/T_{i0}$',fontsize=16)
-# ax.set_xlim(0,2000)
-# ax.tick_params(labelsize = 16)
-# plt.savefig('./Cori/figure_temp/ion_temp.jpg')
-# plt.clf()
-
-
+dJdt5 = np.zeros(np.size(current5)-1)
+nu_eff5 = np.zeros(np.size(current5)-1)
+for i in range(np.size(current5)-1):
+    dJdt5[i] = (current5[i+1] - current5[i]) / (time_current5[i+1] - time_current5[i])
+for i in range(np.size(current5)-1):
+    nu_eff5[i] = (0.00005 - dJdt5[i]) / current5[i]
 #####################################
 ##### Current ####
 ###################################
@@ -109,13 +72,17 @@ for i in range(np.size(current3)-1):
 fig      = plt.figure(figsize=(10.5,7.5))
 ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
 
-ax.plot(time_current1[:],current1,label='25',linewidth=5)
-ax.plot(time_current2[:],current2,label='100',linewidth=5)
-ax.plot(time_current3[:],current3,label='400',linewidth=5)
+# ax.plot(time_current1[:],current1,label='E1',linewidth=5)
+# ax.plot(time_current2[:],current2,label='E2',linewidth=5)
+# ax.plot(time_current3[:],current3,label='E3',linewidth=5)
+# ax.plot(time_current4[:],current4,label='E4',linewidth=5)
+# ax.plot(time_current5[:],current5,label='E5',linewidth=5)
 
-# ax.plot(time_current1[1:],nu_eff1,label='25',linewidth=5)
-# ax.plot(time_current2[1:],nu_eff2,label='100',linewidth=5)
-# ax.plot(time_current3[1:],nu_eff3,label='400',linewidth=5)
+ax.plot(time_current1[1:],nu_eff1[:],label='E1',linewidth=5)
+ax.plot(time_current2[1:241],nu_eff2[:240],label='E2',linewidth=5)
+ax.plot(time_current3[1:201],nu_eff3[:200],label='E3',linewidth=5)
+ax.plot(time_current4[1:181],nu_eff4[:180],label='E4',linewidth=5)
+ax.plot(time_current5[2:141],nu_eff5[1:140],label='E5',linewidth=5)
 
 
 ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)

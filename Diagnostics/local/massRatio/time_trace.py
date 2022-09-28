@@ -5,14 +5,14 @@ matplotlib.use('TkAgg')
 import numpy as np
 
 
-fieldEnergy = np.loadtxt('./massRatio//mass400/E1-low1/saved_data/fieldEnergy.txt')
-time_fieldEnergy = np.loadtxt('./massRatio//mass400/E1-low1/saved_data/fieldEnergy_time.txt')
-Iontemp = np.loadtxt('./massRatio//mass400/E1-low1/saved_data/ion_intM2Thermal.txt')*400
-time_Iontemp = np.loadtxt('./massRatio//mass400/E1-low1/saved_data/ion_intM2Thermal_time.txt')
-Elctemp = np.loadtxt('./massRatio//mass400/E1-low1/saved_data/elc_intM2Thermal.txt')
-time_Elctemp = np.loadtxt('./massRatio//mass400/E1-low1/saved_data/elc_intM2Thermal_time.txt')
-current = np.loadtxt('./massRatio//mass400/E1-low1/saved_data/elc_intM1i.txt')*2
-time_current = np.loadtxt('./massRatio//mass400/E1-low1/saved_data/elc_intM1i_time.txt')
+fieldEnergy = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/fieldEnergy.txt')
+time_fieldEnergy = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/fieldEnergy_time.txt')
+Iontemp = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/ion_intM2Thermal.txt')*400
+time_Iontemp = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/ion_intM2Thermal_time.txt')
+Elctemp = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM2Thermal.txt')
+time_Elctemp = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM2Thermal_time.txt')
+current = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM1i.txt')*2
+time_current = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM1i_time.txt')
 
 ########
 # Temp #
@@ -41,3 +41,7 @@ ax.legend(fontsize=30,loc='lower left')
 #plt.savefig('./Diagnostics/local/Cori/figure_temp/temp.jpg')
 plt.show()
 #plt.clf()
+
+########
+# current and resistivity #
+########
