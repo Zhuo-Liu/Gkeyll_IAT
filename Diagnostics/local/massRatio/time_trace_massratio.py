@@ -5,10 +5,10 @@ import numpy as np
 
 fieldEnergy1 = np.loadtxt('./massRatio/mass25/E1/saved_data/fieldEnergy.txt')
 time_fieldEnergy1 = np.loadtxt('./massRatio/mass25/E1/saved_data/fieldEnergy_time.txt')
-fieldEnergy2 = np.loadtxt('./massRatio/mass100/E1/saved_data/fieldEnergy.txt')
-time_fieldEnergy2 = np.loadtxt('./massRatio/mass100/E1/saved_data/fieldEnergy_time.txt')
-fieldEnergy3 = np.loadtxt('./massRatio/mass400/E1/saved_data/fieldEnergy.txt')
-time_fieldEnergy3 = np.loadtxt('./massRatio/mass400/E1/saved_data/fieldEnergy_time.txt')
+fieldEnergy2 = np.loadtxt('./massRatio/mass100/E1-low1/saved_data/fieldEnergy.txt')
+time_fieldEnergy2 = np.loadtxt('./massRatio/mass100/E1-low1/saved_data/fieldEnergy_time.txt')
+fieldEnergy3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/fieldEnergy.txt')
+time_fieldEnergy3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/fieldEnergy_time.txt')
 
 Iontemp1 = np.loadtxt('./massRatio/mass25/E1/saved_data/ion_intM2Thermal.txt')*25
 time_Iontemp1 = np.loadtxt('./massRatio/mass25/E1/saved_data/ion_intM2Thermal_time.txt')
@@ -25,8 +25,8 @@ time_Elctemp3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM2Ther
 
 current1 = np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM1i.txt')*2
 time_current1 = np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM1i_time.txt') + 300
-current2 = np.loadtxt('./massRatio/mass100/E1/saved_data/elc_intM1i.txt')*2
-time_current2 = np.loadtxt('./massRatio/mass100/E1/saved_data/elc_intM1i_time.txt') + 160
+current2 = np.loadtxt('./massRatio/mass100/E1-low1/saved_data/elc_intM1i.txt')*2
+time_current2 = np.loadtxt('./massRatio/mass100/E1-low1/saved_data/elc_intM1i_time.txt') + 160
 current3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM1i.txt')*2
 time_current3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM1i_time.txt') + 80
 
@@ -109,29 +109,32 @@ for i in range(np.size(current3)-1):
 ##### Current ####
 ###################################
  
-# fig      = plt.figure(figsize=(10.5,7.5))
-# ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
+fig      = plt.figure(figsize=(10.5,7.5))
+ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
 
-# ax.plot(time_current1[:],current1,label='25',linewidth=5)
-# ax.plot(time_current2[:],current2,label='100',linewidth=5)
-# ax.plot(time_current3[:],current3,label='400',linewidth=5)
+ax.plot(time_current1[:],current1,label='25',linewidth=5)
+ax.plot(time_current2[:],current2,label='100',linewidth=5)
+ax.plot(time_current3[:],current3,label='400',linewidth=5)
 
-# # ax.plot(time_current1[1:],nu_eff1,label='25',linewidth=5)
-# # ax.plot(time_current2[1:],nu_eff2,label='100',linewidth=5)
-# # ax.plot(time_current3[1:],nu_eff3,label='400',linewidth=5)
+# ax.plot(time_current1[1:],nu_eff1,label='25',linewidth=5,color='red',linestyle='-')
+# ax.plot(time_fieldEnergy1,fieldEnergy1/0.0004,linewidth=5,color='red',linestyle='--')
+# ax.plot(time_current2[1:],nu_eff2,label='100',linewidth=5,color='green',linestyle='-')
+# ax.plot(time_fieldEnergy2,fieldEnergy2/0.0004,linewidth=5,color='green',linestyle='--')
+# ax.plot(time_current3[1:],nu_eff3,label='400',linewidth=5,color='blue',linestyle='-')
+# ax.plot(time_fieldEnergy3,fieldEnergy3/0.0004,linewidth=5,color='blue',linestyle='--')
 
 
-# ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
+ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
 
-# #ax.set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32,color='blue')
-# # ax.set_xlim(0,2700)
-# # ax.set_ylim(0,5.0)
-# ax.tick_params(labelsize = 26)
-# ax.tick_params(axis='y',colors = 'blue')
-# ax.legend()
-# #ax.set_xlim(0,3500)
-# plt.show()
-# plt.clf()
+#ax.set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32,color='blue')
+# ax.set_xlim(0,2700)
+# ax.set_ylim(0,5.0)
+ax.tick_params(labelsize = 26)
+ax.tick_params(axis='y',colors = 'blue')
+ax.legend()
+#ax.set_xlim(0,3500)
+plt.show()
+plt.clf()
 
 
 #####################################
@@ -164,21 +167,58 @@ ax2.tick_params(labelsize = 24)
 #ax.legend(fontsize=30,loc='lower left')
 ax.legend(fontsize=30)
 plt.show()
-plt.clf()
 
-fig     = plt.figure(figsize=(11.0,10.0))
-ax      = fig.add_axes([0.15, 0.15, 0.75, 0.82])
+# fig     = plt.figure(figsize=(11.0,10.0))
+# ax      = fig.add_axes([0.15, 0.15, 0.75, 0.82])
 
-ax.plot(time_Iontemp1[:],Elctemp1[:]/Iontemp1[:],linewidth=5,color='blue',label='25')
-ax.plot(time_Iontemp2[:],Elctemp2[:]/Iontemp2[:],linewidth=5,color='red',label='100')
-ax.plot(time_Iontemp3[:],Elctemp3[:]/Iontemp3[:],linewidth=5,color='green',label='400')
+# ax.plot(time_Iontemp1[:],Elctemp1[:]/Iontemp1[:],linewidth=5,color='blue',label='25')
+# ax.plot(time_Iontemp2[:],Elctemp2[:]/Iontemp2[:],linewidth=5,color='red',label='100')
+# ax.plot(time_Iontemp3[:],Elctemp3[:]/Iontemp3[:],linewidth=5,color='green',label='400')
 
-ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
-ax.set_ylabel(r'$T_e/T_{i}$',fontsize=36,color='black')
-#ax.set_xlim(0,6000)
-ax.tick_params(labelsize = 24)
-ax.legend(fontsize=30)
-plt.show()
+# ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
+# ax.set_ylabel(r'$T_e/T_{i}$',fontsize=36,color='black')
+# #ax.set_xlim(0,6000)
+# ax.tick_params(labelsize = 24)
+# ax.legend(fontsize=30)
+# plt.show()
+
+dTidt1 = np.zeros(np.size(Iontemp1)-1)
+dWdt1 = np.zeros(np.size(fieldEnergy1)-1)
+for i in range(np.size(Iontemp1)-1):
+    dTidt1[i] = (Iontemp1[i+1] - Iontemp1[i]) / (time_Iontemp1[i+1] - time_Iontemp1[i])
+for i in range(np.size(fieldEnergy1)-1):
+    dWdt1[i] = (fieldEnergy1[i+1] - fieldEnergy1[i]) / (time_fieldEnergy1[i+1] - time_fieldEnergy1[i])
+dTidt2 = np.zeros(np.size(Iontemp2)-1)
+dWdt2 = np.zeros(np.size(fieldEnergy2)-1)
+for i in range(np.size(Iontemp2)-1):
+    dTidt2[i] = (Iontemp2[i+1] - Iontemp2[i]) / (time_Iontemp2[i+1] - time_Iontemp2[i])
+for i in range(np.size(fieldEnergy2)-1):
+    dWdt2[i] = (fieldEnergy2[i+1] - fieldEnergy2[i]) / (time_fieldEnergy2[i+1] - time_fieldEnergy2[i])
+dTidt3 = np.zeros(np.size(Iontemp3)-1)
+dWdt3 = np.zeros(np.size(fieldEnergy3)-1)
+for i in range(np.size(Iontemp3)-1):
+    dTidt3[i] = (Iontemp3[i+1] - Iontemp3[i]) / (time_Iontemp3[i+1] - time_Iontemp3[i])
+for i in range(np.size(fieldEnergy3)-1):
+    dWdt3[i] = (fieldEnergy3[i+1] - fieldEnergy3[i]) / (time_fieldEnergy3[i+1] - time_fieldEnergy3[i])
+
+# fig     = plt.figure(figsize=(11.0,10.0))
+# ax      = fig.add_axes([0.15, 0.15, 0.75, 0.82])
+
+# ax.plot(time_Iontemp1[1:],dTidt1*20,linewidth=5,label='20*dTdt1',color='red',linestyle='-')
+# ax.plot(time_fieldEnergy1,fieldEnergy1,linewidth=5,label='W1',color='red',linestyle='--')
+# ax.plot(time_Iontemp2[1:],dTidt2*40,linewidth=5,label='40*dTdt2',color='green',linestyle='-')
+# ax.plot(time_fieldEnergy2,fieldEnergy2,linewidth=5,label='W2',color='green',linestyle='--')
+# ax.plot(time_Iontemp3[1:],dTidt3*80,linewidth=5,label='80*dTdt3',color='blue',linestyle='-')
+# ax.plot(time_fieldEnergy3,fieldEnergy3,linewidth=5,label='W3',color='blue',linestyle='--')
+# #ax.plot(time_fieldEnergy2[1:],dWdt2,linewidth=5,label='dWdt')
+
+# ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
+# #ax.set_xlim(0,6000)
+# ax.set_ylim(1e-9,)
+# ax.tick_params(labelsize = 24)
+# ax.legend(fontsize=30)
+# ax.set_yscale('log')
+# plt.show()
 
 #####################################
 ##### FIELD ENERGY ####
@@ -196,7 +236,7 @@ plt.show()
 # ax.tick_params(axis='y',colors = 'blue')
 # ax.legend()
 # ax.set_yscale('log')
-# ax.set_xlim(300,5000)
-# ax.set_ylim(1e-7,5e-5)
+# ax.set_xlim(300,)
+# ax.set_ylim(1e-8,)
 # plt.show()
 # plt.clf()

@@ -64,7 +64,7 @@ def load_phi():
 
     for i in range(25,493):
         fignum = str(i).zfill(4)
-        filename = './Diagnostics/local/Cori/mass25/rescheck/4/field/M25_E2_3_field_' + fignum + '.txt'
+        filename = './Cori/mass25/rescheck/4/field/M25_E2_3_field_' + fignum + '.txt'
         phi = np.loadtxt(filename)
         E_z, E_y = np.gradient(phi)
         E_z = E_z/dz
@@ -469,7 +469,15 @@ def smooth(stock_col,WSZ):
     return np.concatenate((start,out0,stop))
 
 if __name__ == '__main__':
-    Ez_k_list, Ey_k_list,_,_,_ = load_phi()
+    Ez_k_list, Ey_k_list,Ez_list,Ey_list,_ = load_phi()
+
+    W = 0
+    for i in range(96):
+        for j in range(48):
+            W = W + Ez_list[100,i,j] * Ez_list[100,i,j] + Ey_list[100,i,j] * Ey_list[100,i,j]
+    W = W / 96 / 48 * 0.5
+    print(W)
+
 
     theta_main(Ez_k_list, Ey_k_list,6)
     #k_main(Ez_k_list,Ey_k_list)
