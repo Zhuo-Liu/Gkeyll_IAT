@@ -4,6 +4,7 @@ import matplotlib
 from matplotlib import pyplot as plt
 from matplotlib import colors, ticker, cm
 from scipy.optimize import curve_fit
+from scipy.interpolate import interp1d
 
 lz = 1.0
 ly = 0.5
@@ -47,24 +48,9 @@ def load_phi():
     Ez_list = []
     Ey_list = []
     phi_list = []
-    # for i in range(200,3798):
-    #     fignum = str(i).zfill(4)
-    #     filename = './Diagnostics/local/Cori/mass25/rescheck/1/field/M25_E2_0_field_' + fignum + '.txt'
-    #     phi = np.loadtxt(filename)
-    #     E_z, E_y = np.gradient(phi)
-    #     E_z = E_z/dz
-    #     E_y = E_y/dy
-    #     Ez_k = np.abs(np.fft.fftshift(np.fft.fftn(E_z)))
-    #     Ey_k = np.abs(np.fft.fftshift(np.fft.fftn(E_y)))
-    #     Ez_k_list.append(Ez_k)
-    #     Ey_k_list.append(Ey_k)
-    #     Ez_list.append(E_z)
-    #     Ey_list.append(E_y)
-    #     phi_list.append(phi)
-
-    for i in range(25,493):
+    for i in range(200,3798):
         fignum = str(i).zfill(4)
-        filename = './Cori/mass25/rescheck/4/field/M25_E2_3_field_' + fignum + '.txt'
+        filename = './Cori/mass25/rescheck/1/field/M25_E2_0_field_' + fignum + '.txt'
         phi = np.loadtxt(filename)
         E_z, E_y = np.gradient(phi)
         E_z = E_z/dz
@@ -76,6 +62,21 @@ def load_phi():
         Ez_list.append(E_z)
         Ey_list.append(E_y)
         phi_list.append(phi)
+
+    # for i in range(25,493):
+    #     fignum = str(i).zfill(4)
+    #     filename = './Cori/mass25/rescheck/4/field/M25_E2_3_field_' + fignum + '.txt'
+    #     phi = np.loadtxt(filename)
+    #     E_z, E_y = np.gradient(phi)
+    #     E_z = E_z/dz
+    #     E_y = E_y/dy
+    #     Ez_k = np.abs(np.fft.fftshift(np.fft.fftn(E_z)))
+    #     Ey_k = np.abs(np.fft.fftshift(np.fft.fftn(E_y)))
+    #     Ez_k_list.append(Ez_k)
+    #     Ey_k_list.append(Ey_k)
+    #     Ez_list.append(E_z)
+    #     Ey_list.append(E_y)
+    #     phi_list.append(phi)
 
     # for i in range(25,493):
     #     fignum = str(i).zfill(4)
@@ -96,7 +97,7 @@ def load_phi():
     return np.array(Ez_k_list), np.array(Ey_k_list), np.array(Ez_list), np.array(Ey_list), np.array(phi_list)
 
 def phi_plot():
-    phi = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/field/M25_E2_3_field_0480.txt')
+    phi = np.loadtxt('./Cori/mass25/rescheck/4/field/M25_E2_3_field_0200.txt')
     fig = plt.figure()
     ax = plt.axes(projection='3d')
 
@@ -113,54 +114,45 @@ def phi_plot():
     ax.set_xlabel('z')
     ax.set_ylabel('y')
     cset = ax.contourf(ZZ, YY, phi, 30,  zdir='z', offset= -0.0004, cmap=matplotlib.cm.coolwarm)
-    ax.set_zlim3d(-0.0004, 0.0006)
+    ax.set_zlim3d(-0.0004, 0.0003)
     plt.show()
 
 def k_omega():
     _,_,Ez0, Ey, phi = load_phi()
 
-    Ez0 = np.transpose(Ez0[500:3500,:,12])
-    ts = np.arange(700,3700)/2
-    zs = np.linspace(0,1.0,48)
-    tt, zzt = np.meshgrid(ts, zs, indexing= 'xy')
+    #Ez0 = np.transpose(Ez0[500:3500,:,12])
+    #ts = np.arange(700,3700)/2
+    #zs = np.linspace(0,1.0,48)
+    #tt, zzt = np.meshgrid(ts, zs, indexing= 'xy')
     #tt = np.transpose(tt)
     #zzt = np.transpose(zzt)
 
-    plt.figure(figsize=(10,3))
-    plt.contourf(tt,zzt,Ez0)
-    plt.colorbar()
-    plt.savefig('./gg.jpg')
-    plt.show()
+    # plt.figure(figsize=(10,3))
+    # plt.contourf(tt,zzt,Ez0)
+    # plt.colorbar()
+    # plt.savefig('./gg.jpg')
+    # plt.show()
 
     #Ez1 = np.transpose(Ey[:800,:,12])
     #Ez1fft = np.fft.fftshift(np.fft.rfft2(Ez1))
-    Ez = np.transpose(Ez0[3000:3600,:,0]) # 48 x 400
+    Ez = np.transpose(Ez0[3000:3700,:,0]) # 48 x 400
     Ezw = np.fft.rfft2(Ez) # 48 x 400
     Ezw2 = np.zeros_like(Ezw)
     for i in range(Ezw.shape[1]):
         Ezw2[:,i] = np.fft.fftshift(Ezw[:,i])
     absEzw = np.power(np.absolute(Ezw2),2)[:,:]  
-    omegas = np.fft.rfftfreq(600,d=(300)/(600-1)) * 2.0 * np.pi
+    omegas = np.fft.rfftfreq(700,d=(350)/(700-1)) * 2.0 * np.pi
     ks = np.linspace(-24,23,48)
 
+    k_list_25 = 2*np.pi*np.array([0, 0.3183, 1,      2,      4,     6,    8,     10,    12,     16,     18])
+    gamma_list_25 =     np.array([0, 0.00143,0.00441,0.00833,0.0135,0.015,0.0141,0.0122,0.00973,0.00364,-0.0003])
+    omega_list_25 =     np.array([0, 0.00835,0.0261, 0.051,  0.0946,0.128,0.153, 0.1718,0.187,  0.2122, 0.2237])
+    f_25 = interp1d(k_list_25, gamma_list_25, kind='cubic')
+    fw_25 = interp1d(k_list_25, omega_list_25, kind='cubic')
+    k_sample_25 = np.arange(0.1,113,0.1)
+    gamma_sample_25 = f_25(k_sample_25)
+    omega_sample_25 = fw_25(k_sample_25)
 
-    Ez_real = Ez[:,500]
-    Ez_time = Ez[24,:]
-
-    Ezk = np.fft.rfft(Ez_real)
-    Ezw1 = np.fft.rfft(Ez_time)
-
-    # plt.plot(omegas,np.abs(Ezw1))
-    # plt.xlim(0,1.0)
-    # plt.show()
-    # plt.clf()
-
-    # plt.plot(ks,np.abs(Ezk[1:]))
-    # plt.show()
-    # plt.clf()
-
-    #fig = plt.gcf()
-    #ax = fig.add_subplot(111)
     zz,yy = np.meshgrid(ks,omegas[:100],indexing='xy')
     zz = np.transpose(zz)
     yy = np.transpose(yy)
@@ -168,12 +160,20 @@ def k_omega():
     absEzw[absEzw<-3] = -3
     #levels = [1e-9,1e-6,1e-3,1e-2,1e-1,1,3]
 
-    #plt.ylim(0,2.0)
+    fig     = plt.figure(figsize=(11.0,9.0))
+    ax      = fig.add_axes([0.15, 0.15, 0.80, 0.76])
+    ax.set_ylim(0,1.0)
     #plt.clim(vmin=-10,vmax=30)
     levels = np.linspace(-3,3,21)
-    plt.contourf(zz,yy,absEzw[:,:100],levels=levels)
-    plt.colorbar()
+    pos = ax.contourf(zz,yy,absEzw[:,:100],levels=levels)
+    #ax.plot(-k_sample_25/2/np.pi, omega_sample_25,linewidth=5, color='black',linestyle='--')
+    ax.plot(-k_sample_25/2/np.pi, k_sample_25/2/np.pi * 0.15,linewidth=5, color='black',linestyle='--')
+    ax.set_xlabel(r'$kd_e/2\pi$',fontsize=32)
+    ax.set_ylabel(r'$\omega/\omega_{pe}$',fontsize=32)
+    ax.text(-2,0.7,r'$\frac{\omega}{k} = 1.2v_{Te}$',fontsize=36,color='white')
     #plt.show()
+    ax.tick_params(labelsize = 26)
+    fig.colorbar(pos,ax=ax)
     plt.savefig('./out.jpg')
 
     # ez1d = Ez[80,:,24]
@@ -469,16 +469,18 @@ def smooth(stock_col,WSZ):
     return np.concatenate((start,out0,stop))
 
 if __name__ == '__main__':
-    Ez_k_list, Ey_k_list,Ez_list,Ey_list,_ = load_phi()
+    phi_plot()
+    #k_omega()
+    #Ez_k_list, Ey_k_list,Ez_list,Ey_list,_ = load_phi()
 
-    W = 0
-    for i in range(96):
-        for j in range(48):
-            W = W + Ez_list[100,i,j] * Ez_list[100,i,j] + Ey_list[100,i,j] * Ey_list[100,i,j]
-    W = W / 96 / 48 * 0.5
-    print(W)
+    # W = 0
+    # for i in range(96):
+    #     for j in range(48):
+    #         W = W + Ez_list[100,i,j] * Ez_list[100,i,j] + Ey_list[100,i,j] * Ey_list[100,i,j]
+    # W = W / 96 / 48 * 0.5
+    # print(W)
 
 
-    theta_main(Ez_k_list, Ey_k_list,6)
+    #theta_main(Ez_k_list, Ey_k_list,6)
     #k_main(Ez_k_list,Ey_k_list)
     #k_theta_main(Ez_k_list,Ey_k_list,100,400)

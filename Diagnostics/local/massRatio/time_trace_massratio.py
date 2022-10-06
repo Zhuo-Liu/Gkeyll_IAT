@@ -23,6 +23,19 @@ time_Iontemp3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/ion_intM2Ther
 Elctemp3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM2Thermal.txt')
 time_Elctemp3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM2Thermal_time.txt')
 
+# Iontemp1 = np.loadtxt('./Cori/mass25/rescheck/4/saved_data/ion_intM2Thermal.txt')*25
+# time_Iontemp1 = np.loadtxt('./Cori/mass25/rescheck/4/saved_data/ion_intM2Thermal_time.txt')
+# Elctemp1= np.loadtxt('./Cori/mass25/rescheck/4/saved_data/elc_intM2Thermal.txt')
+# time_Elctemp1 = np.loadtxt('./Cori/mass25/rescheck/4/saved_data/elc_intM2Thermal_time.txt')
+# Iontemp2 = np.loadtxt('./massRatio/nouse/mass100_Cori/saved_data/ion_intM2Thermal.txt')*100
+# time_Iontemp2 = np.loadtxt('./massRatio/nouse/mass100_Cori/saved_data/ion_intM2Thermal_time.txt')
+# Elctemp2 = np.loadtxt('./massRatio/nouse/mass100_Cori/saved_data/elc_intM2Thermal.txt')
+# time_Elctemp2 = np.loadtxt('./massRatio/nouse/mass100_Cori/saved_data/elc_intM2Thermal_time.txt')
+# Iontemp3 = np.loadtxt('./massRatio/nouse/mass400_Cori/saved_data/ion_intM2Thermal.txt')*400
+# time_Iontemp3 = np.loadtxt('./massRatio/nouse/mass400_Cori/saved_data/ion_intM2Thermal_time.txt')
+# Elctemp3 = np.loadtxt('./massRatio/nouse/mass400_Cori/saved_data/elc_intM2Thermal.txt')
+# time_Elctemp3 = np.loadtxt('./massRatio/nouse/mass400_Cori/saved_data/elc_intM2Thermal_time.txt')
+
 current1 = np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM1i.txt')*2
 time_current1 = np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM1i_time.txt') + 300
 current2 = np.loadtxt('./massRatio/mass100/E1-low1/saved_data/elc_intM1i.txt')*2
@@ -140,47 +153,48 @@ plt.clf()
 #####################################
 ##### Temp ####
 ###################################
-fig     = plt.figure(figsize=(11.0,10.0))
-ax      = fig.add_axes([0.15, 0.15, 0.75, 0.82])
-ax2 = ax.twinx()
-
-ax.plot(time_Elctemp1[:],Elctemp1[:]/Elctemp1[0],linewidth=5,color='blue',linestyle='-',label='25')
-ax2.plot(time_Iontemp1[:],Iontemp1[:]/Iontemp1[0],linewidth=5,color='blue',linestyle='--')
-#ax2.plot(time_Iontemp1[:],Elctemp1[:]/Iontemp1[:],linewidth=5,color='blue')
-ax.plot(time_Elctemp2[:],Elctemp2[:]/Elctemp2[0],linewidth=5,color='red',linestyle='-',label='100')
-ax2.plot(time_Iontemp2[:],Iontemp2[:]/Iontemp2[0],linewidth=5,color='red',linestyle='--')
-#ax2.plot(time_Iontemp2[:],Elctemp2[:]/Iontemp2[:],linewidth=5,color='red')
-ax.plot(time_Elctemp3[:],Elctemp3[:]/Elctemp3[0],linewidth=5,color='green',linestyle='-',label='400')
-ax2.plot(time_Iontemp3[:],Iontemp3[:]/Iontemp3[0],linewidth=5,color='green',linestyle='--')
-#ax2.plot(time_Iontemp3[:],Elctemp3[:]/Iontemp3[:],linewidth=5,color='green')
-ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
-ax.set_ylabel(r'$T_e/T_{e0}$',fontsize=36,color='black')
-ax2.set_ylabel(r'$T_i/T_{ei0}$',fontsize=36,color='black')
-#ax.set_xlim(0,6000)
-#ax.set_ylim(0.9,3)
-#ax.set_xlim(750,1800)
-#ax2.set_ylim(0.9,13)
-ax.tick_params(labelsize = 24)
-ax2.tick_params(labelsize = 24)
-#ax2.ticklabel_format(axis='y', style='sci', scilimits=(1,1))
-#ax.legend(fontsize=30,loc='center right',bbox_to_anchor=(1.0, 0.3))
-#ax.legend(fontsize=30,loc='lower left')
-ax.legend(fontsize=30)
-plt.show()
-
 # fig     = plt.figure(figsize=(11.0,10.0))
 # ax      = fig.add_axes([0.15, 0.15, 0.75, 0.82])
+# ax2 = ax.twinx()
 
-# ax.plot(time_Iontemp1[:],Elctemp1[:]/Iontemp1[:],linewidth=5,color='blue',label='25')
-# ax.plot(time_Iontemp2[:],Elctemp2[:]/Iontemp2[:],linewidth=5,color='red',label='100')
-# ax.plot(time_Iontemp3[:],Elctemp3[:]/Iontemp3[:],linewidth=5,color='green',label='400')
-
+# ax.plot(time_Elctemp1[:],Elctemp1[:]/Elctemp1[0],linewidth=5,color='blue',linestyle='-',label='25')
+# ax2.plot(time_Iontemp1[:],Iontemp1[:]/Iontemp1[0],linewidth=5,color='blue',linestyle='--')
+# #ax2.plot(time_Iontemp1[:],Elctemp1[:]/Iontemp1[:],linewidth=5,color='blue')
+# ax.plot(time_Elctemp2[:],Elctemp2[:]/Elctemp2[0],linewidth=5,color='red',linestyle='-',label='100')
+# ax2.plot(time_Iontemp2[:],Iontemp2[:]/Iontemp2[0],linewidth=5,color='red',linestyle='--')
+# #ax2.plot(time_Iontemp2[:],Elctemp2[:]/Iontemp2[:],linewidth=5,color='red')
+# ax.plot(time_Elctemp3[:],Elctemp3[:]/Elctemp3[0],linewidth=5,color='green',linestyle='-',label='400')
+# ax2.plot(time_Iontemp3[:],Iontemp3[:]/Iontemp3[0],linewidth=5,color='green',linestyle='--')
+# #ax2.plot(time_Iontemp3[:],Elctemp3[:]/Iontemp3[:],linewidth=5,color='green')
 # ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
-# ax.set_ylabel(r'$T_e/T_{i}$',fontsize=36,color='black')
+# ax.set_ylabel(r'$T_e/T_{e0}$',fontsize=36,color='black')
+# ax2.set_ylabel(r'$T_i/T_{ei0}$',fontsize=36,color='black')
 # #ax.set_xlim(0,6000)
+# #ax.set_ylim(0.9,3)
+# #ax.set_xlim(750,1800)
+# #ax2.set_ylim(0.9,13)
 # ax.tick_params(labelsize = 24)
+# ax2.tick_params(labelsize = 24)
+# #ax2.ticklabel_format(axis='y', style='sci', scilimits=(1,1))
+# #ax.legend(fontsize=30,loc='center right',bbox_to_anchor=(1.0, 0.3))
+# #ax.legend(fontsize=30,loc='lower left')
 # ax.legend(fontsize=30)
 # plt.show()
+
+fig     = plt.figure(figsize=(11.0,10.0))
+ax      = fig.add_axes([0.15, 0.15, 0.75, 0.82])
+
+ax.plot(time_Iontemp1[:],Elctemp1[:]/Iontemp1[:],linewidth=5,color='blue',label=r'$m_i/m_e=25$')
+ax.plot(time_Iontemp2[:],Elctemp2[:]/Iontemp2[:],linewidth=5,color='red',label=r'$m_i/m_e=100$')
+ax.plot(time_Iontemp3[:],Elctemp3[:]/Iontemp3[:],linewidth=5,color='green',label=r'$m_i/m_e=400$')
+
+ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
+ax.set_ylabel(r'$T_e/T_{i}$',fontsize=36,color='black')
+ax.set_xlim(0,8000)
+ax.grid()
+ax.tick_params(labelsize = 24)
+ax.legend(fontsize=30)
+plt.show()
 
 dTidt1 = np.zeros(np.size(Iontemp1)-1)
 dWdt1 = np.zeros(np.size(fieldEnergy1)-1)

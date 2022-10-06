@@ -7,9 +7,9 @@ from scipy.optimize import curve_fit
 from scipy.special import gamma
 import matplotlib.ticker as ticker
 
-ElcGridPath = './Diagnostics/local/Cori/mass25/rescheck/4/dist_function/elc_velocities.npz'
-IonGridPath = './Diagnostics/local/Cori/mass25/rescheck/4/dist_function/ion_velocities.npz'
-SpacePath = './Diagnostics/local/Cori/mass25/rescheck/4/dist_function/sapce.npz'
+ElcGridPath = './Cori/mass25/rescheck/4/dist_function_save/elc_velocities.npz'
+IonGridPath = './Cori/mass25/rescheck/4/dist_function_save/ion_velocities.npz'
+SpacePath = './Cori/mass25/rescheck/4/dist_function_save/sapce.npz'
 
 def maxw(x,A,B,C):
     return A/np.sqrt(np.pi)/B*np.exp(-(x-C)**2/B**2)
@@ -41,19 +41,19 @@ def plot_2d_distribution(fName, GridFile):
     
     df[df<10] = 10
 
-    plt.pcolormesh(vz_plot/0.004, vy_plot/0.004, np.log(df),cmap='inferno')
+    plt.pcolormesh(vz_plot/0.02, vy_plot/0.02, df,cmap='inferno')
     #plt.scatter(np.squeeze(vz_plot[np.where(df==np.max(df))]),np.squeeze(vy_plot[np.where(df==np.max(df))]),s = 40, marker = 'x', alpha = 1)
     plt.xlabel(r'$v_z/v_{Te0}$', fontsize=36)
     plt.ylabel(r'$v_y/v_{Te0}$', fontsize=36, labelpad=-1)
     #plt.set_title(r'$<F_e(v_z,v_y)>_{z,y},$' + rf't = {time}'+ r' [$\omega_{pe}^{-1}$]', fontsize=26)
-    # plt.xlim(-2,1)
-    # plt.ylim(-1,1)
+    plt.xlim(-4,8)
+    plt.ylim(-6,6)
     plt.tick_params(labelsize = 26)
     plt.grid()
     cbar = plt.colorbar()
     cbar.ax.tick_params(labelsize=22)
 
-    plt.savefig(r'./Diagnostics/local/Cori/mass25/rescheck/4/'+r'1800_f2D_.jpg', bbox_inches='tight')
+    plt.savefig(r'./Cori/mass25/rescheck/4/'+r'1800_f2D_.jpg', bbox_inches='tight')
     plt.show()
     
     #plt.close()
@@ -73,7 +73,7 @@ def plot_phase_space(fName,GridFile):
 
     plt.pcolormesh(zz, vv/0.02, df,cmap='inferno')
     plt.xlabel(r'$z /d_e$', fontsize=36)
-    plt.ylabel(r'$v_z /c_{s0}$', fontsize=36, labelpad=-1)
+    plt.ylabel(r'$v_z /v_{Te0}$', fontsize=36, labelpad=-1)
     #plt.ylabel(r'$v_z /v_{Te0}$', fontsize=36, labelpad=-1)
     # plt.xlim(-0.04,0.14)
     plt.ylim(-4,10)
@@ -122,7 +122,7 @@ def plot_1d_distribution(fName, GridFile):
     plt.tick_params(labelsize = 26)
 
     plt.show()
-    #plt.savefig(r'./Diagnostics/local/Cori/mass25/rescheck/3/'+rf'_f1D_.jpg', bbox_inches='tight')
+    #plt.savefig(r'./Cori/mass25/rescheck/3/'+rf'_f1D_.jpg', bbox_inches='tight')
     #plt.close()
 
 def new_1d(fName, GridFile):
@@ -169,7 +169,7 @@ def fit_1d(fName,GridFile):
     maxw1 = np.array([maxw(x,1.47,0.0246,0.00) for x in v_z])
     maxw2 = np.array([maxw(x,1.25,0.02716,0.0444) for x in v_z])
 
-    f_e2 = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/850.0_elc_1d.txt')
+    f_e2 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function/850.0_elc_1d.txt')
     maxw3 = np.array([maxw(x,1.25,0.02716,0.0444+0.005) for x in v_z])
     plt.plot(v_z,f_e2)
     #plt.plot(v_z,constructed_f_e,label='fit')
@@ -183,7 +183,7 @@ def fit_1d(fName,GridFile):
 
     #maxw3 = np.array([maxw(x,popt[3],popt[4],popt[5]+0.005) for x in v_z])
 
-    # f_e2 = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/750.0_elc_1d.txt')
+    # f_e2 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function/750.0_elc_1d.txt')
     # plt.plot(v_z,f_e2,label='fe2')
     # #plt.plot(v_z,constructed_f_e,label='fit')
     # plt.plot(v_z,maxw1,label='1',linestyle='--')
@@ -262,13 +262,13 @@ def fit_1d_t(fName,GridFile):
         print("ratio:",popt[0]/popt[3])
 
 def elc_main():
-    df1 = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/750.0_elc_1d.txt')
-    df2 = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1000.0_elc_1d.txt')
-    df3 = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1200.0_elc_1d.txt')
-    df4 = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1400.0_elc_1d.txt')
-    df5 = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1600.0_elc_1d.txt')
-    df6 = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1800.0_elc_1d.txt')
-    df7 = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/2400.0_elc_1d.txt')
+    df1 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function_save/750.0_elc_1d.txt')
+    df2 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function_save/1000.0_elc_1d.txt')
+    df3 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function_save/1200.0_elc_1d.txt')
+    df4 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function_save/1400.0_elc_1d.txt')
+    df5 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function_save/1600.0_elc_1d.txt')
+    df6 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function_save/1800.0_elc_1d.txt')
+    df7 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function_save/2400.0_elc_1d.txt')
 
     grid = np.load(ElcGridPath)
     velocities_z = grid['arr_0']
@@ -308,17 +308,17 @@ def elc_main():
     #plt.set_title(r'$<F_e(v_z)>_{z},$' + rf't = {time}'+ r' [$\omega_{pe}^{-1}$]', fontsize=26)
     plt.tick_params(labelsize = 28)
     plt.xlim(-0.06/0.02,0.18/0.02)
-    plt.savefig('./Diagnostics/local/Cori/figure_temp/elc_1d.jpg')
+    plt.savefig('./Cori/figure_temp/elc_1d.jpg')
     plt.show()
 
 def ion_main():
-    df1 = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/350.0_ion_1d.txt')
-    df2 = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/400.0_ion_1d.txt')
-    df3 = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/450.0_ion_1d.txt')
-    df4 = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/500.0_ion_1d.txt')
-    df5 = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/550.0_ion_1d.txt')
-    df6 = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1600.0_ion_1d.txt')
-    df7 = np.loadtxt('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/2400.0_ion_1d.txt')
+    df1 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function/350.0_ion_1d.txt')
+    df2 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function/400.0_ion_1d.txt')
+    df3 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function/450.0_ion_1d.txt')
+    df4 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function/500.0_ion_1d.txt')
+    df5 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function/550.0_ion_1d.txt')
+    df6 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function/1600.0_ion_1d.txt')
+    df7 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function/2400.0_ion_1d.txt')
 
     grid = np.load(IonGridPath)
     velocities_z = grid['arr_0']
@@ -347,35 +347,35 @@ def ion_main():
     plt.gca().yaxis.offsetText.set_fontsize(28)
     plt.xlim(-2.5,2.5)
     plt.ylim(0,28000)
-    plt.savefig('./Diagnostics/local/Cori/figure_temp/ion_1d.jpg')
+    plt.savefig('./Cori/figure_temp/ion_1d.jpg')
     #plt.show()
 
 if __name__ == '__main__':
-    #new_1d('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1800.0_elc_2d.txt',ElcGridPath)
-    #plot_1d_distribution('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1800.0_elc_1d.txt', ElcGridPath)
+    #new_1d('./Cori/mass25/rescheck/4/dist_function/1800.0_elc_2d.txt',ElcGridPath)
+    #plot_1d_distribution('./Cori/mass25/rescheck/4/dist_function/1800.0_elc_1d.txt', ElcGridPath)
     #ion_main()
-    #elc_main()
-    #fit_1d('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/750.0_elc_1d.txt',ElcGridPath)
-    #popt = fit_1d('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/650.0_elc_1d.txt',ElcGridPath)
+    elc_main()
+    #fit_1d('./Cori/mass25/rescheck/4/dist_function/750.0_elc_1d.txt',ElcGridPath)
+    #popt = fit_1d('./Cori/mass25/rescheck/4/dist_function/650.0_elc_1d.txt',ElcGridPath)
 
-    # fit_1d_t('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/500.0_elc_1d.txt',ElcGridPath)
-    # fit_1d_t('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/700.0_elc_1d.txt',ElcGridPath)
-    # fit_1d_t('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/750.0_elc_1d.txt',ElcGridPath)
-    # fit_1d_t('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/900.0_elc_1d.txt',ElcGridPath)
-    # fit_1d('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1000.0_elc_1d.txt',ElcGridPath)
-    # fit_1d('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1130.0_elc_1d.txt',ElcGridPath)
-    # fit_1d('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1200.0_elc_1d.txt',ElcGridPath)
-    # fit_1d('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1380.0_elc_1d.txt',ElcGridPath)
-    # fit_1d('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1500.0_elc_1d.txt',ElcGridPath)
-    # fit_1d('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1630.0_elc_1d.txt',ElcGridPath)
-    # fit_1d('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1750.0_elc_1d.txt',ElcGridPath)
-    #plot_2d_distribution('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/625.0_elc_2d.txt',ElcGridPath)
-    plot_2d_distribution('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/2400.0_ion_2d.txt',IonGridPath)
+    # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/500.0_elc_1d.txt',ElcGridPath)
+    # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/700.0_elc_1d.txt',ElcGridPath)
+    # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/750.0_elc_1d.txt',ElcGridPath)
+    # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/900.0_elc_1d.txt',ElcGridPath)
+    # fit_1d('./Cori/mass25/rescheck/4/dist_function/1000.0_elc_1d.txt',ElcGridPath)
+    # fit_1d('./Cori/mass25/rescheck/4/dist_function/1130.0_elc_1d.txt',ElcGridPath)
+    # fit_1d('./Cori/mass25/rescheck/4/dist_function/1200.0_elc_1d.txt',ElcGridPath)
+    # fit_1d('./Cori/mass25/rescheck/4/dist_function/1380.0_elc_1d.txt',ElcGridPath)
+    # fit_1d('./Cori/mass25/rescheck/4/dist_function/1500.0_elc_1d.txt',ElcGridPath)
+    # fit_1d('./Cori/mass25/rescheck/4/dist_function/1630.0_elc_1d.txt',ElcGridPath)
+    # fit_1d('./Cori/mass25/rescheck/4/dist_function/1750.0_elc_1d.txt',ElcGridPath)
+    #plot_2d_distribution('./Cori/mass25/rescheck/4/dist_function/625.0_elc_2d.txt',ElcGridPath)
+    # plot_2d_distribution('./Cori/mass25/rescheck/4/dist_function/2400.0_ion_2d.txt',IonGridPath)
 
    
-    #plot_1d_distribution('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/625.0_ion_1d.txt', IonGridPath)
-    #plot_1d_distribution('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1800.0_ion_1d.txt', IonGridPath)
-    #plot_2d_distribution('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1800.0_elc_2d.txt',ElcGridPath)
+    #plot_1d_distribution('./Cori/mass25/rescheck/4/dist_function/625.0_ion_1d.txt', IonGridPath)
+    #plot_1d_distribution('./Cori/mass25/rescheck/4/dist_function/1800.0_ion_1d.txt', IonGridPath)
+    plot_2d_distribution('./Cori/mass25/rescheck/4/dist_function_save/1000.0_elc_2d.txt',ElcGridPath)
     
-    #plot_phase_space('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1800.0_elc_phase.txt', ElcGridPath)
-    #plot_real_space('./Diagnostics/local/Cori/mass25/rescheck/4/dist_function/1800.0_elc_space.txt')
+    #plot_phase_space('./Cori/mass25/rescheck/4/dist_function_save/600.0_elc_phase.txt', ElcGridPath)
+    #plot_real_space('./Cori/mass25/rescheck/4/dist_function/1800.0_elc_space.txt')
