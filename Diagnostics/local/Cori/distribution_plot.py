@@ -120,6 +120,7 @@ def plot_1d_distribution(fName, GridFile):
     plt.xlabel(r'$v_z$', fontsize=30)
     #plt.set_title(r'$<F_e(v_z)>_{z},$' + rf't = {time}'+ r' [$\omega_{pe}^{-1}$]', fontsize=26)
     plt.tick_params(labelsize = 26)
+    plt.grid()
 
     plt.show()
     #plt.savefig(r'./Cori/mass25/rescheck/3/'+rf'_f1D_.jpg', bbox_inches='tight')
@@ -147,11 +148,11 @@ def new_1d(fName, GridFile):
     plt.show()
 
 def fit_1d(fName,GridFile):
-    # def double_maxwellian(x,A,B1,C1,B2,C2):
-    #     return maxw(x,A,B1,C1) + maxw(x,3*A,B2,C2)
+    def double_maxwellian(x,A1,B1,C1,A2,B2,C2):
+        return maxw(x,A1,B1,C1) + maxw(x,A2,B2,C2)
     
-    def kappa_maxwellian(x,A1,B1,C1,A2,B2,C2):
-        return kappa(x,10,A1,B1,C1) + maxw(x,A2,B2,C2)
+    # def kappa_maxwellian(x,A1,B1,C1,A2,B2,C2):
+    #     return kappa(x,10,A1,B1,C1) + maxw(x,A2,B2,C2)
 
     f_e = np.loadtxt(fName)
     grid = np.load(GridFile)
@@ -169,7 +170,7 @@ def fit_1d(fName,GridFile):
     maxw1 = np.array([maxw(x,1.47,0.0246,0.00) for x in v_z])
     maxw2 = np.array([maxw(x,1.25,0.02716,0.0444) for x in v_z])
 
-    f_e2 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function/850.0_elc_1d.txt')
+    f_e2 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function_save/1700.0_elc_1d.txt')
     maxw3 = np.array([maxw(x,1.25,0.02716,0.0444+0.005) for x in v_z])
     plt.plot(v_z,f_e2)
     #plt.plot(v_z,constructed_f_e,label='fit')
@@ -232,12 +233,12 @@ def fit_1d_t(fName,GridFile):
     maxw2 = np.array([maxw(x,popt[3],popt[4],popt[5]) for x in v_z])
 
 
-    # plt.plot(v_z,f_e,label='fe2')
-    # plt.plot(v_z,constructed_f_e,label='fit')
-    # plt.plot(v_z,maxw1,label='1',linestyle='--')
-    # plt.plot(v_z,maxw2,label='2',linestyle='--')
-    # plt.legend()
-    # plt.show()
+    plt.plot(v_z,f_e,label='fe2')
+    plt.plot(v_z,constructed_f_e,label='fit')
+    plt.plot(v_z,maxw1,label='1',linestyle='--')
+    plt.plot(v_z,maxw2,label='2',linestyle='--')
+    plt.legend()
+    plt.show()
     if popt[2] < popt[5]:
         print('==========Maxwell 1=========')
         print("Norm:",popt[0])
@@ -282,12 +283,13 @@ def elc_main():
 
     fig = plt.figure(figsize=(16,10),facecolor='w', edgecolor='k')
 
-    plt.plot(velocities_z/0.02, df1,label=r'$\omega_{pe}t=750$',linewidth=6)
-    plt.plot(velocities_z/0.02, df2,label=r'$\omega_{pe}t=1000$',linewidth=6)
-    plt.plot(velocities_z/0.02, df3,label=r'$\omega_{pe}t=1200$',linewidth=6)
-    plt.plot(velocities_z/0.02, df4,label=r'$\omega_{pe}t=1400$',linewidth=6)
-    plt.plot(velocities_z/0.02, df5,label=r'$\omega_{pe}t=1600$',linewidth=6)
+    # plt.plot(velocities_z/0.02, df1,label=r'$\omega_{pe}t=750$',linewidth=6)
+    # plt.plot(velocities_z/0.02, df2,label=r'$\omega_{pe}t=1000$',linewidth=6)
+    # plt.plot(velocities_z/0.02, df3,label=r'$\omega_{pe}t=1200$',linewidth=6)
+    # plt.plot(velocities_z/0.02, df4,label=r'$\omega_{pe}t=1400$',linewidth=6)
+    # plt.plot(velocities_z/0.02, df5,label=r'$\omega_{pe}t=1600$',linewidth=6)
     plt.plot(velocities_z/0.02, df6,label=r'$\omega_{pe}t=1800$',linewidth=6)
+    plt.vlines(1.0,0,25,linewidth=3,linestyles='--',color='black')
     #plt.plot(velocities_z/0.02, maxw1,linewidth=5,linestyle='--',label=r'bulk electron after saturation')
     #plt.plot(velocities_z/0.02, maxw2,linewidth=5,linestyle='--',label=r'run-away tail at $\omega_{pe}t=750$',color='orange')
     #plt.plot(velocities_z/0.02, maxw3,linewidth=5,linestyle='--',label=r'run-away tail at $\omega_{pe}t=900$',color='green')
@@ -308,7 +310,7 @@ def elc_main():
     #plt.set_title(r'$<F_e(v_z)>_{z},$' + rf't = {time}'+ r' [$\omega_{pe}^{-1}$]', fontsize=26)
     plt.tick_params(labelsize = 28)
     plt.xlim(-0.06/0.02,0.18/0.02)
-    plt.savefig('./Cori/figure_temp/elc_1d.jpg')
+    #plt.savefig('./Cori/figure_temp/elc_1d.jpg')
     plt.show()
 
 def ion_main():
@@ -352,13 +354,13 @@ def ion_main():
 
 if __name__ == '__main__':
     #new_1d('./Cori/mass25/rescheck/4/dist_function/1800.0_elc_2d.txt',ElcGridPath)
-    #plot_1d_distribution('./Cori/mass25/rescheck/4/dist_function/1800.0_elc_1d.txt', ElcGridPath)
+    #plot_1d_distribution('./Cori/mass25/rescheck/4/dist_function_save/1700.0_elc_1d.txt', ElcGridPath)
     #ion_main()
     elc_main()
-    #fit_1d('./Cori/mass25/rescheck/4/dist_function/750.0_elc_1d.txt',ElcGridPath)
-    #popt = fit_1d('./Cori/mass25/rescheck/4/dist_function/650.0_elc_1d.txt',ElcGridPath)
 
-    # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/500.0_elc_1d.txt',ElcGridPath)
+    #popt = fit_1d('./Cori/mass25/rescheck/4/dist_function/650.0_elc_1d.txt',ElcGridPath)
+    #fit_1d('./Cori/mass25/rescheck/4/dist_function_save/1700.0_elc_1d.txt',ElcGridPath)
+    # fit_1d_t('./Cori/mass25/rescheck/4/dist_function_save/1800.0_elc_1d.txt',ElcGridPath)
     # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/700.0_elc_1d.txt',ElcGridPath)
     # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/750.0_elc_1d.txt',ElcGridPath)
     # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/900.0_elc_1d.txt',ElcGridPath)
@@ -375,7 +377,7 @@ if __name__ == '__main__':
    
     #plot_1d_distribution('./Cori/mass25/rescheck/4/dist_function/625.0_ion_1d.txt', IonGridPath)
     #plot_1d_distribution('./Cori/mass25/rescheck/4/dist_function/1800.0_ion_1d.txt', IonGridPath)
-    plot_2d_distribution('./Cori/mass25/rescheck/4/dist_function_save/1000.0_elc_2d.txt',ElcGridPath)
+    #plot_2d_distribution('./Cori/mass25/rescheck/4/dist_function_save/1000.0_elc_2d.txt',ElcGridPath)
     
     #plot_phase_space('./Cori/mass25/rescheck/4/dist_function_save/600.0_elc_phase.txt', ElcGridPath)
     #plot_real_space('./Cori/mass25/rescheck/4/dist_function/1800.0_elc_space.txt')
