@@ -135,13 +135,13 @@ def k_omega():
 
     #Ez1 = np.transpose(Ey[:800,:,12])
     #Ez1fft = np.fft.fftshift(np.fft.rfft2(Ez1))
-    Ez = np.transpose(Ez0[400:1200,:,0]) # 48 x 400
+    Ez = np.transpose(Ez0[3000:3600,:,0]) # 48 x 400
     Ezw = np.fft.rfft2(Ez) # 48 x 400
     Ezw2 = np.zeros_like(Ezw)
     for i in range(Ezw.shape[1]):
         Ezw2[:,i] = np.fft.fftshift(Ezw[:,i])
     absEzw = np.power(np.absolute(Ezw2),2)[:,:]  
-    omegas = np.fft.rfftfreq(800,d=(400)/(800-1)) * 2.0 * np.pi
+    omegas = np.fft.rfftfreq(600,d=(300)/(600-1)) * 2.0 * np.pi
     ks = np.linspace(-24,23,48)
 
     k_list_25 = 2*np.pi*np.array([0, 0.3183, 1,      2,      4,     6,    8,     10,    12,     16,     18])
@@ -149,7 +149,7 @@ def k_omega():
     omega_list_25 =     np.array([0, 0.00835,0.0261, 0.051,  0.0946,0.128,0.153, 0.1718,0.187,  0.2122, 0.2237])
     f_25 = interp1d(k_list_25, gamma_list_25, kind='cubic')
     fw_25 = interp1d(k_list_25, omega_list_25, kind='cubic')
-    k_sample_25 = np.arange(0.1,113,0.1)
+    k_sample_25 = np.arange(0.1,36,0.1)
     gamma_sample_25 = f_25(k_sample_25)
     omega_sample_25 = fw_25(k_sample_25)
 
@@ -166,12 +166,13 @@ def k_omega():
     #plt.clim(vmin=-10,vmax=30)
     levels = np.linspace(-3,3,21)
     pos = ax.contourf(zz,yy,absEzw[:,:100],levels=levels)
-    ax.plot(-k_sample_25/2/np.pi, omega_sample_25,linewidth=4, color='blue',linestyle='--')
-    #ax.plot(-k_sample_25/2/np.pi, k_sample_25/2/np.pi * 0.135,linewidth=4, color='blue',linestyle='--')
+    #ax.plot(-k_sample_25/2/np.pi, omega_sample_25,linewidth=5, color='red',linestyle='--')
+    ax.plot(-k_sample_25/2/np.pi, k_sample_25/2/np.pi * 0.15,linewidth=5, color='red',linestyle='--')
     ax.set_xlabel(r'$kd_e/2\pi$',fontsize=32)
     ax.set_ylabel(r'$\omega/\omega_{pe}$',fontsize=32)
     #ax.text(-2,0.7,r'$\frac{\omega}{k} = 1.2v_{Te}$',fontsize=36,color='white')
     #plt.show()
+    ax.set_xlim(-20,20)
     ax.tick_params(labelsize = 26)
     fig.colorbar(pos,ax=ax)
     plt.savefig('./out.jpg')

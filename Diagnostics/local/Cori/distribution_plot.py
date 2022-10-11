@@ -6,6 +6,7 @@ from scipy.interpolate import interp1d
 from scipy.optimize import curve_fit
 from scipy.special import gamma
 import matplotlib.ticker as ticker
+matplotlib.use('TkAgg')
 
 ElcGridPath = './Cori/mass25/rescheck/4/dist_function_save/elc_velocities.npz'
 IonGridPath = './Cori/mass25/rescheck/4/dist_function_save/ion_velocities.npz'
@@ -164,20 +165,28 @@ def fit_1d(fName,GridFile):
     # popt, pcov = curve_fit(kappa_maxwellian, v_z, f_e)
     # constructed_f_e = kappa_maxwellian(v_z,*popt)
 
-    #maxw1 = np.array([maxw(x,popt[0],popt[1],popt[2]) for x in v_z])
-    #maxw2 = np.array([maxw(x,popt[3],popt[4],popt[5]) for x in v_z])
+    maxw1 = np.array([maxw(x,popt[0],popt[1],popt[2]) for x in v_z])
+    maxw2 = np.array([maxw(x,popt[3],popt[4],popt[5]) for x in v_z])
+    
 
-    maxw1 = np.array([maxw(x,1.47,0.0246,0.00) for x in v_z])
-    maxw2 = np.array([maxw(x,1.25,0.02716,0.0444) for x in v_z])
+    # maxw1 = np.array([maxw(x,1.47,0.0246,0.00) for x in v_z])
+    # maxw2 = np.array([maxw(x,1.25,0.02716,0.0444) for x in v_z])
 
-    f_e2 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function_save/1700.0_elc_1d.txt')
-    maxw3 = np.array([maxw(x,1.25,0.02716,0.0444+0.005) for x in v_z])
-    plt.plot(v_z,f_e2)
+    #f_e2 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function_save/600.0_elc_1d.txt')
+    #maxw3 = np.array([maxw(x,1.25,0.02716,0.0444+0.005) for x in v_z])
+    fig      = plt.figure(figsize=(12.5,7.5))
+    fig.add_axes([0.1, 0.16, 0.8, 0.8])
+    plt.plot(v_z/0.02,f_e, linewidth=8,label=r'$F_e(v_z)(t=600)$')
+    #plt.vlines(0.005/0.02,0,50,color='black',linewidth=4, linestyles='--',label=r'$c_s$')
     #plt.plot(v_z,constructed_f_e,label='fit')
-    plt.plot(v_z,maxw1,label='1',linestyle='--')
-    plt.plot(v_z,maxw3,label='2',linestyle='--')
-    plt.plot(v_z,maxw3+maxw1,label='fit',linestyle='--')
-    plt.legend()
+    plt.plot(v_z/0.02,maxw1,label='bulk',linestyle='--',linewidth=5)
+    plt.plot(v_z/0.02,maxw2,label='tail',linestyle='--',linewidth=5)
+    plt.plot(v_z/0.02,maxw2+maxw1,label='bulk+tail',linestyle='--',linewidth=5)
+    plt.grid()
+    plt.xlim(-4,8)
+    plt.legend(fontsize=28,loc='upper right')
+    plt.xlabel(r'$v_z/v_{Te0}$',fontsize=28)
+    plt.tick_params(labelsize = 24)
     plt.show()
 
     print(popt)
@@ -194,28 +203,6 @@ def fit_1d(fName,GridFile):
     # plt.legend()
     # plt.show()
     return constructed_f_e, maxw1, maxw2
-    # if popt[2] < popt[5]:
-    #     print('==========Maxwell 1=========')
-    #     print("Norm:",popt[0])
-    #     print("Vte",popt[1])
-    #     print("Drift",popt[2])
-    #     print('==========Maxwell 2=========')
-    #     print("Norm:",popt[3])
-    #     print("Vte",popt[4])
-    #     print("Drift",popt[5])
-    #     print("")
-    #     print("ratio:",popt[3]/popt[0])
-    # else:
-    #     print('==========Maxwell 1=========')
-    #     print("Norm:",popt[3])
-    #     print("Vte",popt[4])
-    #     print("Drift",popt[5])
-    #     print('==========Maxwell 2=========')
-    #     print("Norm:",popt[0])
-    #     print("Vte",popt[1])
-    #     print("Drift",popt[2])
-    #     print("")
-    #     print("ratio:",popt[0]/popt[3])
 
 def fit_1d_t(fName,GridFile):
     def double_maxwellian(x,A1,B1,C1,A2,B2,C2):
@@ -356,11 +343,11 @@ if __name__ == '__main__':
     #new_1d('./Cori/mass25/rescheck/4/dist_function/1800.0_elc_2d.txt',ElcGridPath)
     #plot_1d_distribution('./Cori/mass25/rescheck/4/dist_function_save/1700.0_elc_1d.txt', ElcGridPath)
     #ion_main()
-    elc_main()
+    #elc_main()
 
     #popt = fit_1d('./Cori/mass25/rescheck/4/dist_function/650.0_elc_1d.txt',ElcGridPath)
-    #fit_1d('./Cori/mass25/rescheck/4/dist_function_save/1700.0_elc_1d.txt',ElcGridPath)
-    # fit_1d_t('./Cori/mass25/rescheck/4/dist_function_save/1800.0_elc_1d.txt',ElcGridPath)
+    fit_1d('./Cori/mass25/rescheck/4/dist_function_save/1800.0_elc_1d.txt',ElcGridPath)
+    fit_1d_t('./Cori/mass25/rescheck/4/dist_function_save/1800.0_elc_1d.txt',ElcGridPath)
     # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/700.0_elc_1d.txt',ElcGridPath)
     # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/750.0_elc_1d.txt',ElcGridPath)
     # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/900.0_elc_1d.txt',ElcGridPath)
