@@ -5,14 +5,47 @@ matplotlib.use('TkAgg')
 import numpy as np
 
 
-fieldEnergy = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/fieldEnergy.txt')
-time_fieldEnergy = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/fieldEnergy_time.txt')
-Iontemp = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/ion_intM2Thermal.txt')*400
-time_Iontemp = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/ion_intM2Thermal_time.txt')
-Elctemp = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM2Thermal.txt')
-time_Elctemp = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM2Thermal_time.txt')
-current = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM1i.txt')*2
-time_current = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM1i_time.txt')
+fieldEnergy = np.loadtxt('./massRatio/mass25/E1/saved_data/fieldEnergy.txt')
+time_fieldEnergy = np.loadtxt('./massRatio/mass25/E1/saved_data/fieldEnergy_time.txt')
+Iontemp = np.loadtxt('./massRatio/mass25/E1/saved_data/ion_intM2Thermal.txt')*25
+time_Iontemp = np.loadtxt('./massRatio/mass25/E1/saved_data/ion_intM2Thermal_time.txt')
+Elctemp = np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM2Thermal.txt')
+time_Elctemp = np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM2Thermal_time.txt')
+current = np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM1i.txt')*2
+time_current = np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM1i_time.txt')
+dJdt = np.zeros(np.size(current)-1)
+nu_eff = np.zeros(np.size(current)-1)
+for i in range(np.size(current)-1):
+    dJdt[i] = (current[i+1] - current[i]) / (time_current[i+1] - time_current[i])
+for i in range(np.size(current)-1):
+    nu_eff[i] = (0.00005 - dJdt[i]) / current[i]
+
+#####
+# field energy
+####
+fig      = plt.figure(figsize=(14.5,7.5))
+ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
+ax2 = ax.twinx()
+
+ax.plot(time_current,current/0.02,linewidth=5,color='blue')
+ax2.plot(time_fieldEnergy,fieldEnergy/1e-4,linewidth=5,color='red')
+ax.vlines(2800,0,6.0,linestyle='--',linewidth=2,color='black')
+
+ax2.set_yscale('log')
+#ax2.set_ylim(1e-11,1e-4)
+ax2.tick_params(labelsize = 26,colors='red')
+ax2.set_yscale('log')
+#ax2.set_ylim(1e-11,1e-4)
+ax2.tick_params(labelsize = 26,colors='red')
+ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
+ax.set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32,color='blue')
+ax.set_xlim(0,4000)
+ax.set_ylim(0,1.5)
+ax.tick_params(labelsize = 26)
+ax.tick_params(axis='y',colors = 'blue')
+plt.show()
+#plt.savefig('./Cori/figure_temp/current.jpg')
+plt.clf()
 
 ########
 # Temp #
