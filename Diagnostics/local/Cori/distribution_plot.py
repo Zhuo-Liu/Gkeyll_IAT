@@ -349,9 +349,9 @@ if __name__ == '__main__':
     #elc_main()
 
     #popt = fit_1d('./Cori/mass25/rescheck/4/dist_function/650.0_elc_1d.txt',ElcGridPath)
-    fit_1d('./Cori/mass25/rescheck/4/dist_function_save/1800.0_elc_1d.txt',ElcGridPath)
-    #fit_1d_t('./Cori/mass25/rescheck/4/dist_function_save/1800.0_elc_1d.txt',ElcGridPath)
-    # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/700.0_elc_1d.txt',ElcGridPath)
+    #fit_1d('./Cori/mass25/rescheck/4/dist_function_save/1700.0_elc_1d.txt',ElcGridPath)
+    # fit_1d_t('./Cori/mass25/rescheck/4/dist_function_save/1800.0_elc_1d.txt',ElcGridPath)
+    fit_1d_t('./Cori/mass25/rescheck/4/dist_function_save/650.0_elc_1d.txt',ElcGridPath)
     # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/750.0_elc_1d.txt',ElcGridPath)
     # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/900.0_elc_1d.txt',ElcGridPath)
     # fit_1d('./Cori/mass25/rescheck/4/dist_function/1000.0_elc_1d.txt',ElcGridPath)
