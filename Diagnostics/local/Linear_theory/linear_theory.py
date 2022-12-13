@@ -1,3 +1,5 @@
+from matplotlib.backend_tools import AxisScaleBase
+from matplotlib.lines import lineStyles
 import numpy as np
 from tkinter import *
 import matplotlib
@@ -376,6 +378,39 @@ def mass100():
     #plt.clf()
 
 
+def eaw():
+    k_list = 2*np.pi*np.array([0.6369, 0.9554, 1.2739, 1.5924,1.9108,2.2293,2.5478, 2.86624, 3.1847,3.5032,3.82167,4.1403])
+    gamma_list =     np.array([0.047, 0.0668,0.0817,0.09110,0.09455,0.092105,0.0841,0.0709,0.0531,0.03125,0.006,-0.023])
+    omega_list =     np.array([0.08, 0.123,0.168, 0.215,  0.2637,0.31288,0.362, 0.4105,0.4581,0.50445,0.5495, 0.5931])
+    f = interp1d(k_list, gamma_list, kind='cubic')
+    fw = interp1d(k_list, omega_list, kind='cubic')
+    k_sample = np.arange(0.65,4,0.1)*2*np.pi
+    gamma_sample = f(k_sample)
+    omega_sample = fw(k_sample)
+
+    fig = plt.figure(figsize=(8,6))
+    ax = fig.add_axes([0.12, 0.16, 0.72, 0.8])
+    ax2 = ax.twinx()
+    ax.plot(k_sample/2/np.pi,gamma_sample,linewidth=5,label=r'$\gamma$',color='red',linestyle='--')
+    ax.plot(k_sample/2/np.pi,omega_sample,linewidth=5,label=r'$\omega$',color='red',linestyle='-')
+    ax2.plot(k_sample/2/np.pi,omega_sample/k_sample/0.02,color='blue',linewidth=5,label=r'$\omega/k$')
+    ax.set_ylim(0,0.6)
+    ax.grid()
+    ax.set_xlabel(r'$k_z/2 \pi \quad (d_e^{-1})$',fontsize=26)
+    ax.set_ylabel('$\omega_{pe}$',fontsize=26,color='red')
+    ax.yaxis.offsetText.set_fontsize(16)
+    ax.legend(fontsize=26,loc='center left')
+    ax2.legend(fontsize=26,loc='center right')
+    ax2.set_ylim(0,1.2)
+    ax2.set_ylabel(r'$v_{Te}$',fontsize=26,color='blue')
+    ax.tick_params(labelsize = 18)
+    ax.tick_params(axis='y',colors='red')
+    ax2.tick_params(labelsize = 18,colors='blue')
+    #plt.savefig('./Diagnostics/local/Linear_theory/mass25/temp50_mass25_gamma.pdf')
+    plt.show()
+    plt.clf()
+
 if __name__ == '__main__':
-    mass100()
+    #mass100()
     #linear_theory()
+    eaw()

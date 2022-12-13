@@ -97,24 +97,35 @@ def load_phi():
     return np.array(Ez_k_list), np.array(Ey_k_list), np.array(Ez_list), np.array(Ey_list), np.array(phi_list)
 
 def phi_plot():
-    phi = np.loadtxt('./Cori/mass25/rescheck/4/field/M25_E2_3_field_0200.txt')
-    fig = plt.figure()
-    ax = plt.axes(projection='3d')
+    phi = np.loadtxt('./Cori/mass25/rescheck/4/field/M25_E2_3_field_0360.txt')
+    # fig = plt.figure(figsize=(9,10),facecolor='w', edgecolor='k')
+    # fig.add_axes([0.13, 0.15, 0.8, 0.8])
+    # ax = plt.axes(projection='3d')
 
 
-    ax.contour3D(ZZ, YY, phi, 100)
+    # ax.contour3D(ZZ, YY, phi, 100)
 
-    p = ax.plot_surface(ZZ, YY, phi, rstride=4, cstride=4, linewidth=0,cmap=cm.coolwarm)
+    # p = ax.plot_surface(ZZ, YY, phi, rstride=4, cstride=4, linewidth=0,cmap=cm.coolwarm)
 
-    # surface_plot with color grading and color bar
-    # ax = fig.add_subplot(1, 2, 2, projection='3d')
-    # p = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=matplotlib.cm.coolwarm, linewidth=0, antialiased=False)
-    # cb = fig.colorbar(p, shrink=0.5)
+    # # surface_plot with color grading and color bar
+    # # ax = fig.add_subplot(1, 2, 2, projection='3d')
+    # # p = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=matplotlib.cm.coolwarm, linewidth=0, antialiased=False)
+    # # cb = fig.colorbar(p, shrink=0.5)
 
-    ax.set_xlabel('z')
-    ax.set_ylabel('y')
-    cset = ax.contourf(ZZ, YY, phi, 30,  zdir='z', offset= -0.0004, cmap=matplotlib.cm.coolwarm)
-    ax.set_zlim3d(-0.0004, 0.0003)
+    # ax.set_xlabel('z')
+    # ax.set_ylabel('y')
+    # cset = ax.contourf(ZZ, YY, phi, 30,  zdir='z', offset= -0.0004, cmap=matplotlib.cm.coolwarm)
+    # ax.set_zlim3d(-0.0004, 0.0003)
+
+    fig = plt.figure(figsize=(8,8),facecolor='w', edgecolor='k')
+    fig.add_axes([0.16, 0.16, 0.8, 0.8])
+    plt.pcolormesh(ZZ, YY, phi,cmap='inferno')
+    plt.xlabel('$z/d_e$',fontsize=36)
+    plt.ylabel('$y/d_e$',fontsize=36)
+    plt.tick_params(labelsize = 26)
+    plt.grid()
+    plt.savefig(r'./Cori/mass25/rescheck/4/'+r'phi_1800.jpg')
+    
     plt.show()
 
 def k_omega():
@@ -470,8 +481,8 @@ def smooth(stock_col,WSZ):
     return np.concatenate((start,out0,stop))
 
 if __name__ == '__main__':
-    #phi_plot()
-    k_omega()
+    phi_plot()
+    #k_omega()
     #Ez_k_list, Ey_k_list,Ez_list,Ey_list,_ = load_phi()
 
     # W = 0

@@ -29,7 +29,8 @@ def plot_2d_distribution(fName, GridFile):
 
     vz_plot, vy_plot = np.meshgrid(velocities_z,velocities_y,indexing='ij')
     
-    fig = plt.figure(figsize=(15,12),facecolor='w', edgecolor='k')
+    fig = plt.figure(figsize=(9,10),facecolor='w', edgecolor='k')
+    fig.add_axes([0.13, 0.15, 0.8, 0.8])
 
     # fig = plt.figure()
     # ax = plt.axes(projection='3d')
@@ -47,14 +48,14 @@ def plot_2d_distribution(fName, GridFile):
     plt.xlabel(r'$v_z/v_{Te0}$', fontsize=36)
     plt.ylabel(r'$v_y/v_{Te0}$', fontsize=36, labelpad=-1)
     #plt.set_title(r'$<F_e(v_z,v_y)>_{z,y},$' + rf't = {time}'+ r' [$\omega_{pe}^{-1}$]', fontsize=26)
-    plt.xlim(-4,8)
-    plt.ylim(-6,6)
+    plt.xlim(-2,8)
+    plt.ylim(-5,5)
     plt.tick_params(labelsize = 26)
     plt.grid()
-    cbar = plt.colorbar()
-    cbar.ax.tick_params(labelsize=22)
+    #cbar = plt.colorbar()
+    #cbar.ax.tick_params(labelsize=22)
 
-    plt.savefig(r'./Cori/mass25/rescheck/4/'+r'1800_f2D_.jpg', bbox_inches='tight')
+    plt.savefig(r'./Cori/mass25/rescheck/4/'+r'elc_1000_f2D_.jpg', bbox_inches='tight')
     plt.show()
     
     #plt.close()
@@ -159,32 +160,34 @@ def fit_1d(fName,GridFile):
     grid = np.load(GridFile)
     v_z = grid['arr_0']
 
-    popt, pcov = curve_fit(double_maxwellian, v_z, f_e)
-    constructed_f_e = double_maxwellian(v_z,*popt)
+    #popt, pcov = curve_fit(double_maxwellian, v_z, f_e)
+    #constructed_f_e = double_maxwellian(v_z,*popt)
 
     # popt, pcov = curve_fit(kappa_maxwellian, v_z, f_e)
     # constructed_f_e = kappa_maxwellian(v_z,*popt)
 
-    maxw1 = np.array([maxw(x,popt[0],popt[1],popt[2]) for x in v_z])
-    maxw2 = np.array([maxw(x,popt[3],popt[4],popt[5]) for x in v_z])
+    # maxw1 = np.array([maxw(x,popt[0],popt[1],popt[2]) for x in v_z])
+    # maxw2 = np.array([maxw(x,popt[3],popt[4],popt[5]) for x in v_z])
     
 
-    # maxw1 = np.array([maxw(x,1.47,0.0246,0.00) for x in v_z])
-    # maxw2 = np.array([maxw(x,1.25,0.02716,0.0444) for x in v_z])
+    # maxw1 = np.array([maxw(x,0.5,0.016,0.00) for x in v_z])
+    # maxw2 = np.array([maxw(x,2.5,0.047,0.068) for x in v_z])
+    maxw1 = np.array([maxw(x,0.35,0.016,0.00) for x in v_z])
+    maxw2 = np.array([maxw(x,2.45,0.05,0.065) for x in v_z])
 
     #f_e2 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function_save/600.0_elc_1d.txt')
     #maxw3 = np.array([maxw(x,1.25,0.02716,0.0444+0.005) for x in v_z])
     fig      = plt.figure(figsize=(12.5,7.5))
     fig.add_axes([0.1, 0.16, 0.8, 0.8])
-    plt.plot(v_z/0.02,f_e, linewidth=8,label=r'$F_e(v_z)(t=600)$')
+    plt.plot(v_z/0.02,f_e, linewidth=5,label=r'$F_e(v_z)$')
     #plt.vlines(0.005/0.02,0,50,color='black',linewidth=4, linestyles='--',label=r'$c_s$')
     #plt.plot(v_z,constructed_f_e,label='fit')
-    plt.plot(v_z/0.02,maxw1,label='bulk',linestyle='--',linewidth=5)
-    plt.plot(v_z/0.02,maxw2,label='tail',linestyle='--',linewidth=5)
-    plt.plot(v_z/0.02,maxw2+maxw1,label='bulk+tail',linestyle='--',linewidth=5)
+    plt.plot(v_z/0.02,maxw1,label='Max1',linestyle='--',linewidth=5)
+    plt.plot(v_z/0.02,maxw2,label='Max2',linestyle='--',linewidth=5)
+    plt.plot(v_z/0.02,maxw2+maxw1,label='1+2',linestyle='--',linewidth=5)
     plt.grid()
-    plt.xlim(-4,8)
-    plt.legend(fontsize=28,loc='upper right')
+    plt.xlim(-6,10)
+    plt.legend(fontsize=28,loc='upper left')
     plt.xlabel(r'$v_z/v_{Te0}$',fontsize=28)
     plt.tick_params(labelsize = 24)
     plt.show()
@@ -347,7 +350,7 @@ if __name__ == '__main__':
 
     #popt = fit_1d('./Cori/mass25/rescheck/4/dist_function/650.0_elc_1d.txt',ElcGridPath)
     fit_1d('./Cori/mass25/rescheck/4/dist_function_save/1800.0_elc_1d.txt',ElcGridPath)
-    fit_1d_t('./Cori/mass25/rescheck/4/dist_function_save/1800.0_elc_1d.txt',ElcGridPath)
+    #fit_1d_t('./Cori/mass25/rescheck/4/dist_function_save/1800.0_elc_1d.txt',ElcGridPath)
     # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/700.0_elc_1d.txt',ElcGridPath)
     # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/750.0_elc_1d.txt',ElcGridPath)
     # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/900.0_elc_1d.txt',ElcGridPath)
@@ -358,8 +361,8 @@ if __name__ == '__main__':
     # fit_1d('./Cori/mass25/rescheck/4/dist_function/1500.0_elc_1d.txt',ElcGridPath)
     # fit_1d('./Cori/mass25/rescheck/4/dist_function/1630.0_elc_1d.txt',ElcGridPath)
     # fit_1d('./Cori/mass25/rescheck/4/dist_function/1750.0_elc_1d.txt',ElcGridPath)
-    #plot_2d_distribution('./Cori/mass25/rescheck/4/dist_function/625.0_elc_2d.txt',ElcGridPath)
-    # plot_2d_distribution('./Cori/mass25/rescheck/4/dist_function/2400.0_ion_2d.txt',IonGridPath)
+    #plot_2d_distribution('./Cori/mass25/rescheck/4/dist_function_save/1000.0_elc_2d.txt',ElcGridPath)
+    #plot_2d_distribution('./Cori/mass25/rescheck/4/dist_function_save/1800.0_ion_2d.txt',IonGridPath)
 
    
     #plot_1d_distribution('./Cori/mass25/rescheck/4/dist_function/625.0_ion_1d.txt', IonGridPath)
