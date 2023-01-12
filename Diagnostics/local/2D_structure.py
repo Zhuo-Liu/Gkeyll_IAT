@@ -73,12 +73,12 @@ def plot_phase_space(fName,GridFile):
     ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
 
     ax.pcolormesh(zz, vv/0.02, df,cmap='inferno')
-    ax.set_xlabel(r'$z /d_e$', fontsize=36)
-    ax.set_ylabel(r'$v_z /v_{Te0}$', fontsize=36, labelpad=-1)
+    ax.set_xlabel(r'$z /d_e$', fontsize=32)
+    ax.set_ylabel(r'$v_z /v_{Te0}$', fontsize=32, labelpad=-1)
 
-    ax.ylim(-4,8)
-    ax.tick_params(labelsize = 26)
-    ax.grid()
+    ax.set_ylim(-4,8)
+    ax.tick_params(labelsize = 32)
+
 
     plt.show()
     plt.clf()
@@ -91,9 +91,9 @@ def plot_phi(fName):
 
     ax.set_xlabel('z',fontsize=32)
     ax.set_ylabel('y',fontsize=32)
-    ax.tick_params(labelsize = 26)
-    #ax.grid()
+    ax.tick_params(labelsize = 32)
     ax.contourf(ZZ, YY, phi, 30,  zdir='z', cmap=matplotlib.cm.coolwarm)
+
     plt.show()
     plt.clf()
 
