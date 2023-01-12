@@ -419,62 +419,17 @@ def elcheatingtrace_mass():
     fig     = plt.figure(figsize=(11.0,10.0))
     ax      = fig.add_axes([0.15, 0.15, 0.75, 0.82])
 
-    dTedt25 = np.zeros(np.size(Elctemp25)-1)
-    for i in range(np.size(Elctemp25)-1):
-        dTedt25[i] = (Elctemp25[i+1] - Elctemp25[i]) / (time_Elctemp25[i+1] - time_Elctemp25[i])
 
-    dTedt50 = np.zeros(np.size(Elctemp50)-1)
-    for i in range(np.size(Elctemp50)-1):
-        dTedt50[i] = (Elctemp50[i+1] - Elctemp50[i]) / (time_Elctemp50[i+1] - time_Elctemp50[i])
-
-    dTedt100 = np.zeros(np.size(Elctemp100)-1)
-    for i in range(np.size(Elctemp100)-1):
-        dTedt100[i] = (Elctemp100[i+1] - Elctemp100[i]) / (time_Elctemp100[i+1] - time_Elctemp100[i])
-
-    dTedt200 = np.zeros(np.size(Elctemp200)-1)
-    for i in range(np.size(Elctemp200)-1):
-        dTedt200[i] = (Elctemp200[i+1] - Elctemp200[i]) / (time_Elctemp200[i+1] - time_Elctemp200[i])
-
-    dTedt400 = np.zeros(np.size(Elctemp400)-1)
-    for i in range(np.size(Elctemp400)-1):
-        dTedt400[i] = (Elctemp400[i+1] - Elctemp400[i]) / (time_Elctemp400[i+1] - time_Elctemp400[i])
-
-    dTedtE1_pd = pd.Series(dTedt25)
-    windows_1 = dTedtE1_pd.rolling(100)
-    dTedtE1_ = np.array(windows_1.mean().tolist())
-
-    dTedtE2_pd = pd.Series(dTedt50)
-    windows_2 = dTedtE2_pd.rolling(100)
-    dTedtE2_ = np.array(windows_2.mean().tolist())
-
-    dTedtE3_pd = pd.Series(dTedt100)
-    windows_3 = dTedtE3_pd.rolling(100)
-    dTedtE3_ = np.array(windows_3.mean().tolist())
-
-    dTedtE4_pd = pd.Series(dTedt200)
-    windows_4 = dTedtE4_pd.rolling(100)
-    dTedtE4_ = np.array(windows_4.mean().tolist())
-
-    dTedtE5_pd = pd.Series(dTedt400)
-    windows_5 = dTedtE5_pd.rolling(100)
-    dTedtE5_ = np.array(windows_5.mean().tolist())
-
-    # ax.plot(time_Elctemp25[:],Elctemp25[:]/Elctemp25[0],linewidth=5,label=r'$m_i/m_e=25$')
-    # ax.plot(time_Elctemp50[:],Elctemp50[:]/Elctemp50[0],linewidth=5,label=r'$m_i/m_e=50$')
-    # ax.plot(time_Elctemp100[:],Elctemp100[:]/Elctemp100[0],linewidth=5,label=r'$m_i/m_e=100$')
-    # ax.plot(time_Elctemp200[:],Elctemp200[:]/Elctemp200[0],linewidth=5,label=r'$m_i/m_e=200$')
-    # ax.plot(time_Elctemp400[:],Elctemp400[:]/Elctemp400[0],linewidth=5,label=r'$m_i/m_e=400$')
-
-    ax.plot(time_Elctemp25[1:],dTedtE1_,linewidth=5,label=r'$m_i/m_e=25$')
-    ax.plot(time_Elctemp50[1:],dTedtE2_,linewidth=5,label=r'$m_i/m_e=50$')
-    ax.plot(time_Elctemp100[1:],dTedtE3_,linewidth=5,label=r'$m_i/m_e=100$')
-    ax.plot(time_Elctemp200[1:],dTedtE4_,linewidth=5,label=r'$m_i/m_e=200$')
-    ax.plot(time_Elctemp400[1:],dTedtE5_,linewidth=5,label=r'$m_i/m_e=400$')
+    ax.plot(time_Elctemp25[:280],Elctemp25[:280]/Elctemp25[0],linewidth=5,label=r'$m_i/m_e=25$')
+    ax.plot(time_Elctemp50[:200],Elctemp50[:200]/Elctemp50[0],linewidth=5,label=r'$m_i/m_e=50$')
+    ax.plot(time_Elctemp100[:],Elctemp100[:]/Elctemp100[0],linewidth=5,label=r'$m_i/m_e=100$')
+    ax.plot(time_Elctemp200[:],Elctemp200[:]/Elctemp200[0],linewidth=5,label=r'$m_i/m_e=200$')
+    ax.plot(time_Elctemp400[:],Elctemp400[:]/Elctemp400[0],linewidth=5,label=r'$m_i/m_e=400$')
 
     ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
     ax.set_ylabel(r'$T_e/T_{e0}$',fontsize=36,color='black')
-    #ax.set_xlim(0,2000)
-    #ax.set_ylim(0,7)
+    ax.set_xlim(0,2500)
+    ax.set_ylim(0,8)
     ax.grid()
     ax.tick_params(labelsize = 24)
     ax.legend(fontsize=30)
@@ -484,57 +439,11 @@ def elcheatingtrace_E():
     fig     = plt.figure(figsize=(11.0,10.0))
     ax      = fig.add_axes([0.15, 0.15, 0.75, 0.82])
 
-    # ax.plot(time_Elctemp25_E1[:280],Elctemp25_E1[:280]/Elctemp25_E1[0],linewidth=5,label=r'$E1$') #110
-    # ax.plot(time_Elctemp25_E2[:220],Elctemp25_E2[:220]/Elctemp25_E2[0],linewidth=5,label=r'$E2$') #130
-    # ax.plot(time_Elctemp25_E3[:170],Elctemp25_E3[:170]/Elctemp25_E3[0],linewidth=5,label=r'$E3$') #180
-    # ax.plot(time_Elctemp25_E4[:130],Elctemp25_E4[:130]/Elctemp25_E4[0],linewidth=5,label=r'$E4$') #220
-    # ax.plot(time_Elctemp25[:220],Elctemp25[:220]/Elctemp25[0],linewidth=5,label=r'$E5$')
-
-    dTedtE1 = np.zeros(np.size(Elctemp25_E1)-1)
-    for i in range(np.size(Elctemp25_E1)-1):
-        dTedtE1[i] = (Elctemp25_E1[i+1] - Elctemp25_E1[i]) / (time_Elctemp25_E1[i+1] - time_Elctemp25_E1[i])
-
-    dTedtE2 = np.zeros(np.size(Elctemp25_E2)-1)
-    for i in range(np.size(Elctemp25_E2)-1):
-        dTedtE2[i] = (Elctemp25_E2[i+1] - Elctemp25_E2[i]) / (time_Elctemp25_E2[i+1] - time_Elctemp25_E2[i])
-
-    dTedtE3 = np.zeros(np.size(Elctemp25_E3)-1)
-    for i in range(np.size(Elctemp25_E3)-1):
-        dTedtE3[i] = (Elctemp25_E3[i+1] - Elctemp25_E3[i]) / (time_Elctemp25_E3[i+1] - time_Elctemp25_E3[i])
-
-    dTedtE4 = np.zeros(np.size(Elctemp25_E4)-1)
-    for i in range(np.size(Elctemp25_E4)-1):
-        dTedtE4[i] = (Elctemp25_E4[i+1] - Elctemp25_E4[i]) / (time_Elctemp25_E4[i+1] - time_Elctemp25_E4[i])
-
-    dTedtE5 = np.zeros(np.size(Elctemp25)-1)
-    for i in range(np.size(Elctemp25)-1):
-        dTedtE5[i] = (Elctemp25[i+1] - Elctemp25[i]) / (time_Elctemp25[i+1] - time_Elctemp25[i])
-
-    dTedtE1_pd = pd.Series(dTedtE1)
-    windows_1 = dTedtE1_pd.rolling(50)
-    dTedtE1_ = np.array(windows_1.mean().tolist())
-
-    dTedtE2_pd = pd.Series(dTedtE2)
-    windows_2 = dTedtE2_pd.rolling(50)
-    dTedtE2_ = np.array(windows_2.mean().tolist())
-
-    dTedtE3_pd = pd.Series(dTedtE3)
-    windows_3 = dTedtE3_pd.rolling(50)
-    dTedtE3_ = np.array(windows_3.mean().tolist())
-
-    dTedtE4_pd = pd.Series(dTedtE4)
-    windows_4 = dTedtE4_pd.rolling(50)
-    dTedtE4_ = np.array(windows_4.mean().tolist())
-
-    dTedtE5_pd = pd.Series(dTedtE5)
-    windows_5 = dTedtE5_pd.rolling(50)
-    dTedtE5_ = np.array(windows_5.mean().tolist())
-
-    ax.plot(time_Elctemp25_E1[1:280],dTedtE1_[1:280],linewidth=5,label=r'$E1$')
-    ax.plot(time_Elctemp25_E2[1:220],dTedtE2_[1:220],linewidth=5,label=r'$E2$')
-    #ax.plot(time_Elctemp25_E3[1:170],dTedtE3_[1:170],linewidth=5,label=r'$E3$')
-    ax.plot(time_Elctemp25_E4[1:130],dTedtE4_[1:130],linewidth=5,label=r'$E4$')
-    ax.plot(time_Elctemp25[1:220],dTedtE5_[1:220],linewidth=5,label=r'$E5$')
+    ax.plot(time_Elctemp25_E1[:280],Elctemp25_E1[:280]/Elctemp25_E1[0],linewidth=5,label=r'$E1$') #110
+    ax.plot(time_Elctemp25_E2[:220],Elctemp25_E2[:220]/Elctemp25_E2[0],linewidth=5,label=r'$E2$') #130
+    ax.plot(time_Elctemp25_E3[:170],Elctemp25_E3[:170]/Elctemp25_E3[0],linewidth=5,label=r'$E3$') #180
+    ax.plot(time_Elctemp25_E4[:130],Elctemp25_E4[:130]/Elctemp25_E4[0],linewidth=5,label=r'$E4$') #220
+    ax.plot(time_Elctemp25[:220],Elctemp25[:220]/Elctemp25[0],linewidth=5,label=r'$E5$')
 
     ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
     ax.set_ylabel(r'$T_e/T_{e0}$',fontsize=36,color='black')
@@ -618,7 +527,7 @@ def elcheating_rate():
     windows_4 = dTedtE4_pd.rolling(50)
     dTedtE4_ = np.array(windows_4.mean().tolist())
 
-    fig     = plt.figure(figsize=(13.0,10.0))
+    fig     = plt.figure(figsize=(13.0,9.0))
     ax      = fig.add_axes([0.15, 0.15, 0.75, 0.82])
 
     ax.plot(time_Elctemp400[1:],dTedt400_/0.0004,linewidth=5,label=r'$400,E5$')
@@ -634,7 +543,7 @@ def elcheating_rate():
 
     ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
     ax.set_ylabel(r'$ (1/T_{e0}) d T_e / d t [\omega_{pe}^-1]$',fontsize=32,color='black')
-    ax.set_xlim(0,3000)
+    ax.set_xlim(0,2500)
     ax.grid()
     ax.tick_params(labelsize = 24)
     ax.legend(fontsize=30)
@@ -649,9 +558,9 @@ if __name__ == '__main__':
 
     # ionheatingtrace()
 
-    # ionheating()
+    ionheating()
 
-    # elcheatingtrace_mass()
-    # elcheatingtrace_E()
+    elcheatingtrace_mass()
+    elcheatingtrace_E()
 
     elcheating_rate()
