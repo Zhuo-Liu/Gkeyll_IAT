@@ -73,17 +73,24 @@ def make_time_traces_plot(name_list,timecut, cutoff=0):
     for i in range(len(name_list)):
         #for field energy
         time_list = fieldEnergy_time_list[i]
-        for j in range(len(time_list)):
-            if time_list[j] > timecut:
-                timecut_energy_list.append(j)
-                break
+        if time_list[-1] <= timecut:
+            timecut_energy_list.append(len(time_list)-1)
+        else:
+            for j in range(len(time_list)):
+                if time_list[j] > timecut:
+                    timecut_energy_list.append(j)
+                    break
+            
         
         #for other quantity
         time_list = elcTemp_time_list[i]
-        for j in range(len(time_list)):
-            if time_list[j] > timecut:
-                timecut_list.append(j)
-                break
+        if time_list[-1] <= timecut:
+            timecut_list.append(len(time_list)-1)
+        else:
+            for j in range(len(time_list)):
+                if time_list[j] > timecut:
+                    timecut_list.append(j)
+                    break
 
     for i in range(len(name_list)):
         axs[0,0].plot(ionTemp_time_list[i][0:timecut_list[i]],ionTemp_list[i][0:timecut_list[i]]/ionTemp_list[i][0],label=label_list[i])
@@ -127,7 +134,7 @@ if __name__ == '__main__':
     #name_list = ['./mass100/Erec/highres/','./mass100/Erec/lowres/']
     #name_list = ['./Cori/mass400/highres/','./Cori/mass400/lowres/']
     #name_list = ['./Cori/mass25/High/','./Cori/mass25/Low/','./Cori/mass25/lowcol/']
-    #name_list = ['./Diagnostics/local/E_external/E1/0/','./Diagnostics/local/Cori/mass25/rescheck/4/', './Diagnostics/local/Cori/mass25/rescheck/3/']
-    #name_list = ['./Diagnostics/local/Cori/mass25/rescheck/4/', './Diagnostics/local/E_external/E2/1D/']
-    name_list = ['./Diagnostics/local/massRatio/mass100/E1/','./Diagnostics/local/massRatio/mass100/E1-low1/','./Diagnostics/local/massRatio/mass100/E1-low2/','./Diagnostics/local/massRatio/mass100/E1-low3/']
-    make_time_traces_plot(name_list,2000)
+    #name_list = ['./E_external/E1/0/','./Cori/mass25/rescheck/4/', './Cori/mass25/rescheck/3/']
+    #name_list = ['./Cori/mass25/rescheck/4/', './E_external/E2/1D/']
+    name_list = ['./massRatio/mass100/E1/','./massRatio/mass100/E1-low1/','./massRatio/mass100/E1-low2/','./massRatio/mass100/E1-low3/']
+    make_time_traces_plot(name_list,8000)
