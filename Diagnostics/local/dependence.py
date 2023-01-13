@@ -4,6 +4,7 @@
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+matplotlib.use('TkAgg')
 
 # if no add-on, it means that the resolution is H1
 
