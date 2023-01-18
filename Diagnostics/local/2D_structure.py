@@ -102,8 +102,11 @@ def plot_phase_space(fName,GridFile):
 
     df[df<5] = 0
     ax.pcolormesh(zz, vv/0.02, df,cmap='inferno')
-    ax.set_xlabel(r'$z /d_e$', fontsize=36)
-    ax.set_ylabel(r'$v_z /v_{Te0}$', fontsize=36, labelpad=-1)
+    ax.set_xlabel(r'$z /d_e$', fontsize=32)
+    ax.set_ylabel(r'$v_z /v_{Te0}$', fontsize=32, labelpad=-1)
+
+    ax.set_ylim(-4,8)
+    ax.tick_params(labelsize = 32)
 
     ax.set_ylim(-4,8)
     ax.tick_params(labelsize = 32)
