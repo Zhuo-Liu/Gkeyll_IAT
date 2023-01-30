@@ -119,7 +119,7 @@ def plot_phase_space(fName,GridFile):
 def plot_phi(fName):
     phi = np.loadtxt(fName)
 
-    fig      = plt.figure(figsize=(8.5,7.5),facecolor='w', edgecolor='k')
+    fig      = plt.figure(figsize=(10.5,7.5),facecolor='w', edgecolor='k')
     ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
 
     ax.set_xlabel(r'$z/d_e$',fontsize=36)
@@ -127,13 +127,16 @@ def plot_phi(fName):
     ax.tick_params(labelsize = 32)
     #ax.grid()
     #ax.contourf(ZZ, YY, phi, 30,  zdir='z', cmap=matplotlib.cm.coolwarm)
-    ax.contourf(ZZ, YY, phi, 30,  zdir='z', cmap='inferno')
+    pos = ax.contourf(ZZ, YY, phi/0.0004, 30,  zdir='z', cmap='inferno')
+    cbar = fig.colorbar(pos,ax=ax)
+    cbar.set_label(r"$e\phi/T_{e0}$",fontsize=32)
+    cbar.ax.tick_params(labelsize=22)
     #plt.show()
     plt.savefig(r'./paper_figures/phi.jpg', bbox_inches='tight')
     plt.cla()
 
 if __name__ == '__main__':
-    # plot_phi('./Cori/mass25/rescheck/4/field/M25_E2_3_field_0150.txt')
+    #plot_phi('./Cori/mass25/rescheck/4/field/M25_E2_3_field_0150.txt')
     # plot_phase_space('./Cori/mass25/rescheck/4/dist_function_save/750.0_elc_phase.txt', ElcGridPath)
     # plot_2d_elc_distribution('./Cori/mass25/rescheck/4/dist_function_save/750.0_elc_2d.txt',ElcGridPath)
     # plot_2d_ion_distribution('./Cori/mass25/rescheck/4/dist_function_save/750.0_ion_2d.txt',IonGridPath)
@@ -143,7 +146,7 @@ if __name__ == '__main__':
     # plot_2d_elc_distribution('./Cori/mass25/rescheck/4/dist_function_save/1800.0_elc_2d.txt',ElcGridPath)
     # plot_2d_ion_distribution('./Cori/mass25/rescheck/4/dist_function_save/1800.0_ion_2d.txt',IonGridPath)
 
-    # plot_phi('./Cori/mass25/rescheck/4/field/M25_E2_3_field_0480.txt')
+    plot_phi('./Cori/mass25/rescheck/4/field/M25_E2_3_field_0480.txt')
     # plot_phase_space('./Cori/mass25/rescheck/4/dist_function_save/2400.0_elc_phase.txt', ElcGridPath)
-    plot_2d_elc_distribution('./Cori/mass25/rescheck/4/dist_function_save/2400.0_elc_2d.txt',ElcGridPath)
-    plot_2d_ion_distribution('./Cori/mass25/rescheck/4/dist_function_save/2400.0_ion_2d.txt',IonGridPath)
+    # plot_2d_elc_distribution('./Cori/mass25/rescheck/4/dist_function_save/2400.0_elc_2d.txt',ElcGridPath)
+    # plot_2d_ion_distribution('./Cori/mass25/rescheck/4/dist_function_save/2400.0_ion_2d.txt',IonGridPath)
