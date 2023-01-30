@@ -263,6 +263,7 @@ def nueff_massratio():
 
     i = 0
     new_Elctemp25 = []
+    new_Elctemp100 = []
     new_Elctemp400 = []
     for t in Elctemp25:
         if i%4 == 0:
@@ -270,13 +271,19 @@ def nueff_massratio():
         i += 1
     new_Elctemp25 = np.array(new_Elctemp25)
     i = 0
+    for t in Elctemp100:
+        if i%5 == 0:
+            new_Elctemp100.append(t)
+        i += 1
+    i = 0
     for t in Elctemp400:
         if i%3 == 0:
             new_Elctemp400.append(t)
         i += 1
     new_Elctemp400 = np.array(new_Elctemp400)
     ax.plot(time_fieldEnergy25,fieldEnergy25/new_Elctemp25,label=r'$(W/nTe)_{25}$',linewidth=3,linestyle='--')
-    #ax.plot(time_fieldEnergy400,fieldEnergy400/new_Elctemp400,label='W/nTe400',linewidth=5,linestyle='--')
+    ax.plot(time_fieldEnergy100,fieldEnergy100/new_Elctemp100,label=r'$(W/nTe)_{100}$',linewidth=3,linestyle='--')
+    #ax.plot(time_fieldEnergy400,fieldEnergy400/new_Elctemp400,label=r'$(W/nTe)_{400}$',linewidth=3,linestyle='--')
 
     ax.hlines(0.0059,0,2000, linestyles='--',color='black',linewidth=3)
     ax.text(650,0.0066-0.001,"quasi-linear",fontsize = 18)
@@ -286,7 +293,7 @@ def nueff_massratio():
     ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
     ax.set_ylabel(r'$\nu_{eff} [\omega_{pe}]$',fontsize=32)
 
-    ax.set_ylim(-0.0005,0.007)
+    ax.set_ylim(-0.0005,0.009)
     ax.tick_params(labelsize = 23)
     ax.tick_params(axis='y')
     ax.legend(fontsize=25)
@@ -551,16 +558,16 @@ def elcheating_rate():
 
 if __name__ == '__main__':
 
-    # nueff_massratio()
+    nueff_massratio()
     # nueff_electricfield()
 
     # tempratio_ratio()
 
     # ionheatingtrace()
 
-    ionheating()
+    # ionheating()
 
-    elcheatingtrace_mass()
-    elcheatingtrace_E()
+    # elcheatingtrace_mass()
+    # elcheatingtrace_E()
 
-    elcheating_rate()
+    # elcheating_rate()
