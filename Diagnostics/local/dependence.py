@@ -132,20 +132,45 @@ def nueff_massratio():
     ax.plot(time_current100[2:],nu_eff100[1:],label='100',linewidth=5,color='blue',linestyle='-')
     #ax.plot(time_fieldEnergy3,fieldEnergy3/0.0006,label='W/nTe',linewidth=5,color='blue',linestyle='--')
 
+    i = 0
+    new_Elctemp25 = []
+    new_Elctemp100 = []
+    new_Elctemp400 = []
+    for t in Elctemp25:
+        if i%4 == 0:
+            new_Elctemp25.append(t)
+        i += 1
+    new_Elctemp25 = np.array(new_Elctemp25)
+    i = 0
+    for t in Elctemp100:
+        if i%5 == 0:
+            new_Elctemp100.append(t)
+        i += 1
+    i = 0
+    for t in Elctemp400:
+        if i%3 == 0:
+            new_Elctemp400.append(t)
+        i += 1
+    new_Elctemp400 = np.array(new_Elctemp400)
+    ax.plot(time_fieldEnergy25,fieldEnergy25/new_Elctemp25,label=r'$(W/nTe)_{25}$',linewidth=3,linestyle='--')
+    ax.plot(time_fieldEnergy100,fieldEnergy100/new_Elctemp100,label=r'$(W/nTe)_{100}$',linewidth=3,linestyle='--')
+    #ax.plot(time_fieldEnergy400,fieldEnergy400/new_Elctemp400,label=r'$(W/nTe)_{400}$',linewidth=3,linestyle='--')
 
-    ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
+    ax.hlines(0.0059,0,2000, linestyles='--',color='black',linewidth=3)
+    ax.text(650,0.0066-0.001,"quasi-linear",fontsize = 18)
+    ax.text(700,0.0063-0.001,"estimate",fontsize = 18)
+    ax.text(650,0.0060-0.001,"for $m_i/m_e=25$",fontsize = 18)
 
-    #ax.set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32,color='blue')
-    # ax.set_xlim(0,2700)
-    # ax.set_ylim(0,5.0)
-    ax.tick_params(labelsize = 26)
-    ax.tick_params(axis='y',colors = 'blue')
+    ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
+
+    ax.set_ylim(-0.0005,0.009)
+    ax.tick_params(labelsize = 23)
+    ax.tick_params(axis='y')
     ax.legend(fontsize=25)
     ax.grid()
     ax.set_xlim(0,2000)
-    plt.savefig('nueff.jpg')
-    #plt.show()
-    #plt.clf()
+    plt.show()
+    plt.clf()
 
 def heating_massratio():
     fig     = plt.figure(figsize=(11.0,10.0))
@@ -175,7 +200,17 @@ def temp_electricfield():
     pass
 
 if __name__ == '__main__':
-    # current_massratio()
-    nueff_massratio()
 
-    # heating_massratio()
+    nueff_massratio()
+    # nueff_electricfield()
+
+    # tempratio_ratio()
+
+    # ionheatingtrace()
+
+    # ionheating()
+
+    # elcheatingtrace_mass()
+    # elcheatingtrace_E()
+
+    # elcheating_rate()
