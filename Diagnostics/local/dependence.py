@@ -133,7 +133,7 @@ def nueff_massratio():
     #ax.plot(time_fieldEnergy3,fieldEnergy3/0.0006,label='W/nTe',linewidth=5,color='blue',linestyle='--')
 
 
-    ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
+    ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
 
     #ax.set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32,color='blue')
     # ax.set_xlim(0,2700)
@@ -143,8 +143,9 @@ def nueff_massratio():
     ax.legend(fontsize=25)
     ax.grid()
     ax.set_xlim(0,2000)
-    plt.show()
-    plt.clf()
+    plt.savefig('nueff.jpg')
+    #plt.show()
+    #plt.clf()
 
 def heating_massratio():
     fig     = plt.figure(figsize=(11.0,10.0))
@@ -175,6 +176,6 @@ def temp_electricfield():
 
 if __name__ == '__main__':
     # current_massratio()
-    # nueff_massratio()
+    nueff_massratio()
 
-    heating_massratio()
+    # heating_massratio()
