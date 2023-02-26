@@ -161,7 +161,7 @@ def nueff_massratio():
     ax.text(700,0.0063-0.001,"estimate",fontsize = 18)
     ax.text(650,0.0060-0.001,"for $m_i/m_e=25$",fontsize = 18)
 
-    ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
+    ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
 
     ax.set_ylim(-0.0005,0.009)
     ax.tick_params(labelsize = 23)
@@ -169,8 +169,9 @@ def nueff_massratio():
     ax.legend(fontsize=25)
     ax.grid()
     ax.set_xlim(0,2000)
-    plt.show()
-    plt.clf()
+    plt.savefig('nueff.jpg')
+    #plt.show()
+    #plt.clf()
 
 def heating_massratio():
     fig     = plt.figure(figsize=(11.0,10.0))
