@@ -4,6 +4,7 @@
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+matplotlib.use('TkAgg')
 
 # if no add-on, it means that the resolution is H1
 
@@ -12,26 +13,26 @@ import numpy as np
 ###############
 
 
-fieldEnergy25 = np.loadtxt('./massRatio/mass25/E1/saved_data/fieldEnergy.txt')
-time_fieldEnergy25 = np.loadtxt('./massRatio/mass25/E1/saved_data/fieldEnergy_time.txt')
-fieldEnergy50 = np.loadtxt('./massRatio/mass100/E1-low1/saved_data/fieldEnergy.txt')
-time_fieldEnergy50 = np.loadtxt('./massRatio/mass100/E1-low1/saved_data/fieldEnergy_time.txt')
-fieldEnergy100 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/fieldEnergy.txt')
-time_fieldEnergy100 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/fieldEnergy_time.txt')
+fieldEnergy25 = np.loadtxt('./massRatio/mass25/E5/saved_data/fieldEnergy.txt')
+time_fieldEnergy25 = np.loadtxt('./massRatio/mass25/E5/saved_data/fieldEnergy_time.txt')
+fieldEnergy50 = np.loadtxt('./massRatio/mass50/E5_H1/saved_data/fieldEnergy.txt')
+time_fieldEnergy50 = np.loadtxt('./massRatio/mass50/E5_H1/saved_data/fieldEnergy_time.txt')
+fieldEnergy100 = np.loadtxt('./massRatio/mass100/E5_H2/saved_data/fieldEnergy.txt')
+time_fieldEnergy100 = np.loadtxt('./massRatio/mass100/E5_H2/saved_data/fieldEnergy_time.txt')
 
 
 Iontemp25 = np.loadtxt('./massRatio/mass25/E5/saved_data/ion_intM2Thermal.txt')*25
 time_Iontemp25 = np.loadtxt('./massRatio/mass25/E5/saved_data/ion_intM2Thermal_time.txt')
 Elctemp25= np.loadtxt('./massRatio/mass25/E5/saved_data/elc_intM2Thermal.txt')
 time_Elctemp25 = np.loadtxt('./massRatio/mass25/E5/saved_data/elc_intM2Thermal_time.txt')
-Iontemp50 = np.loadtxt('./massRatio/mass50/E5_L1/saved_data/ion_intM2Thermal.txt')*50
-time_Iontemp50 = np.loadtxt('./massRatio/mass50/E5_L1/saved_data/ion_intM2Thermal_time.txt')
-Elctemp50 = np.loadtxt('./massRatio/mass50/E5_L1/saved_data/elc_intM2Thermal.txt')
-time_Elctemp50 = np.loadtxt('./massRatio/mass50/E5_L1/saved_data/elc_intM2Thermal_time.txt')
-Iontemp100 = np.loadtxt('./massRatio/mass100/E5_old_L0/saved_data/ion_intM2Thermal.txt')*100
-time_Iontemp100 = np.loadtxt('./massRatio/mass100/E5_old_L0/saved_data/ion_intM2Thermal_time.txt')
-Elctemp100 = np.loadtxt('./massRatio/mass100/E5_old_L0/saved_data/elc_intM2Thermal.txt')
-time_Elctemp100 = np.loadtxt('./massRatio/mass100/E5_old_L0/saved_data/elc_intM2Thermal_time.txt')
+Iontemp50 = np.loadtxt('./massRatio/mass50/E5_H1/saved_data/ion_intM2Thermal.txt')*50
+time_Iontemp50 = np.loadtxt('./massRatio/mass50/E5_H1/saved_data/ion_intM2Thermal_time.txt')
+Elctemp50 = np.loadtxt('./massRatio/mass50/E5_H1/saved_data/elc_intM2Thermal.txt')
+time_Elctemp50 = np.loadtxt('./massRatio/mass50/E5_H1/saved_data/elc_intM2Thermal_time.txt')
+Iontemp100 = np.loadtxt('./massRatio/mass100/E5_H2/saved_data/ion_intM2Thermal.txt')*100
+time_Iontemp100 = np.loadtxt('./massRatio/mass100/E5_H2/saved_data/ion_intM2Thermal_time.txt')
+Elctemp100 = np.loadtxt('./massRatio/mass100/E5_H2/saved_data/elc_intM2Thermal.txt')
+time_Elctemp100 = np.loadtxt('./massRatio/mass100/E5_H2/saved_data/elc_intM2Thermal_time.txt')
 # Iontemp200 = np.loadtxt('./massRatio/mass100/E5_old_L0/saved_data/ion_intM2Thermal.txt')*100
 # time_Iontemp200 = np.loadtxt('./massRatio/mass100/E5_old_L0/saved_data/ion_intM2Thermal_time.txt')
 # Elctemp200 = np.loadtxt('./massRatio/mass100/E5_old_L0/saved_data/elc_intM2Thermal.txt')
@@ -44,12 +45,12 @@ time_Elctemp400 = np.loadtxt('./Cori/nouse/mass400/highres/saved_data/elc_intM2T
 
 # current25 = np.loadtxt('./massRatio/mass25/E5/saved_data/elc_intM1i.txt')*2
 # time_current25 = np.loadtxt('./massRatio/mass25/E5/saved_data/elc_intM1i_time.txt')
-current25 = np.loadtxt('./Cori/mass25/rescheck/4/saved_data/elc_intM1i.txt')*2
-time_current25 = np.loadtxt('./Cori/mass25/rescheck/4/saved_data/elc_intM1i_time.txt')
-current50 = np.loadtxt('./massRatio/mass50/E5_L1/saved_data/elc_intM1i.txt')*2
-time_current50 = np.loadtxt('./massRatio/mass50/E5_L1/saved_data/elc_intM1i_time.txt')
-current100 = np.loadtxt('./massRatio/mass100/E5_old_L0/saved_data/elc_intM1i.txt')*2
-time_current100 = np.loadtxt('./massRatio/mass100/E5_old_L0/saved_data/elc_intM1i_time.txt')
+current25 = np.loadtxt('./massRatio/mass25/E5/saved_data/elc_intM1i.txt')*2
+time_current25 = np.loadtxt('./massRatio/mass25/E5/saved_data/elc_intM1i_time.txt')
+current50 = np.loadtxt('./massRatio/mass50/E5_H1/saved_data/elc_intM1i.txt')*2
+time_current50 = np.loadtxt('./massRatio/mass50/E5_H1/saved_data/elc_intM1i_time.txt')
+current100 = np.loadtxt('./massRatio/mass100/E5_H1/saved_data/elc_intM1i.txt')*2
+time_current100 = np.loadtxt('./massRatio/mass100/E5_H1/saved_data/elc_intM1i_time.txt')
 # current200 = np.loadtxt('./massRatio/mass100/E5_old_L0/saved_data/elc_intM1i.txt')*2
 # time_current200 = np.loadtxt('./massRatio/mass100/E5_old_L0/saved_data/elc_intM1i_time.txt')
 # current400 = np.loadtxt('./massRatio/mass100/E5_old_L0/saved_data/elc_intM1i.txt')*2
@@ -107,10 +108,10 @@ def current_massratio():
     # #ax.plot(time_current2[1:],nu_eff2,label='100',linewidth=5,color='green',linestyle='-')
     # #ax.plot(time_fieldEnergy2,fieldEnergy2/0.0004,linewidth=5,color='green',linestyle='--')
     # ax.plot(time_current3[1:],nu_eff3,label='400',linewidth=5,color='blue',linestyle='-')
-    # ax.plot(time_fieldEnergy3,fieldEnergy3/0.0006,label='W/nTe',linewidth=5,color='blue',linestyle='--')
+    #ax.plot(time_fieldEnergy3,fieldEnergy3/0.0006,label='$W/n T_e$',linewidth=5,color='blue',linestyle='--')
 
 
-    ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
+    ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
 
     #ax.set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32,color='blue')
     # ax.set_xlim(0,2700)
@@ -152,7 +153,7 @@ def nueff_massratio():
             new_Elctemp400.append(t)
         i += 1
     new_Elctemp400 = np.array(new_Elctemp400)
-    ax.plot(time_fieldEnergy25,fieldEnergy25/new_Elctemp25,label=r'$(W/nTe)_{25}$',linewidth=3,linestyle='--')
+    ax.plot(time_fieldEnergy25,fieldEnergy25/new_Elctemp25,label=r'$(W/nT_e)_{25}$',linewidth=3,linestyle='--')
     ax.plot(time_fieldEnergy100,fieldEnergy100/new_Elctemp100,label=r'$(W/nTe)_{100}$',linewidth=3,linestyle='--')
     #ax.plot(time_fieldEnergy400,fieldEnergy400/new_Elctemp400,label=r'$(W/nTe)_{400}$',linewidth=3,linestyle='--')
 
@@ -169,8 +170,8 @@ def nueff_massratio():
     ax.legend(fontsize=25)
     ax.grid()
     ax.set_xlim(0,2000)
-    plt.savefig('nueff.jpg')
-    #plt.show()
+    #plt.savefig('nueff.jpg')
+    plt.show()
     #plt.clf()
 
 def heating_massratio():
