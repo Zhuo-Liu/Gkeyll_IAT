@@ -29,10 +29,10 @@ def fieldenergy_current():
     ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
     ax2 = ax.twinx()
 
-    t1 = np.arange(1000,2000)
-    c1 = 0.019 + 0.000017*(t1-1000) 
-    t2 = np.arange(2000,3800)
-    c2 = 0.040 + 0.000035*(t2-2000)
+    t1 = np.arange(1000,1900)
+    c1 = 0.019 + 0.000016*(t1-1000) 
+    t2 = np.arange(1900,3800)
+    c2 = 0.035 + 0.000035*(t2-1900)
     ax.plot(time_current,current/0.02,label='2D',linewidth=5,color='blue')
     #ax.plot(time_current_1d,current_1d/0.02,label='1D',linewidth=4)
     ax.plot(t1,c1/0.02,linewidth=6,linestyle='dashed',color='green')
@@ -45,7 +45,7 @@ def fieldenergy_current():
 
     ax.vlines(500,0,7.0,linestyle='--',linewidth=2,color='black')
     ax.vlines(1000,0,7.0,linestyle='--',linewidth=2,color='black')
-    ax.vlines(2000,0,7.0,linestyle='--',linewidth=2,color='black')
+    ax.vlines(1900,0,7.0,linestyle='--',linewidth=2,color='black')
     ax.vlines(3800,0,7.0,linestyle='--',linewidth=2,color='black')
     ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
     ax.set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32,color='blue')
@@ -72,17 +72,7 @@ def temperature_ratio():
     ax.set_xlim(0,4500)
     ax.set_ylim(0,30)
     ax2.set_ylim(10,70)
-    # ax.vlines(500,0,30,linestyles='--',linewidth=3)
-    # ax.vlines(1000,0,30,linestyles='--',linewidth=3)
-    # ax.vlines(2000,0,30,linestyles='--',linewidth=3)
-    # ax.vlines(3800,0,30,linestyles='--',linewidth=3)
-    # ax.text(675,27.5,"II",fontsize=36)
-    # ax.text(1350,27.5,"III",fontsize=36)
-    # ax.text(2700,27.5,"IV",fontsize=36)
-    # ax.text(4100,27.5,"V",fontsize=36)
 
-    #ax.set_xlim(750,1800)
-    #ax.set_ylim(0,18)
     ax.tick_params(labelsize = 28)
     ax.tick_params(axis='y',colors='black')
     ax2.tick_params(labelsize = 24,colors='blue')
@@ -90,10 +80,23 @@ def temperature_ratio():
     #ax.grid()
     #ax.legend(fontsize=30,loc='lower left')
     #plt.savefig('./Cori/figure_temp/temp.jpg')
-    #plt.show()
-    plt.savefig('./Figures/figures_temp/tempratio.jpg')
+    plt.show()
+    #plt.savefig('./Figures/figures_temp/tempratio.jpg')
+    plt.clf()
+
+def ion_temp():
+    fig      = plt.figure(figsize=(11.0,9.0))
+    ax      = fig.add_axes([0.12, 0.16, 0.75, 0.80])
+    ax2 = ax.twinx()
+
+    ax.plot(time_Iontemp[:],Elctemp[0]/Iontemp[:],label='ion',linewidth=5,color='black',linestyle='--')
+    ax.set_xlim(0,4000)
+    plt.show()
     plt.clf()
 
 if __name__ == "__main__":
+    #ion_temp()
+    
     #fieldenergy_current()
+    
     temperature_ratio()
