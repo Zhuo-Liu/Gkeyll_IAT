@@ -27,6 +27,30 @@ K_z, K_y = np.meshgrid(kz_plot, ky_plot, indexing = 'xy')
 K_z = np.transpose(K_z)
 K_y = np.transpose(K_y)
 
+# def load_phi():
+#     Ez_k_list=[]
+#     Ey_k_list=[]
+#     Ez_list = []
+#     Ey_list = []
+#     phi_list = []
+#     for i in range(200,3798):
+#         fignum = str(i).zfill(4)
+#         filename = './Cori/mass25/rescheck/1/field/M25_E2_0_field_' + fignum + '.txt'
+#         phi = np.loadtxt(filename)
+#         E_z, E_y = np.gradient(phi)
+#         E_z = E_z/dz
+#         E_y = E_y/dy
+#         Ez_k = np.abs(np.fft.fftshift(np.fft.fftn(E_z)))
+#         Ey_k = np.abs(np.fft.fftshift(np.fft.fftn(E_y)))
+#         Ez_k_list.append(Ez_k)
+#         Ey_k_list.append(Ey_k)
+#         Ez_list.append(E_z)
+#         Ey_list.append(E_y)
+#         phi_list.append(phi)
+
+    
+#     return np.array(Ez_k_list), np.array(Ey_k_list), np.array(Ez_list), np.array(Ey_list), np.array(phi_list)
+
 def load_phi():
     Ez_k_list=[]
     Ey_k_list=[]
@@ -144,5 +168,5 @@ def k_omega_eaw():
 
 
 if __name__ == '__main__':
-    k_omega_eaw()
+    #k_omega_eaw()
     k_omega_iaw()
