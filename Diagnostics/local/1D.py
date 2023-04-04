@@ -173,9 +173,47 @@ def plot_all():
     plt.tight_layout()
     plt.savefig(r'./Figures/figures_temp/1D/field.pdf', bbox_inches='tight')
 
+def distribution():
+    ElcGridPath = './massRatio/mass100/E5_H2/dist_function/elc_velocities.npz'
+    ElcGridPath_1D = './massRatio/mass100/1D/dist_function/elc_velocities.npz'
+
+    df_1000_1d = np.loadtxt('./massRatio/mass100/1D/dist_function/1000.0_elc_1d.txt')
+    df_1900_1d = np.loadtxt('./massRatio/mass100/1D/dist_function/1900.0_elc_1d.txt')
+    df_1000 = np.loadtxt('./massRatio/mass100/E5_H2/dist_function_save/1000.0_elc_1d.txt')
+    df_1900 = np.loadtxt('./massRatio/mass100/E5_H2/dist_function_save/1900.0_elc_1d.txt')
+
+    grid = np.load(ElcGridPath)
+    velocities_z = grid['arr_0']
+
+    grid_1D = np.load(ElcGridPath_1D)
+    velocities_z_1D = grid_1D['arr_0']
+
+
+    fig = plt.figure(figsize=(16,10),facecolor='w', edgecolor='k')
+
+    plt.plot(velocities_z_1D[1:]/0.02, df_1000_1d,label=r'$\omega_{pe}t=1000$ 1D',linewidth=6,color = u'#1f77b4',linestyle='--')
+    plt.plot(velocities_z[:]/0.02, df_1000/2.8,label=r'$\omega_{pe}t=1000$',linewidth=6,color = u'#1f77b4')
+    plt.plot(velocities_z_1D[1:]/0.02, df_1900_1d,label=r'$\omega_{pe}t=1900$ 1D',linewidth=6,color = u'#ff7f0e',linestyle='--')
+    plt.plot(velocities_z[:]/0.02, df_1900/2.8,label=r'$\omega_{pe}t=1900$',linewidth=6, color = u'#ff7f0e')
+    #plt.plot(velocities_z/0.02, df_700,label=r'$\omega_{pe}t=700$',linewidth=6)
+
+
+    plt.xlabel(r'$v_z/v_{Te0}$', fontsize=36)
+    plt.ylabel(r'$F_e (v_z)$', fontsize=36)
+    plt.grid()
+    plt.legend(fontsize=26)
+    #plt.set_title(r'$<F_e(v_z)>_{z},$' + rf't = {time}'+ r' [$\omega_{pe}^{-1}$]', fontsize=26)
+    plt.tick_params(labelsize = 28)
+    plt.xlim(-0.10/0.02,0.26/0.02)
+    plt.ylim(-0.5,14)
+    plt.savefig('elc_1d.jpg')
+    plt.show()
+
 if __name__ == '__main__':
     #current_plot()
     # resistivity_plot()
     # fieldenergy_plot()
     # temp_plot()
-    plot_all()
+    # plot_all()
+
+    distribution()

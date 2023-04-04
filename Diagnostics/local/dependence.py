@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.optimize import curve_fit
+matplotlib.use('TkAgg')
 
 #The default E is E5
 #The default resolution is H1
@@ -14,13 +15,19 @@ path_25 = './Cori/mass25/rescheck/4/saved_data/'
 #path_25 = './massRatio/mass25/E5/saved_data/'
 path_50 = './massRatio/mass50/E5_H1/saved_data/'
 path_100 = './massRatio/mass100/E5_H2/saved_data/'
-path_200 = './massRatio/mass200/E5_L1/saved_data/'
+path_200 = './massRatio/mass200/E5_H1/saved_data/'
 path_400 = './massRatio/mass400/E5_L1/saved_data/'
 #path_400 = './massRatio/nouse/mass400_Cori/saved_data/'
 path_25_E1 = './massRatio/mass25/E1/saved_data/'
 path_25_E2 = './massRatio/mass25/E2/saved_data/'
 path_25_E3 = './massRatio/mass25/E3/saved_data/'
 path_25_E4 = './massRatio/mass25/E4/saved_data/'
+
+path_100_E1 = './massRatio/mass100/E1/saved_data/'
+path_400_E1 = './massRatio/mass400/E1-low1/saved_data/'
+
+path_25_temp20 = './tempRatio/20/saved_data/'
+path_25_temp100 = './tempRatio/100/saved_data/'
 
 ###############
 #data reading
@@ -54,6 +61,11 @@ time_fieldEnergy25_E3 = np.loadtxt(path_25_E3 + 'fieldEnergy_time.txt')
 fieldEnergy25_E4 = np.loadtxt(path_25_E4 + 'fieldEnergy.txt')
 time_fieldEnergy25_E4 = np.loadtxt(path_25_E4 + 'fieldEnergy_time.txt')
 
+fieldEnergy25_temp20 = np.loadtxt(path_25_temp20 + 'fieldEnergy.txt')
+time_fieldEnergy25_temp100 = np.loadtxt(path_25_temp100 + 'fieldEnergy_time.txt')
+
+fieldEnergy25 = np.loadtxt(path_25 + 'fieldEnergy.txt')
+time_fieldEnergy25 = np.loadtxt(path_25 + 'fieldEnergy_time.txt')
 ######### Temperature ############
 Iontemp25 = np.loadtxt(path_25 + 'ion_intM2Thermal.txt')*25
 time_Iontemp25 = np.loadtxt(path_25 + 'ion_intM2Thermal_time.txt')
@@ -100,6 +112,15 @@ time_Iontemp25_E4 = np.loadtxt(path_25_E4 + 'ion_intM2Thermal_time.txt')
 Elctemp25_E4 = np.loadtxt(path_25_E4 + 'elc_intM2Thermal.txt')
 time_Elctemp25_E4 = np.loadtxt(path_25_E4 + 'elc_intM2Thermal_time.txt')
 
+Iontemp25_temp20 = np.loadtxt(path_25_temp20 + 'ion_intM2Thermal.txt')*25
+time_Iontemp25_temp20 = np.loadtxt(path_25_temp20 + 'ion_intM2Thermal_time.txt')
+Elctemp25_temp20 = np.loadtxt(path_25_temp20 + 'elc_intM2Thermal.txt')
+time_Elctemp25_temp20 = np.loadtxt(path_25_temp20 + 'elc_intM2Thermal_time.txt')
+
+Iontemp25_temp100 = np.loadtxt(path_25_temp100 + 'ion_intM2Thermal.txt')*25
+time_Iontemp25_temp100 = np.loadtxt(path_25_temp100 + 'ion_intM2Thermal_time.txt')
+Elctemp25_temp100 = np.loadtxt(path_25_temp100 + 'elc_intM2Thermal.txt')
+time_Elctemp25_temp100 = np.loadtxt(path_25_temp100 + 'elc_intM2Thermal_time.txt')
 
 ######### Current ############
 current25 = np.loadtxt(path_25 + 'elc_intM1i.txt')*2
@@ -118,16 +139,22 @@ current400 = np.loadtxt(path_400 + 'elc_intM1i.txt')*2
 time_current400 = np.loadtxt(path_400 + 'elc_intM1i_time.txt')
 
 current25_E1 = np.loadtxt(path_25_E1 + 'elc_intM1i.txt')*2
-time_current25_E1 = np.loadtxt(path_25_E1 + 'elc_intM1i_time.txt')
+time_current25_E1 = np.loadtxt(path_25_E1 + 'elc_intM1i_time.txt') + 300
 
 current25_E2 = np.loadtxt(path_25_E2 + 'elc_intM1i.txt')*2
-time_current25_E2 = np.loadtxt(path_25_E2 + 'elc_intM1i_time.txt')
+time_current25_E2 = np.loadtxt(path_25_E2 + 'elc_intM1i_time.txt') + 150
 
 current25_E3 = np.loadtxt(path_25_E3 + 'elc_intM1i.txt')*2
 time_current25_E3 = np.loadtxt(path_25_E3 + 'elc_intM1i_time.txt')
 
 current25_E4 = np.loadtxt(path_25_E4 + 'elc_intM1i.txt')*2
 time_current25_E4 = np.loadtxt(path_25_E4 + 'elc_intM1i_time.txt')
+
+current100_E1 = np.loadtxt(path_100_E1 + 'elc_intM1i.txt')*2
+time_current100_E1 = np.loadtxt(path_100_E1 + 'elc_intM1i_time.txt') + 160
+
+current400_E1 = np.loadtxt(path_400_E1 + 'elc_intM1i.txt')*2
+time_current400_E1 = np.loadtxt(path_400_E1 + 'elc_intM1i_time.txt') + 80
 
 ######### Anomalous resistivity ############
 
@@ -227,7 +254,7 @@ def current_massratio():
     ax.plot(time_current25[:],current25,label='25',linewidth=5)
     #ax.plot(time_current50[:],current50,label='50',linewidth=5)
     ax.plot(time_current100[:],current100,label='100',linewidth=5)
-    #ax.plot(time_current200[:],current200,label='200',linewidth=5)
+    ax.plot(time_current200[:],current200,label='200',linewidth=5)
     ax.plot(time_current400[:],current400,label='400',linewidth=5)
 
     # #ax.plot(time_current1[1:],nu_eff1,label='25',linewidth=5,color='red',linestyle='-')
@@ -241,8 +268,8 @@ def current_massratio():
     ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
 
     #ax.set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32,color='blue')
-    ax.set_xlim(0,2800)
-    ax.set_ylim(0,0.035)
+    ax.set_xlim(0,5000)
+    ax.set_ylim(0,0.050)
     ax.tick_params(labelsize = 26)
     ax.tick_params(axis='y',colors = 'blue')
     ax.legend(fontsize=25)
@@ -283,15 +310,40 @@ def current_electricfield():
     plt.show()
     plt.clf()
 
+def current_all():
+    fig      = plt.figure(figsize=(10.5,7.5))
+    ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
+
+    ax.plot(time_current25[:],current25,label='E5,25',linewidth=5)
+    ax.plot(time_current100[:],current100,label='E5,100',linewidth=5)
+    ax.plot(time_current400[:],current400,label='E5,400',linewidth=5)
+    ax.plot(time_current25_E1[:],current25_E1,label='E1,25',linewidth=5)
+    ax.plot(time_current25_E2[:],current25_E2,label='E2,25',linewidth=5)
+    ax.plot(time_current100_E1[:],current100_E1,label='E1,100',linewidth=5)
+    ax.plot(time_current400_E1[:],current400_E1,label='E1,400',linewidth=5)
+
+
+    ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
+
+    #ax.set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32,color='blue')
+    # ax.set_xlim(0,2700)
+    # ax.set_ylim(0,5.0)
+    ax.tick_params(labelsize = 26)
+    ax.tick_params(axis='y',colors = 'blue')
+    ax.legend()
+    ax.grid()
+    #ax.set_xlim(0,3500)
+    plt.show()
+
 def nueff_massratio():
     fig      = plt.figure(figsize=(9.5,7.5))
     ax      = fig.add_axes([0.18, 0.16, 0.75, 0.75])
 
     ax.plot(time_current25[4:],nu_eff25[3:],label='$m_i/m_e = 25$',linewidth=4,linestyle='-')
-    #ax.plot(time_current50[4:],nu_eff50[3:],label='50',linewidth=3,linestyle='-')
+    ax.plot(time_current50[4:],nu_eff50[3:],label='$m_i/m_e = 50$',linewidth=4,linestyle='-')
     ax.plot(time_current100[4:],nu_eff100[3:],label='$m_i/m_e = 100$',linewidth=4,linestyle='-')
-    #ax.plot(time_current200[4:],nu_eff200[3:],label='200',linewidth=3,linestyle='-')
-    ax.plot(time_current400[4:],nu_eff400[3:],label='$m_i/m_e = 400$',linewidth=4,linestyle='-')
+    ax.plot(time_current200[4:],nu_eff200[3:],label='$m_i/m_e = 200$',linewidth=4,linestyle='-')
+    #ax.plot(time_current400[4:],nu_eff400[3:],label='$m_i/m_e = 400$',linewidth=4,linestyle='-')
 
     i = 0
     new_Elctemp25 = []
@@ -314,24 +366,25 @@ def nueff_massratio():
         i += 1
     new_Elctemp400 = np.array(new_Elctemp400)
     #ax.plot(time_fieldEnergy25,0.5*fieldEnergy25/new_Elctemp25,label=r'$(W/nT_e)_{25}$',linewidth=3,linestyle='--')
-    ax.plot(time_fieldEnergy100,0.5*fieldEnergy100/new_Elctemp100,label=r'$\frac{1}{2}(W/nT_e)_{100}\omega_{pe}$',linewidth=3,linestyle='--')
+    ax.plot(time_fieldEnergy100,0.5*fieldEnergy100/new_Elctemp100,label=r'$\frac{1}{2}(W/nT_e)_{100}$',linewidth=3,linestyle='--')
     #ax.plot(time_fieldEnergy400,fieldEnergy400/new_Elctemp400,label=r'$(W/nTe)_{400}$',linewidth=3,linestyle='--')
 
-    ax.hlines(0.0059,0,2000, linestyles='--',color='black',linewidth=3)
-    ax.text(650-100,0.0066-0.001,"quasi-linear",fontsize = 18)
-    ax.text(700-100,0.0063-0.001,"estimate",fontsize = 18)
-    ax.text(650-100,0.0060-0.001,"for $m_i/m_e=25$",fontsize = 18)
+    ax.hlines(0.0118*0.08,0,2000, linestyles='--',color='black',linewidth=4,label=r'$0.1\nu_{eff_{100}}^{QL}$')
+    # ax.text(650-100,0.0066-0.001,"quasi-linear",fontsize = 18)
+    # ax.text(700-100,0.0063-0.001,"estimate",fontsize = 18)
+    # ax.text(650-100,0.0060-0.001,"for $m_i/m_e=25$",fontsize = 18)
 
     ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
     ax.set_ylabel(r'$\nu_{eff} \quad [\omega_{pe}]$',fontsize=32)
 
-    ax.set_ylim(-0.0005,0.007)
+    ax.set_ylim(-0.0005,0.006)
     ax.tick_params(labelsize = 23)
     ax.tick_params(axis='y')
-    ax.legend(fontsize=25)
+    ax.legend(fontsize=22)
     ax.grid()
     ax.set_xlim(300,2000)
-    plt.show()
+    plt.savefig('./Figures/figures_temp/dependence/nu_eff_mass.jpeg')
+    #plt.show()
     plt.cla()
 
 def nueff_electricfield():
@@ -347,6 +400,7 @@ def nueff_electricfield():
     # ax.plot(time_current25_E1[4:]+300,nu_eff25_E1_[3:] / (quasi_estimate * 1*1e-5),label=r'$E_{ext} = 1\times 10^{-5} en_0 d_e/\epsilon_0$',linewidth=4,linestyle='-')
 
     ax.plot(time_current25[5:], nu_eff25_[4:] / (quasi_estimate * 5*1e-5),label=r'$E5$',linewidth=4,linestyle='-')
+    #ax.plot(time_current25_E3[4:-5]+100,nu_eff25_E3_[3:-5] / (quasi_estimate * 3*1e-5),label=r'$E3$',linewidth=4,linestyle='-')
     ax.plot(time_current25_E2[4:]+150,nu_eff25_E2_[3:] / (quasi_estimate * 2*1e-5),label=r'$E2$',linewidth=4,linestyle='-')
     ax.plot(time_current25_E1[4:]+300,nu_eff25_E1_[3:] / (quasi_estimate * 1*1e-5),label=r'$E1$',linewidth=4,linestyle='-')
 
@@ -354,7 +408,7 @@ def nueff_electricfield():
     # ax.text(20,0.0055,"quasi-linear",fontsize = 20)
     # ax.text(50,0.0051,"estimate",fontsize = 20)
 
-    ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
+    ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
     ax.set_ylabel(r'$\nu_{eff} / \nu_{\rm{eff}}^{\rm{QL}}$',fontsize=32)
     #ax.set_ylim(-0.0005,0.005)
     ax.tick_params(labelsize = 23)
@@ -362,7 +416,8 @@ def nueff_electricfield():
     ax.legend(fontsize=26)
     ax.grid()
     ax.set_xlim(300,2500)
-    plt.show()
+    #plt.show()
+    plt.savefig('./Figures/figures_temp/dependence/nu_eff_E.jpeg')
     plt.cla()
     
 def ionheatingtrace():
@@ -392,24 +447,31 @@ def tempratio_ratio():
     fig      = plt.figure(figsize=(9.5,7.5))
     ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
 
-    ax.plot(time_Iontemp25[:220],Elctemp25[:220]/Iontemp25[:220],linewidth=5,label=r'$E_{5}, m_i/m_e=25$')
-    ax.plot(time_Iontemp50[:130],Elctemp50[:130]/Iontemp50[:130],linewidth=5,label=r'$E_{5}, m_i/m_e=50$')
-    ax.plot(time_Iontemp100[:200],Elctemp100[:200]/Iontemp100[:200],linewidth=5,label=r'$E_{5}, m_i/m_e=100$')
+    ax.plot(time_Iontemp25[:220],(Elctemp25[:220]/Iontemp25[:220]),linewidth=5,label=r'default')
+    ax.plot(time_Iontemp50[:130],(Elctemp50[:130]/Iontemp50[:130]),linewidth=5,label=r'$m_i/m_e=50$')
+    ax.plot(time_Iontemp100[:200],(Elctemp100[:200]/Iontemp100[:200]),linewidth=5,label=r'$m_i/m_e=100$')
+    ax.plot(time_Iontemp200[:220],(Elctemp200[:220]/Iontemp200[:220]),linewidth=5,label=r'$m_i/m_e=200$')
 
-    ax.plot(time_Iontemp25_E1[:],Elctemp25_E1[:]/Iontemp25_E1[:],linewidth=5,label=r'$E_{1}, m_i/m_e=25$')
-    ax.plot(time_Iontemp25_E2[:],Elctemp25_E2[:]/Iontemp25_E2[:],linewidth=5,label=r'$E_{2}, m_i/m_e=25$')
+    ax.plot(time_Iontemp25_E1[:],(Elctemp25_E1[:]/Iontemp25_E1[:]),linewidth=5,label=r'$E_{1}$')
+    #ax.plot(time_Iontemp25_E2[:],1/(Elctemp25_E2[:]/Iontemp25_E2[:]),linewidth=5,label=r'$E_{2}, m_i/m_e=25$')
 
-    ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
+    ax.plot(time_Iontemp25_temp20[:],(Elctemp25_temp20[:]/Iontemp25_temp20[:]),linewidth=5,label=r'$T_{e0}/T_{I0} = 20$')
+    ax.plot(time_Iontemp25_temp100[:],(Elctemp25_temp100[:]/Iontemp25_temp100[:]),linewidth=5,label=r'$T_{e0}/T_{I0} = 100$')
+
+    ax.hlines(10,0,3000,linestyles='--',linewidth=5,colors='black')
+
+    ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
 
     ax.set_ylabel(r'$T_e/T_i$',fontsize=32)
-    ax.set_xlim(0,2800)
-    #ax.set_ylim(0,0.035)
+    ax.set_xlim(0,2500)
+    ax.set_ylim(0,105)
     ax.tick_params(labelsize = 26)
     ax.tick_params(axis='y')
     ax.legend(fontsize=24)
     ax.grid()
+    plt.savefig('./Figures/figures_temp/dependence/temp_ratio.jpeg')
     #ax.set_xlim(0,2000)
-    plt.show()
+    #plt.show()
     plt.clf()    
 
 def ionheating():
@@ -572,10 +634,10 @@ def elcheating_rate():
     fig     = plt.figure(figsize=(13.0,9.0))
     ax      = fig.add_axes([0.15, 0.15, 0.75, 0.82])
 
-    ax.plot(time_Elctemp400[1:],dTedt400_/0.0004,linewidth=5,label=r'$400,E5$')
-    ax.plot(time_Elctemp200[1:],dTedt200_/0.0004,linewidth=5,label=r'$200,E5$')
-    ax.plot(time_Elctemp100[1:],dTedt100_/0.0004,linewidth=5,label=r'$100,E5$')   
-    ax.plot(time_Elctemp50[1:],dTedt50_/0.0004,linewidth=5,label=r'$50,E5$')
+    #ax.plot(time_Elctemp400[1:],dTedt400_/0.0004,linewidth=5,label=r'$400,E5$')
+    #ax.plot(time_Elctemp200[150:300],dTedt200_[150:300]/0.0004,linewidth=5,label=r'$200,E5$')
+    ax.plot(time_Elctemp100[150:300],dTedt100_[150:300]/0.0004,linewidth=5,label=r'$100,E5$')   
+    ax.plot(time_Elctemp50[110:220],dTedt50_[110:220]/0.0004,linewidth=5,label=r'$50,E5$')
 
     ax.plot(time_Elctemp25[1:280],dTedt25_[1:280]/0.0004,linewidth=5,label=r'$25,E5$')
     ax.plot(time_Elctemp25_E4[1:150],dTedtE4_[1:150]/0.0004,linewidth=5,label=r'$25,E4$')
@@ -585,7 +647,7 @@ def elcheating_rate():
 
     ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
     ax.set_ylabel(r'$ (1/T_{e0}) d T_e / d t [\omega_{pe}^-1]$',fontsize=32,color='black')
-    ax.set_xlim(0,2500)
+    #ax.set_xlim(0,2500)
     ax.grid()
     ax.tick_params(labelsize = 24)
     ax.legend(fontsize=30)
@@ -594,7 +656,7 @@ def elcheating_rate():
 if __name__ == '__main__':
 
     # nueff_massratio()
-    # nueff_electricfield()
+    nueff_electricfield()
 
     tempratio_ratio()
 
@@ -607,4 +669,6 @@ if __name__ == '__main__':
 
     # elcheating_rate()
 
-    current_electricfield()
+    # current_electricfield()
+
+    # current_massratio()

@@ -84,6 +84,57 @@ def temperature_ratio():
     #plt.savefig('./Figures/figures_temp/tempratio.jpg')
     plt.clf()
 
+
+#######################
+# Not used by the paper
+#######################
+
+def all_current():
+    current25_E1 = np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM1i.txt')*2
+    time_current25_E1 = np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM1i_time.txt') + 300
+    current100_E1 = np.loadtxt('./massRatio/mass100/E1/saved_data/elc_intM1i.txt')*2
+    time_curren100_E1 = np.loadtxt('./massRatio/mass100/E1/saved_data/elc_intM1i_time.txt') + 160
+    current400_E1 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM1i.txt')*2
+    time_current400_E1 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM1i_time.txt') + 80
+
+    current25_E2 = np.loadtxt('./massRatio/mass25/E2/saved_data/elc_intM1i.txt')*2
+    time_current25_E2 = np.loadtxt('./massRatio/mass25/E2/saved_data/elc_intM1i_time.txt') + 150
+    current25_E5 = np.loadtxt('./massRatio/mass25/E5/saved_data/elc_intM1i.txt')*2
+    time_current25_E5 = np.loadtxt('./massRatio/mass25/E5/saved_data/elc_intM1i_time.txt')
+
+    current100_E5 = np.loadtxt('./massRatio/mass100/E5_H2/saved_data/elc_intM1i.txt')*2
+    time_curren100_E1 = np.loadtxt('./massRatio/mass100/E5_H2/saved_data/elc_intM1i_time.txt') 
+    current400_E5 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM1i.txt')*2
+    time_current400_E5 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM1i_time.txt') + 80
+
+    fig      = plt.figure(figsize=(10.5,7.5))
+    ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
+
+    ax.plot(time_current1[:],current1,label='E1',linewidth=5)
+    # ax.plot(time_current2[:],current2,label='E2',linewidth=5)
+    # ax.plot(time_current3[:],current3,label='E3',linewidth=5)
+    # ax.plot(time_current4[:],current4,label='E4',linewidth=5)
+    # ax.plot(time_current5[:],current5,label='E5',linewidth=5)
+
+    # ax.plot(time_current1[1:],nu_eff1[:],label='E1',linewidth=5)
+    # ax.plot(time_current2[1:241],nu_eff2[:240],label='E2',linewidth=5)
+    # ax.plot(time_current3[1:201],nu_eff3[:200],label='E3',linewidth=5)
+    # ax.plot(time_current4[1:181],nu_eff4[:180],label='E4',linewidth=5)
+    # ax.plot(time_current5[2:141],nu_eff5[1:140],label='E5',linewidth=5)
+
+
+    ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
+
+    #ax.set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32,color='blue')
+    # ax.set_xlim(0,2700)
+    # ax.set_ylim(0,5.0)
+    ax.tick_params(labelsize = 26)
+    ax.tick_params(axis='y',colors = 'blue')
+    ax.legend()
+    ax.grid()
+    #ax.set_xlim(0,3500)
+    plt.show()
+
 def ion_temp():
     fig      = plt.figure(figsize=(11.0,9.0))
     ax      = fig.add_axes([0.12, 0.16, 0.75, 0.80])
@@ -94,9 +145,10 @@ def ion_temp():
     plt.show()
     plt.clf()
 
+
 if __name__ == "__main__":
-    #ion_temp()
+    ion_temp()
     
     #fieldenergy_current()
     
-    temperature_ratio()
+    # temperature_ratio()

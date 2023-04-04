@@ -5,8 +5,8 @@ import numpy as np
 
 fieldEnergy1 = np.loadtxt('./massRatio/mass25/E1/saved_data/fieldEnergy.txt')
 time_fieldEnergy1 = np.loadtxt('./massRatio/mass25/E1/saved_data/fieldEnergy_time.txt')
-fieldEnergy2 = np.loadtxt('./massRatio/mass100/E1-low1/saved_data/fieldEnergy.txt')
-time_fieldEnergy2 = np.loadtxt('./massRatio/mass100/E1-low1/saved_data/fieldEnergy_time.txt')
+fieldEnergy2 = np.loadtxt('./massRatio/mass100/E1/saved_data/fieldEnergy.txt')
+time_fieldEnergy2 = np.loadtxt('./massRatio/mass100/E1/saved_data/fieldEnergy_time.txt')
 fieldEnergy3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/fieldEnergy.txt')
 time_fieldEnergy3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/fieldEnergy_time.txt')
 
@@ -14,10 +14,10 @@ Iontemp1 = np.loadtxt('./massRatio/mass25/E1/saved_data/ion_intM2Thermal.txt')*2
 time_Iontemp1 = np.loadtxt('./massRatio/mass25/E1/saved_data/ion_intM2Thermal_time.txt')
 Elctemp1= np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM2Thermal.txt')
 time_Elctemp1 = np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM2Thermal_time.txt')
-Iontemp2 = np.loadtxt('./massRatio/mass100/E1-low1/saved_data/ion_intM2Thermal.txt')*100
-time_Iontemp2 = np.loadtxt('./massRatio/mass100/E1-low1/saved_data/ion_intM2Thermal_time.txt')
-Elctemp2 = np.loadtxt('./massRatio/mass100/E1-low1/saved_data/elc_intM2Thermal.txt')
-time_Elctemp2 = np.loadtxt('./massRatio/mass100/E1-low1/saved_data/elc_intM2Thermal_time.txt')
+Iontemp2 = np.loadtxt('./massRatio/mass100/E1/saved_data/ion_intM2Thermal.txt')*100
+time_Iontemp2 = np.loadtxt('./massRatio/mass100/E1/saved_data/ion_intM2Thermal_time.txt')
+Elctemp2 = np.loadtxt('./massRatio/mass100/E1/saved_data/elc_intM2Thermal.txt')
+time_Elctemp2 = np.loadtxt('./massRatio/mass100/E1/saved_data/elc_intM2Thermal_time.txt')
 Iontemp3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/ion_intM2Thermal.txt')*400
 time_Iontemp3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/ion_intM2Thermal_time.txt')
 Elctemp3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM2Thermal.txt')
@@ -38,8 +38,8 @@ time_Elctemp3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM2Ther
 
 current1 = np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM1i.txt')*2
 time_current1 = np.loadtxt('./massRatio/mass25/E1/saved_data/elc_intM1i_time.txt') + 300
-current2 = np.loadtxt('./massRatio/mass100/E1-low1/saved_data/elc_intM1i.txt')*2
-time_current2 = np.loadtxt('./massRatio/mass100/E1-low1/saved_data/elc_intM1i_time.txt') + 160
+current2 = np.loadtxt('./massRatio/mass100/E1/saved_data/elc_intM1i.txt')*2
+time_current2 = np.loadtxt('./massRatio/mass100/E1/saved_data/elc_intM1i_time.txt') + 160
 current3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM1i.txt')*2
 time_current3 = np.loadtxt('./massRatio/mass400/E1-low1/saved_data/elc_intM1i_time.txt') + 80
 
@@ -125,16 +125,16 @@ for i in range(np.size(current3)-1):
 fig      = plt.figure(figsize=(10.5,7.5))
 ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
 
-# ax.plot(time_current1[:],current1,label='25',linewidth=5)
-# ax.plot(time_current2[:],current2,label='100',linewidth=5)
-# ax.plot(time_current3[:],current3,label='400',linewidth=5)
+ax.plot(time_current1[:],current1,label='25',linewidth=5)
+ax.plot(time_current2[:],current2,label='100',linewidth=5)
+ax.plot(time_current3[:],current3,label='400',linewidth=5)
 
 #ax.plot(time_current1[1:],nu_eff1,label='25',linewidth=5,color='red',linestyle='-')
 #ax.plot(time_fieldEnergy1,fieldEnergy1/0.0004,linewidth=5,color='red',linestyle='--')
 #ax.plot(time_current2[1:],nu_eff2,label='100',linewidth=5,color='green',linestyle='-')
 #ax.plot(time_fieldEnergy2,fieldEnergy2/0.0004,linewidth=5,color='green',linestyle='--')
-ax.plot(time_current3[1:],nu_eff3,label='400',linewidth=5,color='blue',linestyle='-')
-ax.plot(time_fieldEnergy3,fieldEnergy3/0.0006,label='W/nTe',linewidth=5,color='blue',linestyle='--')
+#ax.plot(time_current3[1:],nu_eff3,label='400',linewidth=5,color='blue',linestyle='-')
+#ax.plot(time_fieldEnergy3,fieldEnergy3/0.0006,label='W/nTe',linewidth=5,color='blue',linestyle='--')
 
 
 ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
