@@ -5,12 +5,12 @@ from scipy.interpolate import interp1d
 from scipy.optimize import curve_fit
 from scipy.special import gamma
 import matplotlib.ticker as ticker
-# matplotlib.use('TkAgg')
+matplotlib.use('TkAgg')
 
 ####### Load Data ########
 
-fieldEnergy = np.loadtxt('./Cori/mass25/rescheck/3/saved_data/fieldEnergy.txt')
-time_fieldEnergy = np.loadtxt('./Cori/mass25/rescheck/3/saved_data/fieldEnergy_time.txt')
+fieldEnergy = np.loadtxt('./Cori/mass25/rescheck/4/saved_data/fieldEnergy.txt')
+time_fieldEnergy = np.loadtxt('./Cori/mass25/rescheck/4/saved_data/fieldEnergy_time.txt')
 
 fieldEnergy_20 = np.loadtxt('./tempRatio/20/saved_data/fieldEnergy.txt')
 time_fieldEnergy_20 = np.loadtxt('./tempRatio/20/saved_data/fieldEnergy_time.txt')
@@ -19,20 +19,20 @@ fieldEnergy_100 = np.loadtxt('./tempRatio/100/saved_data/fieldEnergy.txt')
 time_fieldEnergy_100 = np.loadtxt('./tempRatio/100/saved_data/fieldEnergy_time.txt')
 
 
-time_current = np.loadtxt('./Cori/mass25/rescheck/3/saved_data/elc_intM1i_time.txt')
-current = np.loadtxt('./Cori/mass25/rescheck/3/saved_data/elc_intM1i.txt')*2
+time_current = np.loadtxt('./Cori/mass25/rescheck/4/saved_data/elc_intM1i_time.txt')
+current = np.loadtxt('./Cori/mass25/rescheck/4/saved_data/elc_intM1i.txt')*2
 
-time_current_20 = np.loadtxt('./tempRatio/20_low/saved_data/elc_intM1i_time.txt')
-current_20 = np.loadtxt('./tempRatio/20_low/saved_data/elc_intM1i.txt')*2
+time_current_20 = np.loadtxt('./tempRatio/20/saved_data/elc_intM1i_time.txt')
+current_20 = np.loadtxt('./tempRatio/20/saved_data/elc_intM1i.txt')*2
 
 time_current_100 = np.loadtxt('./tempRatio/100/saved_data/elc_intM1i_time.txt')
 current_100 = np.loadtxt('./tempRatio/100/saved_data/elc_intM1i.txt')*2
 
 
-Iontemp_20 = np.loadtxt('./tempRatio/20_low/saved_data/ion_intM2Thermal.txt')*25
-time_Iontemp_20 = np.loadtxt('./tempRatio/20_low/saved_data/ion_intM2Thermal_time.txt')
-Elctemp_20 = np.loadtxt('./tempRatio/20_low/saved_data/elc_intM2Thermal.txt')
-time_Elctemp_20 = np.loadtxt('./tempRatio/20_low/saved_data/elc_intM2Thermal_time.txt')
+Iontemp_20 = np.loadtxt('./tempRatio/20/saved_data/ion_intM2Thermal.txt')*25
+time_Iontemp_20 = np.loadtxt('./tempRatio/20/saved_data/ion_intM2Thermal_time.txt')
+Elctemp_20 = np.loadtxt('./tempRatio/20/saved_data/elc_intM2Thermal.txt')
+time_Elctemp_20 = np.loadtxt('./tempRatio/20/saved_data/elc_intM2Thermal_time.txt')
 
 Iontemp_50 = np.loadtxt('./Cori/mass25/rescheck/3/saved_data/ion_intM2Thermal.txt')*25
 time_Iontemp_50 = np.loadtxt('./Cori/mass25/rescheck/3/saved_data/ion_intM2Thermal_time.txt')
@@ -149,16 +149,21 @@ def temp_plot():
     fig      = plt.figure(figsize=(11.0,9.0))
     ax      = fig.add_axes([0.16, 0.16, 0.78, 0.78])
 
-    ax.plot(time_Iontemp_20[:],Elctemp_20[0]/Iontemp_20[:],label='20',linewidth=5)
-    ax.plot(time_Iontemp_50[:],Elctemp_50[0]/Iontemp_50[:],label='50',linewidth=5)
-    ax.plot(time_Iontemp_100[:],Elctemp_100[0]/Iontemp_100[:],label='100',linewidth=5)
-    #ax.plot(time_Iontemp_200[:],Elctemp_200[:]/Iontemp_200[:],label='200',linewidth=5)
+    # ax.plot(time_Iontemp_20[:],Elctemp_20[:]/Iontemp_20[:],label='20',linewidth=5)
+    # ax.plot(time_Iontemp_50[:],Elctemp_50[:]/Iontemp_50[:],label='50',linewidth=5)
+    # ax.plot(time_Iontemp_100[:],Elctemp_100[:]/Iontemp_100[:],label='100',linewidth=5)
+    # ax.plot(time_Iontemp_200[:],Elctemp_200[:]/Iontemp_200[:],label='200',linewidth=5)
+
+    ax.plot(time_Iontemp_20[:],Iontemp_20[:]/Iontemp_20[0],label='20',linewidth=5)
+    ax.plot(time_Iontemp_50[:],Iontemp_50[:]/Iontemp_50[0],label='50',linewidth=5)
+    ax.plot(time_Iontemp_100[:],Iontemp_100[:]/Iontemp_100[0],label='100',linewidth=5)
+    ax.plot(time_Iontemp_200[:],Iontemp_200[:]/Iontemp_200[0],label='200',linewidth=5)
 
     ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
     ax.set_ylabel(r'$T_e/T_{i} $',fontsize=32,color='black')
 
     ax.set_xlim(0,1500)
-    ax.set_ylim(-3,110)
+    ax.set_ylim(-3,60)
     ax.tick_params(labelsize = 28)
     ax.tick_params(axis='y',colors='black')
 
@@ -184,13 +189,13 @@ def compare():
 
 
     axs[0,1].set_title("ion temperature",fontsize=28)
-    axs[0,1].plot(time_Iontemp_20[:],Iontemp_20[:]/Iontemp_20[0],label='20',linewidth=5)
-    axs[0,1].plot(time_Iontemp_50[:],Iontemp_50[:]/Iontemp_50[0],label='50',linewidth=5)
-    axs[0,1].plot(time_Iontemp_100[:],Iontemp_100[:]/Iontemp_100[0],label='100',linewidth=5)
+    axs[0,1].plot(time_Iontemp_20[:],Iontemp_20[:]/Elctemp_20[0],label='20',linewidth=5)
+    axs[0,1].plot(time_Iontemp_50[:],Iontemp_50[:]/Elctemp_50[0],label='50',linewidth=5)
+    axs[0,1].plot(time_Iontemp_100[:],Iontemp_100[:]/Elctemp_100[0],label='100',linewidth=5)
     axs[0,1].set_xlabel(r'$t [omega_{pe}^{-1}]$',fontsize=32)
     axs[0,1].set_ylabel(r'$T_i/T_{i0}$',fontsize=32)
     axs[0,1].set_xlim(0,2000)
-    axs[0,1].set_ylim(-3,40)
+    #axs[0,1].set_ylim(-3,40)
     axs[0,1].tick_params(labelsize = 28)
     axs[0,1].legend(fontsize=24)
 
@@ -225,8 +230,14 @@ def distribution():
     # df_20_2 = np.loadtxt('./tempRatio/20/dist_function/650.0_elc_1d.txt')
     # df_50_2 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function_save/600.0_elc_1d.txt')
 
-    df_20_1600 = np.loadtxt('./tempRatio/20/dist_function/1550.0_elc_1d.txt')
-    df_50_1600 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function_save/1500.0_elc_1d.txt')
+    df_20_750 = np.loadtxt('./tempRatio/20/dist_function/750.0_elc_1d.txt')
+    df_50_750 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function_save/700.0_elc_1d.txt')
+
+    df_20_1000 = np.loadtxt('./tempRatio/20/dist_function/1000.0_elc_1d.txt')
+    df_50_1000 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function_save/950.0_elc_1d.txt')
+
+    df_20_1250 = np.loadtxt('./tempRatio/20/dist_function/1250.0_elc_1d.txt')
+    df_50_1250 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function_save/1200.0_elc_1d.txt')
 
     #df_50_1800 = np.loadtxt('./Cori/mass25/rescheck/4/dist_function_save/1650.0_elc_1d.txt')
 
@@ -243,11 +254,14 @@ def distribution():
     plt.plot(velocities_z_20/0.02, df_20_1,label=r'$20,\omega_{pe}t=600$',linewidth=6,linestyle='--',color='red')
     plt.plot(velocities_z_50/0.02, df_50_1,label=r'$50,\omega_{pe}t=550$',linewidth=6,linestyle='-',color='red')
 
-    # plt.plot(velocities_z_20/0.02, df_20_2,label=r'$20,\omega_{pe}t=600$',linewidth=6,linestle='--',color='blue')
-    # plt.plot(velocities_z_50/0.02, df_50_2,label=r'$50,\omega_{pe}t=550$',linewidth=6,linestle='-',color='blue')
+    # plt.plot(velocities_z_20/0.02, df_20_750,label=r'$20,\omega_{pe}t=750$',linewidth=6,linestyle='--',color='green')
+    # plt.plot(velocities_z_50/0.02, df_50_750,label=r'$50,\omega_{pe}t=700$',linewidth=6,linestyle='-',color='green')
 
-    plt.plot(velocities_z_20/0.02, df_20_1600,label=r'$20,\omega_{pe}t=1550$',linewidth=6)
-    plt.plot(velocities_z_50/0.02, df_50_1600,label=r'$50,\omega_{pe}t=1500$',linewidth=6)
+    plt.plot(velocities_z_20/0.02, df_20_1000,label=r'$20,\omega_{pe}t=1000$',linewidth=6,linestyle='--',color='blue')
+    plt.plot(velocities_z_50/0.02, df_50_1000,label=r'$50,\omega_{pe}t=950$',linewidth=6,linestyle='-',color='blue')
+
+    plt.plot(velocities_z_20/0.02, df_20_1250,label=r'$20,\omega_{pe}t=1250$',linewidth=6,linestyle='--',color='orange')
+    plt.plot(velocities_z_50/0.02, df_50_1250,label=r'$50,\omega_{pe}t=1200$',linewidth=6,linestyle='-',color='orange')
 
 
     resonance = np.arange(-1.2,1.4,0.1)
@@ -257,7 +271,7 @@ def distribution():
     plt.grid()
     plt.legend(fontsize=26)
     plt.tick_params(labelsize = 28)
-    plt.xlim(-0.08/0.02,0.30/0.02)
+    plt.xlim(-0.08/0.02,0.16/0.02)
     plt.ylim(-3,56)
     plt.show()
 
