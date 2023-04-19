@@ -247,6 +247,23 @@ nu_eff25_E1_ = np.array(windows_25_E1.mean().tolist())
 ####################
 ########################################################################################################
 
+def field_energy():
+    fig      = plt.figure(figsize=(12.5,7.5))
+    ax      = fig.add_axes([0.16, 0.16, 0.82, 0.75])
+    #ax.set_title("perturbed electric field energy",fontsize=16)
+    ax.plot(time_fieldEnergy100,fieldEnergy100,label='M100',linewidth=5)
+    ax.plot(time_fieldEnergy200,fieldEnergy200,label='M200',linewidth=5)
+    ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=36)
+    ax.set_ylabel(r'$\epsilon_0 \int (|\delta E_z|^2 + |\delta E_y|^2) dydz / n_0 T_{e0}$',fontsize=24,color='red')
+    ax.set_yscale('log')
+    #ax.set_xlim(0,650)
+    #ax.set_ylim(1e-11,1e-5)
+    ax.tick_params(labelsize = 28)
+    ax.legend(fontsize=26)
+    #plt.savefig('./Cori/figure_temp/field_energy.jpg')
+    plt.show()
+    # plt.clf()
+
 def current_massratio():
     fig      = plt.figure(figsize=(10.5,7.5))
     ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
@@ -654,11 +671,11 @@ def elcheating_rate():
     plt.show()
 
 if __name__ == '__main__':
-
+    field_energy()
     # nueff_massratio()
-    nueff_electricfield()
+    # nueff_electricfield()
 
-    tempratio_ratio()
+    # tempratio_ratio()
 
     # ionheatingtrace()
 
