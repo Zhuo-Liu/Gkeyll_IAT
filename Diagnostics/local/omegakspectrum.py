@@ -57,9 +57,11 @@ def load_phi():
     Ez_list = []
     Ey_list = []
     phi_list = []
-    for i in range(200,3798):
+    for i in range(0,466):
         fignum = str(i).zfill(4)
-        filename = './Cori/mass25/rescheck/1/field/M25_E2_0_field_' + fignum + '.txt'
+        #filename = './Cori/mass25/rescheck/1/field/M25_E2_0_field_' + fignum + '.txt'
+        #filename = './massRatio/mass100/more_save/field/M100_E5_field_' + fignum + '.txt'
+        filename = './massRatio/mass100/E5_H2/field/M100_E5_field_' + fignum + '.txt'
         phi = np.loadtxt(filename)
         E_z, E_y = np.gradient(phi)
         E_z = E_z/dz
@@ -78,30 +80,37 @@ def load_phi():
 def k_omega_iaw():
     _,_,Ez0, Ey, phi = load_phi()
 
-    Ez = np.transpose(Ez0[400:1200,:,0]) # 48 x 400
+    Ez = np.transpose(Ez0[40:100,:,0]) # 48 x 400
     Ezw = np.fft.rfft2(Ez) # 48 x 400
     Ezw2 = np.zeros_like(Ezw)
     for i in range(Ezw.shape[1]):
         Ezw2[:,i] = np.fft.fftshift(Ezw[:,i])
     absEzw = np.power(np.absolute(Ezw2),2)[:,:]  
-    omegas = np.fft.rfftfreq(800,d=(400)/(800-1)) * 2.0 * np.pi
-    ks = np.linspace(-24,23,48)
+    omegas = np.fft.rfftfreq(60,d=(600)/(60-1)) * 2.0 * np.pi
+    #ks = np.linspace(-24,23,48)
+    ks = np.linspace(-48,47,96)
 
-    k_list_25 = 2*np.pi*np.array([0, 0.3183, 1,      2,      4,     6,    8,     10,    12,     16,     18])
-    gamma_list_25 =     np.array([0, 0.00143,0.00441,0.00833,0.0135,0.015,0.0141,0.0122,0.00973,0.00364,-0.0003])
-    omega_list_25 =     np.array([0, 0.00835,0.0261, 0.051,  0.0946,0.128,0.153, 0.1718,0.187,  0.2122, 0.2237])
-    f_25 = interp1d(k_list_25, gamma_list_25, kind='cubic')
-    fw_25 = interp1d(k_list_25, omega_list_25, kind='cubic')
-    k_sample_25 = np.arange(0.1,100,0.1)
-    gamma_sample_25 = f_25(k_sample_25)
-    omega_sample_25 = fw_25(k_sample_25)
+    # k_list_25 = 2*np.pi*np.array([0, 0.3183, 1,      2,      4,     6,    8,     10,    12,     16,     18])
+    # gamma_list_25 =     np.array([0, 0.00143,0.00441,0.00833,0.0135,0.015,0.0141,0.0122,0.00973,0.00364,-0.0003])
+    # omega_list_25 =     np.array([0, 0.00835,0.0261, 0.051,  0.0946,0.128,0.153, 0.1718,0.187,  0.2122, 0.2237])
+    # f_25 = interp1d(k_list_25, gamma_list_25, kind='cubic')
+    # fw_25 = interp1d(k_list_25, omega_list_25, kind='cubic')
+    # k_sample_25 = np.arange(0.1,100,0.1)
+    # gamma_sample_25 = f_25(k_sample_25)
+    # omega_sample_25 = fw_25(k_sample_25)
+
+    k_list_100 = 2*np.pi*np.array([0, 0.3183,1,2,4,6,8,10,12,16,18,19])
+    omega_list_100 =     np.array([0, 0.00412,0.01286,0.02525,0.04715,0.06417,0.07677,0.08623,0.09378,0.1063,0.111973,0.114734])
+    fw_100 = interp1d(k_list_100, omega_list_100, kind='cubic')
+    k_sample_100 = np.arange(0.1,100,0.1)
+    omega_sample_100 = fw_100(k_sample_100)
 
     zz,yy = np.meshgrid(ks,omegas[:100],indexing='xy')
     zz = np.transpose(zz)
     yy = np.transpose(yy)
     absEzw = np.log(absEzw)
     absEzw[absEzw<-3] = -3
-    #levels = [1e-9,1e-6,1e-3,1e-2,1e-1,1,3]
+    levels = [1e-9,1e-6,1e-3,1e-2,1e-1,1,3]
 
     fig     = plt.figure(figsize=(10.0,9.0))
     ax      = fig.add_axes([0.15, 0.15, 0.80, 0.76])
@@ -109,7 +118,7 @@ def k_omega_iaw():
     #plt.clim(vmin=-10,vmax=30)
     levels = np.linspace(-3,3,21)
     pos = ax.contourf(zz,yy,absEzw[:,:100],levels=levels)
-    ax.plot(-k_sample_25/2/np.pi, omega_sample_25,linewidth=5, color='red',linestyle='--',label=r'Linear theory')
+    ax.plot(-k_sample_100/2/np.pi, omega_sample_100,linewidth=5, color='red',linestyle='--',label=r'Linear theory')
     ax.set_xlabel(r'$kd_e/2\pi$',fontsize=36)
     ax.set_ylabel(r'$\omega/\omega_{pe}$',fontsize=36)
     ax.set_xlim(-20,20)
@@ -117,26 +126,23 @@ def k_omega_iaw():
     l = ax.legend(fontsize=32)
     # for text in l.get_texts():
     #     text.set_color("white")
-    plt.savefig('./paper_figures/iaw_ek_spectrum.jpg')
+    plt.show()
+    #plt.savefig('./paper_figures/iaw_ek_spectrum.jpg')
     plt.cla()
 
 def k_omega_eaw():
     _,_,Ez0, Ey, phi = load_phi()
 
-    Ez = np.transpose(Ez0[3000:3600,:,0]) # 48 x 400
+    Ez = np.transpose(Ez0[380:460,:,0]) # 48 x 400
     Ezw = np.fft.rfft2(Ez) # 48 x 400
     Ezw2 = np.zeros_like(Ezw)
     for i in range(Ezw.shape[1]):
         Ezw2[:,i] = np.fft.fftshift(Ezw[:,i])
     absEzw = np.power(np.absolute(Ezw2),2)[:,:]  
-    omegas = np.fft.rfftfreq(600,d=(300)/(600-1)) * 2.0 * np.pi
-    ks = np.linspace(-24,23,48)
+    omegas = np.fft.rfftfreq(80,d=(800)/(80-1)) * 2.0 * np.pi
+    #ks = np.linspace(-24,23,48)
+    ks = np.linspace(-48,47,96)
 
-    k_list_25 = 2*np.pi*np.array([0, 0.3183, 1,      2,      4,     6,    8,     10,    12,     16,     18])
-    gamma_list_25 =     np.array([0, 0.00143,0.00441,0.00833,0.0135,0.015,0.0141,0.0122,0.00973,0.00364,-0.0003])
-    omega_list_25 =     np.array([0, 0.00835,0.0261, 0.051,  0.0946,0.128,0.153, 0.1718,0.187,  0.2122, 0.2237])
-    f_25 = interp1d(k_list_25, gamma_list_25, kind='cubic')
-    fw_25 = interp1d(k_list_25, omega_list_25, kind='cubic')
     k_sample_25 = np.arange(0.1,36,0.1)
 
     zz,yy = np.meshgrid(ks,omegas[:100],indexing='xy')
@@ -163,10 +169,11 @@ def k_omega_eaw():
     # for text in l.get_texts():
     #     text.set_color("white")
     #fig.colorbar(pos,ax=ax)
-    plt.savefig('./paper_figures/eaw_ek_spectrum.jpg')
+    plt.show()
+    #plt.savefig('./paper_figures/eaw_ek_spectrum.jpg')
     plt.cla()
 
 
 if __name__ == '__main__':
-    #k_omega_eaw()
-    k_omega_iaw()
+    k_omega_eaw()
+    #k_omega_iaw()

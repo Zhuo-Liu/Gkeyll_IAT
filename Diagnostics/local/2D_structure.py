@@ -110,12 +110,22 @@ def plot_phase_space(fName,GridFile):
 
     ax.set_ylim(-4,13)
     ax.tick_params(labelsize = 32)
-
+    time_middle = fName.rsplit("/")[-1]
+    time = float(time_middle.rsplit("_")[0])
+    ax.set_title(r'$\omega_{pe}t=$' + f"{time:04}",fontsize=26)
     #ax.grid(which='major')
 
-    plt.show()
+    #plt.show()
+    savename = './massRatio/mass100/E5_H2/phase_plots/'+f'{time:04}'+'.jpg'
+    plt.savefig(savename)
     #plt.savefig(r'./paper_figures/phase.jpg', bbox_inches='tight')
     plt.cla()
+
+def phase_space_loop():
+    for i in range(89):
+        time = i * 50 +100
+        fileName = './massRatio/mass100/E5_H2/dist_function/' + f'{time:.1f}' + '_elc_phase.txt'
+        plot_phase_space(fileName, ElcGridPath)
 
 def plot_phase_space_ion(fName,GridFile):
     df = loadtxt(fName)
@@ -170,8 +180,8 @@ if __name__ == '__main__':
     #plot_2d_elc_distribution('./massRatio/mass100/E5_H2/dist_function/1800.0_elc_2d.txt',ElcGridPath)
     #plot_2d_ion_distribution('./massRatio/mass100/E5_H2/dist_function/1800.0_ion_2d.txt',IonGridPath)
 
-    #plot_phi('./massRatio/mass100/E5_H2/field/M100_E5_field_0376.txt')
-    plot_phase_space('./massRatio/mass100/E5_H2/dist_function/1800.0_elc_phase.txt', ElcGridPath)
+    plot_phi('./massRatio/mass100/E5_H2/field/M100_E5_field_0356.txt')
+    #plot_phase_space('./massRatio/mass100/E5_H2/dist_function/1800.0_elc_phase.txt', ElcGridPath)
     #plot_phase_space_ion('./massRatio/mass100/E5_H2/dist_function/3500.0_ion_phase.txt', IonGridPath)
     #plot_2d_elc_distribution('./massRatio/mass100/E5_H2/dist_function/3200.0_elc_2d.txt',ElcGridPath)
     #plot_2d_ion_distribution('./massRatio/mass100/E5_H2/dist_function/3700.0_ion_2d.txt',IonGridPath)
@@ -181,3 +191,6 @@ if __name__ == '__main__':
     #plot_phase_space_ion('./massRatio/mass100/E5_H2/dist_function/4300.0_ion_phase.txt', IonGridPath)
     #plot_2d_elc_distribution('./massRatio/mass100/E5_H2/dist_function/4300.0_elc_2d.txt',ElcGridPath)
     #plot_2d_ion_distribution('./massRatio/mass100/E5_H2/dist_function/4200.0_ion_2d.txt',IonGridPath)
+
+    #plot_phase_space('./massRatio/mass100/E5_H2/dist_function/4000.0_elc_phase.txt', ElcGridPath)
+    # phase_space_loop()

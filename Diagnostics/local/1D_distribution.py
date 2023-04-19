@@ -31,9 +31,9 @@ def elc_main():
     # maxw2 = np.array([maxw(x,0.84,0.033,0.06) for x in velocities_z])
     # maxw3 = np.array([maxw(x,0.76,0.033,0.08) for x in velocities_z])
 
-    maxw1 = np.array([maxw(x,1.66,0.0313,0.000) for x in velocities_z])
+    maxw1 = np.array([maxw(x,1.66,0.031,0.000) for x in velocities_z])
     maxw2 = np.array([maxw(x,1.14,0.035,0.0487) for x in velocities_z])
-    maxw3 = np.array([maxw(x,0.82,0.035,0.078) for x in velocities_z])
+    maxw3 = np.array([maxw(x,1.3,0.0478,0.0613) for x in velocities_z])
 
     fig = plt.figure(figsize=(16,10),facecolor='w', edgecolor='k')
 
@@ -47,7 +47,7 @@ def elc_main():
     plt.plot(velocities_z/0.02, df_3500,label=r'$\omega_{pe}t=3500$',linewidth=6)
     plt.plot(velocities_z/0.02, df_4000,label=r'$\omega_{pe}t=4000$',linewidth=6)
 
-    resonance = np.arange(-1.2,1.4,0.1)
+    resonance = np.arange(-1.2,1.3,0.1)
     plt.fill_between(resonance, 0, 56, facecolor='grey', alpha=0.5)
     #plt.vlines(1.0,0,25,linewidth=3,linestyles='--',color='black')
 
@@ -60,8 +60,8 @@ def elc_main():
     plt.tick_params(labelsize = 28)
     plt.xlim(-0.08/0.02,0.30/0.02)
     plt.ylim(-3,56)
-    #plt.savefig('./Cori/figure_temp/elc_1d.jpg')
-    plt.show()
+    plt.savefig('./Figures/figures_temp/elc_1d.jpg')
+    #plt.show()
 
 
 def fit_1d_numerical(fName, GridFile):
@@ -306,7 +306,7 @@ def compare_dist():
 
 if __name__ == '__main__':
     # ion_main()
-    #elc_main()
+    # elc_main()
 
     ######### Fitting 
     #fit_1d_numerical('./massRatio/mass100/E5_H2/dist_function_save/1600.0_elc_1d.txt', ElcGridPath)
@@ -314,11 +314,14 @@ if __name__ == '__main__':
     ##fit_1d_1000('./massRatio/mass100/E5_H2/dist_function_save/1000.0_elc_1d.txt', ElcGridPath)
     #fit_1d_numerical('./massRatio/mass100/E5_H2/dist_function_save/1400.0_elc_1d.txt', ElcGridPath)
     
-    #fit_1d_numerical('./massRatio/mass100/E5_H2/dist_function_save/1900.0_elc_1d.txt', ElcGridPath)
+    fit_1d_numerical('./massRatio/mass100/E5_H2/dist_function_save/900.0_elc_1d.txt', ElcGridPath)
     # fit_1d('./massRatio/mass100/E5_H2/dist_function_save/1900.0_elc_1d.txt', ElcGridPath, 1.23,1.58,0.0327,0.0565,0.001,0.0646)
     # fit_1d('./massRatio/mass100/E5_H2/dist_function_save/1600.0_elc_1d.txt', ElcGridPath, 1.48,1.32,0.0326,0.0478,0.0,0.0613)
     # fit_1d('./massRatio/mass100/E5_H2/dist_function_save/1000.0_elc_1d.txt', ElcGridPath, 1.66,1.14,0.031,0.035,0.0,0.0487)
     # fit_1d('./massRatio/mass100/E5_H2/dist_function_save/750.0_elc_1d.txt', ElcGridPath, 1.69,1.1,0.0296,0.0255,0.00136,0.0479)
 
     #justification()
-    compare_dist()
+    # compare_dist()
+
+    # ElcGridPath_E1 = './massRatio/mass25/E1/dist_function/elc_velocities.npz'
+    # fit_1d_numerical('./massRatio/mass25/E1/dist_function/2500.0_elc_1d.txt', ElcGridPath_E1)
