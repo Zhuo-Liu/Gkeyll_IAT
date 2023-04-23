@@ -314,7 +314,7 @@ if __name__ == '__main__':
     ##fit_1d_1000('./massRatio/mass100/E5_H2/dist_function_save/1000.0_elc_1d.txt', ElcGridPath)
     #fit_1d_numerical('./massRatio/mass100/E5_H2/dist_function_save/1400.0_elc_1d.txt', ElcGridPath)
     
-    fit_1d_numerical('./massRatio/mass100/E5_H2/dist_function_save/900.0_elc_1d.txt', ElcGridPath)
+    # fit_1d_numerical('./massRatio/mass100/E5_H2/dist_function_save/900.0_elc_1d.txt', ElcGridPath)
     # fit_1d('./massRatio/mass100/E5_H2/dist_function_save/1900.0_elc_1d.txt', ElcGridPath, 1.23,1.58,0.0327,0.0565,0.001,0.0646)
     # fit_1d('./massRatio/mass100/E5_H2/dist_function_save/1600.0_elc_1d.txt', ElcGridPath, 1.48,1.32,0.0326,0.0478,0.0,0.0613)
     # fit_1d('./massRatio/mass100/E5_H2/dist_function_save/1000.0_elc_1d.txt', ElcGridPath, 1.66,1.14,0.031,0.035,0.0,0.0487)

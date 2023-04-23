@@ -48,6 +48,8 @@ def fieldenergy_current():
     #ax2.set_ylim(1e-11,1e-4)
     ax2.tick_params(labelsize = 26,colors='red')
 
+    ax.vlines(240,0,7.0,linestyle='-.',linewidth=2,color='red')
+    ax.vlines(500,0,7.0,linestyle='--',linewidth=2,color='black')
     ax.vlines(500,0,7.0,linestyle='--',linewidth=2,color='black')
     ax.vlines(1000,0,7.0,linestyle='--',linewidth=2,color='black')
     ax.vlines(1900,0,7.0,linestyle='--',linewidth=2,color='black')
@@ -59,8 +61,8 @@ def fieldenergy_current():
     ax.set_ylim(0,7.0)
     ax.tick_params(labelsize = 26)
     ax.tick_params(axis='y',colors = 'blue')
-    #plt.show()
-    plt.savefig('./Figures/figures_temp/current_and_fieldenergy.jpg')
+    plt.show()
+    #plt.savefig('./Figures/figures_temp/current_and_fieldenergy.jpg')
     plt.clf()
 
 def temperature_ratio():
@@ -157,8 +159,8 @@ def ion_temp():
 
 
 if __name__ == "__main__":
-    ion_temp()
+    # ion_temp()
     
-    # fieldenergy_current()
+    fieldenergy_current()
     
     # temperature_ratio()

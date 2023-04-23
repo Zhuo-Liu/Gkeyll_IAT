@@ -419,7 +419,7 @@ def nueff_electricfield():
     ax.plot(time_current25_E3[4:201],nu_eff25_E3_[3:200] / (quasi_estimate * 3*1e-5)/1.05,label=r'E3',linewidth=4,linestyle='-')
     ax.plot(time_current25_E2[4:],nu_eff25_E2_[3:] / (quasi_estimate * 2*1e-5)/1.1,label=r'E2',linewidth=4,linestyle='-')
     ax.plot(time_current25_E1[4:],nu_eff25_E1_[3:] / (quasi_estimate * 1*1e-5),label=r'E1',linewidth=4,linestyle='-')
-    ax.plot(time_current25_E0[4:]-1500,nu_eff25_E0_[3:] / (quasi_estimate * 5*1e-6),label=r'E0',linewidth=4,linestyle='-')
+    ax.plot(time_current25_E0[4:],nu_eff25_E0_[3:] / (quasi_estimate * 5*1e-6),label=r'E0',linewidth=4,linestyle='-')
 
     # ax.hlines(0.0059,0,2500, linestyles='--',color='black',linewidth=3)
     # ax.text(20,0.0055,"quasi-linear",fontsize = 20)
@@ -674,7 +674,10 @@ def elcheating_rate():
 
     #ax.plot(time_Elctemp400[1:],dTedt400_/0.0004,linewidth=5,label=r'$400,E5$')
     #ax.plot(time_Elctemp200[0:300],dTedt200_[0:300]/0.0004,linewidth=5,label=r'M200')
-    ax.plot(time_Elctemp100[0:300],dTedt100_[0:300]/0.0004,linewidth=5,label=r'Main')   
+
+    ax.plot(time_Elctemp100[1:],dTedt100_[0:]/0.0004,linewidth=5,label=r'Main')
+
+    #ax.plot(time_Elctemp100[0:300],dTedt100_[0:300]/0.0004,linewidth=5,label=r'Main')   
     ax.plot(time_Elctemp50[0:220],dTedt50_[0:220]/0.0004,linewidth=5,label=r'M50')
 
     ax.plot(time_Elctemp25[1:390],dTedt25_[1:390]/0.0004,linewidth=5,label=r'M25E5')
@@ -688,7 +691,7 @@ def elcheating_rate():
 
     ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
     ax.set_ylabel(r'$ (1/T_{e0}) d T_e / d t \quad [\omega_{pe}^-1]$',fontsize=32,color='black')
-    ax.set_xlim(500,2500)
+    ax.set_xlim(500,5000)
     ax.grid()
     ax.tick_params(labelsize = 24)
     ax.legend(fontsize=28, loc='center right')

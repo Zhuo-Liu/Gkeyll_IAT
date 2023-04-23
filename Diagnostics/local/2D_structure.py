@@ -19,8 +19,13 @@ SpacePath = './massRatio/mass100/E5_H2/dist_function_save/sapce.npz'
 lz = 1.0
 ly = 0.5
 
-nz = 96
-ny = 48
+# nz = 96
+# ny = 48
+
+
+nz = 48
+ny = 24
+
 
 dz = lz/nz
 dy = ly/ny
@@ -180,7 +185,8 @@ if __name__ == '__main__':
     #plot_2d_elc_distribution('./massRatio/mass100/E5_H2/dist_function/1800.0_elc_2d.txt',ElcGridPath)
     #plot_2d_ion_distribution('./massRatio/mass100/E5_H2/dist_function/1800.0_ion_2d.txt',IonGridPath)
 
-    plot_phi('./massRatio/mass100/E5_H2/field/M100_E5_field_0356.txt')
+    #plot_phi('./massRatio/mass100/E5_H2/field/M100_E5_field_0080.txt')
+    plot_phi('./massRatio/mass25/E1/field/M25_E1_field_0120.txt')
     #plot_phase_space('./massRatio/mass100/E5_H2/dist_function/1800.0_elc_phase.txt', ElcGridPath)
     #plot_phase_space_ion('./massRatio/mass100/E5_H2/dist_function/3500.0_ion_phase.txt', IonGridPath)
     #plot_2d_elc_distribution('./massRatio/mass100/E5_H2/dist_function/3200.0_elc_2d.txt',ElcGridPath)
