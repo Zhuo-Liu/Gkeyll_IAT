@@ -91,13 +91,13 @@ def k_main(Ez_k_list,Ey_k_list):
     Ek_4300 = k_dependence(Ez_k_4300,Ey_k_4300)
     # k_plot, Ek_750_f = fit(Ek_750)
 
-    k_list = np.arange(0.6,48,0.1)*np.pi*2
+    k_list = np.arange(0.6,48,0.1)*np.pi*2/50
     N_k = 1/(k_list*k_list*k_list) * np.log(1/k_list/0.02) 
     kf = np.arange(0.0,48,0.01)*np.pi*2
     krde = kf*0.02
     N_k_full = 1/(kf*kf*kf)*(1+krde*krde)**(-3/2)*(np.log(np.sqrt(1+krde*krde)/krde)-0.5/(1+krde*krde)-0.25/(1+krde*krde)/(1+krde*krde))
 
-    k_plot_2 = np.arange(49)*50
+    k_plot_2 = np.arange(49)/50
 
     fig = plt.figure(figsize=(9,7))
     ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
@@ -108,14 +108,14 @@ def k_main(Ez_k_list,Ey_k_list):
     ax.plot(k_plot_2,Ek_3500,label=r'$\omega_{pe}t=3500$',linewidth=3)
     ax.plot(k_plot_2,Ek_4300,label=r'$\omega_{pe}t=4300$',linewidth=3)
     # plt.plot(k_plot_2,Ek_2400,label=r'$\omega_{pe}t=2400$',linewidth=3)
-    ax.plot(k_list,N_k*1700,linewidth=3,linestyle = '--',color='black')
+    ax.plot(k_list,0.004*N_k,linewidth=3,linestyle = '--',color='black')
     #plt.plot(k_list,N_k*700,label='theory2',linewidth=3,linestyle = '--',color='black')
     #plt.plot(k_list,N_k*200,label='theory2')
     #plt.plot(kf,N_k_full*900,label='theory2')
     ax.legend(fontsize=18)
-    ax.set_xlim(0,20*50)
+    ax.set_xlim(0,0.35)
     ax.set_ylim(1e-4,1000)
-    ax.set_xlabel(r'$k\lambda_{De} / 2\pi $',fontsize=26)
+    ax.set_xlabel(r'$k\lambda_{De0} / 2\pi $',fontsize=26)
     ax.set_ylabel(r'$N(k)$',fontsize=26)
     ax.tick_params(labelsize=22)
     ax.set_yscale('log')

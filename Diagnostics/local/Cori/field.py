@@ -146,7 +146,8 @@ def k_omega():
 
     #Ez1 = np.transpose(Ey[:800,:,12])
     #Ez1fft = np.fft.fftshift(np.fft.rfft2(Ez1))
-    Ez = np.transpose(Ez0[3000:3600,:,0]) # 48 x 400
+    Ez = np.transpose(Ez0[400:1000,:,0])
+    #Ez = np.transpose(Ez0[3000:3600,:,0]) # 48 x 400
     Ezw = np.fft.rfft2(Ez) # 48 x 400
     Ezw2 = np.zeros_like(Ezw)
     for i in range(Ezw.shape[1]):
@@ -160,7 +161,7 @@ def k_omega():
     omega_list_25 =     np.array([0, 0.00835,0.0261, 0.051,  0.0946,0.128,0.153, 0.1718,0.187,  0.2122, 0.2237])
     f_25 = interp1d(k_list_25, gamma_list_25, kind='cubic')
     fw_25 = interp1d(k_list_25, omega_list_25, kind='cubic')
-    k_sample_25 = np.arange(0.1,36,0.1)
+    k_sample_25 = np.arange(0.1,100,0.1)
     gamma_sample_25 = f_25(k_sample_25)
     omega_sample_25 = fw_25(k_sample_25)
 
@@ -176,22 +177,23 @@ def k_omega():
     ax.set_ylim(0,1.0)
     #plt.clim(vmin=-10,vmax=30)
     levels = np.linspace(-3,3,21)
-    pos = ax.contourf(zz,yy,absEzw[:,:100],levels=levels)
-    #ax.plot(-k_sample_25/2/np.pi, omega_sample_25,linewidth=5, color='red',linestyle='--')
-    ax.plot(-k_sample_25/2/np.pi, k_sample_25/2/np.pi * 0.15,linewidth=5, color='red',linestyle='--')
-    ax.set_xlabel(r'$kd_e/2\pi$',fontsize=32)
+    pos = ax.contourf(zz/50,yy,absEzw[:,:100],levels=levels)
+    ax.plot(-k_sample_25/2/np.pi/50, omega_sample_25,linewidth=5, color='red',linestyle='--',label='Linear theory')
+    #ax.plot(-k_sample_25/2/np.pi/50, k_sample_25 * 0.024,linewidth=5, color='red',linestyle='--',label=r'$\omega/k=1.2v_{Te0}$')
+    ax.set_xlabel(r'$k\lambda_{De}/2\pi$',fontsize=32)
     ax.set_ylabel(r'$\omega/\omega_{pe}$',fontsize=32)
     #ax.text(-2,0.7,r'$\frac{\omega}{k} = 1.2v_{Te}$',fontsize=36,color='white')
     #plt.show()
-    ax.set_xlim(-20,20)
+    ax.set_xlim(-20/50,20/50)
     ax.tick_params(labelsize = 26)
-    fig.colorbar(pos,ax=ax)
-    plt.savefig('./out.jpg')
+    ax.legend(fontsize=26 )
+    #fig.colorbar(pos,ax=ax)
+    #plt.savefig('./out.jpg')
 
     # ez1d = Ez[80,:,24]
     # ez1dfft = np.fft.fft(ez1d)
     # plt.plot(np.linspace(-48,47,96),np.abs(np.fft.fftshift(ez1dfft)))
-    # plt.show()
+    plt.show()
 
 def fit(Ek,x):
 
@@ -481,8 +483,8 @@ def smooth(stock_col,WSZ):
     return np.concatenate((start,out0,stop))
 
 if __name__ == '__main__':
-    phi_plot()
-    #k_omega()
+    # phi_plot()
+    k_omega()
     #Ez_k_list, Ey_k_list,Ez_list,Ey_list,_ = load_phi()
 
     # W = 0
