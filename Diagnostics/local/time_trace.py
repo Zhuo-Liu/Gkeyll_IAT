@@ -16,6 +16,11 @@ time_Iontemp = np.loadtxt('./massRatio/mass100/E5_H2/saved_data/ion_intM2Thermal
 Elctemp = np.loadtxt('./massRatio/mass100/E5_H2/saved_data/elc_intM2Thermal.txt')
 time_Elctemp = np.loadtxt('./massRatio/mass100/E5_H2/saved_data/elc_intM2Thermal_time.txt')
 
+# Iontemp = np.loadtxt('./massRatio/mass100/E1/saved_data/ion_intM2Thermal.txt')*100
+# time_Iontemp = np.loadtxt('./massRatio/mass100/E1/saved_data/ion_intM2Thermal_time.txt')
+# Elctemp = np.loadtxt('./massRatio/mass100/E1/saved_data/elc_intM2Thermal.txt')
+# time_Elctemp = np.loadtxt('./massRatio/mass100/E1/saved_data/elc_intM2Thermal_time.txt')
+
 dJdt = np.zeros(np.size(current)-1)
 nu_eff = np.zeros(np.size(current)-1)
 for i in range(np.size(current)-1):
@@ -47,6 +52,7 @@ def fieldenergy_current():
     ax.vlines(1000,0,7.0,linestyle='--',linewidth=2,color='black')
     ax.vlines(1900,0,7.0,linestyle='--',linewidth=2,color='black')
     ax.vlines(3800,0,7.0,linestyle='--',linewidth=2,color='black')
+    ax.hlines(0.2,0,4500,linestyle='--',linewidth=2,color='black')
     ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
     ax.set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32,color='blue')
     ax.set_xlim(0,4500)
@@ -73,14 +79,16 @@ def temperature_ratio():
     ax.set_ylim(0,30)
     ax2.set_ylim(10,70)
 
-    ax.tick_params(labelsize = 28)
+    ax.tick_params(labelsize = 50)
     ax.tick_params(axis='y',colors='black')
     ax2.tick_params(labelsize = 24,colors='blue')
-    ax.legend(fontsize=30,loc='center right',bbox_to_anchor=(1.0, 0.5))
-    #ax.grid()
+    
+    #ax.legend(fontsize=30,loc='center right',bbox_to_anchor=(1.0, 0.2))
+    ax.grid()
     #ax.legend(fontsize=30,loc='lower left')
     #plt.savefig('./Cori/figure_temp/temp.jpg')
     plt.show()
+    
     #plt.savefig('./Figures/figures_temp/tempratio.jpg')
     plt.clf()
 
@@ -141,7 +149,9 @@ def ion_temp():
     ax2 = ax.twinx()
 
     ax.plot(time_Iontemp[:],Elctemp[0]/Iontemp[:],label='ion',linewidth=5,color='black',linestyle='--')
-    ax.set_xlim(0,4000)
+    #ax.set_xlim(0,10000)
+    #ax.set_ylim(0,55)
+    ax.grid()
     plt.show()
     plt.clf()
 
@@ -149,6 +159,6 @@ def ion_temp():
 if __name__ == "__main__":
     ion_temp()
     
-    #fieldenergy_current()
+    # fieldenergy_current()
     
     # temperature_ratio()

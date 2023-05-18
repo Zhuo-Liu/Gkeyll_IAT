@@ -36,6 +36,7 @@ def load_phi():
     for i in range(0,450):
         fignum = str(i).zfill(4)
         filename = './massRatio/mass100/E5_H2/field/M100_E5_field_' + fignum + '.txt'
+        #filename = './massRatio/mass100/more_save/field/M100_E5_field_' + fignum + '.txt'
         phi = np.loadtxt(filename)
         E_z, E_y = np.gradient(phi)
         E_z = E_z/dz
@@ -61,7 +62,7 @@ def k_main(Ez_k_list,Ey_k_list):
                 if k_star <= nz//2:
                     decimal = k_star - int(k_star)
                     Ek_square = Ez_k[i,j]**2 + Ey_k[i,j]**2
-                    if decimal >= 0.5:
+                    if decimal >= 0.1:
                         E_k[int(k_star)+1] += Ek_square
                     else:
                         E_k[int(k_star)] += Ek_square
@@ -70,10 +71,12 @@ def k_main(Ez_k_list,Ey_k_list):
 
     Ez_k_500 = Ez_k_list[50,:,:]
     Ey_k_500 = Ey_k_list[50,:,:]
-    Ez_k_1000 = Ez_k_list[100,:,:]
-    Ey_k_1000 = Ey_k_list[100,:,:]
-    Ez_k_1800 = Ez_k_list[200,:,:]
-    Ey_k_1800 = Ey_k_list[200,:,:]
+    Ez_k_1000 = Ez_k_list[103,:,:]
+    Ey_k_1000 = Ey_k_list[103,:,:]
+    Ez_k_1600 = Ez_k_list[160,:,:]
+    Ey_k_1600 = Ey_k_list[160,:,:]
+    Ez_k_2000 = Ez_k_list[210,:,:]
+    Ey_k_2000 = Ey_k_list[210,:,:]
     Ez_k_3500 = Ez_k_list[350,:,:]
     Ey_k_3500 = Ey_k_list[350,:,:]
     Ez_k_4300 = Ez_k_list[420,:,:]
@@ -82,7 +85,8 @@ def k_main(Ez_k_list,Ey_k_list):
     # Ey_k_2400 = Ey_k_list[480-25,:,:]
     Ek_500 = k_dependence(Ez_k_500,Ey_k_500)
     Ek_1000 = k_dependence(Ez_k_1000,Ey_k_1000)
-    Ek_1800 = k_dependence(Ez_k_1800,Ey_k_1800)
+    Ek_1800 = k_dependence(Ez_k_1600,Ey_k_1600)
+    Ek_2000 = k_dependence(Ez_k_2000,Ey_k_2000)
     Ek_3500 = k_dependence(Ez_k_3500,Ey_k_3500)
     Ek_4300 = k_dependence(Ez_k_4300,Ey_k_4300)
     # k_plot, Ek_750_f = fit(Ek_750)
@@ -93,13 +97,14 @@ def k_main(Ez_k_list,Ey_k_list):
     krde = kf*0.02
     N_k_full = 1/(kf*kf*kf)*(1+krde*krde)**(-3/2)*(np.log(np.sqrt(1+krde*krde)/krde)-0.5/(1+krde*krde)-0.25/(1+krde*krde)/(1+krde*krde))
 
-    k_plot_2 = np.arange(49)
+    k_plot_2 = np.arange(49)*50
 
     fig = plt.figure(figsize=(9,7))
     ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
     ax.plot(k_plot_2,Ek_500,label=r'$\omega_{pe}t=500$',linewidth=3)
     ax.plot(k_plot_2,Ek_1000,label=r'$\omega_{pe}t=1000$',linewidth=3)
-    ax.plot(k_plot_2,Ek_1800,label=r'$\omega_{pe}t=1800$',linewidth=3)
+    ax.plot(k_plot_2,Ek_1800,label=r'$\omega_{pe}t=1600$',linewidth=3)
+    ax.plot(k_plot_2,Ek_2000,label=r'$\omega_{pe}t=2000$',linewidth=3)
     ax.plot(k_plot_2,Ek_3500,label=r'$\omega_{pe}t=3500$',linewidth=3)
     ax.plot(k_plot_2,Ek_4300,label=r'$\omega_{pe}t=4300$',linewidth=3)
     # plt.plot(k_plot_2,Ek_2400,label=r'$\omega_{pe}t=2400$',linewidth=3)
@@ -107,10 +112,10 @@ def k_main(Ez_k_list,Ey_k_list):
     #plt.plot(k_list,N_k*700,label='theory2',linewidth=3,linestyle = '--',color='black')
     #plt.plot(k_list,N_k*200,label='theory2')
     #plt.plot(kf,N_k_full*900,label='theory2')
-    ax.legend(fontsize=20)
-    ax.set_xlim(0,20)
+    ax.legend(fontsize=18)
+    ax.set_xlim(0,20*50)
     ax.set_ylim(1e-4,1000)
-    ax.set_xlabel(r'$kd_e / 2\pi $',fontsize=26)
+    ax.set_xlabel(r'$k\lambda_{De} / 2\pi $',fontsize=26)
     ax.set_ylabel(r'$N(k)$',fontsize=26)
     ax.tick_params(labelsize=22)
     ax.set_yscale('log')
@@ -199,8 +204,78 @@ def theta_main(Ez_k_list,Ey_k_list, N=6):
     ax.tick_params(labelsize=20)
     plt.show()
 
+def k_main_2(Ez_k_list,Ey_k_list):
+    def k_dependence(Ez_k,Ey_k):
+        E_k = np.zeros(nz//2+1)
+        for i in range(nz):
+            for j in range(ny):
+                k_square = (i-int(nz/2))**2 + (j-int(ny/2))**2
+                k_star = np.sqrt(k_square)
+                if k_star <= nz//2:
+                    decimal = k_star - int(k_star)
+                    Ek_square = Ez_k[i,j]**2 + Ey_k[i,j]**2
+                    if decimal >= 0.5:
+                        E_k[int(k_star)+1] += Ek_square
+                    else:
+                        E_k[int(k_star)] += Ek_square
+        
+        return E_k
+    
+    Ez_k_800 = Ez_k_list[80,:,:]
+    Ey_k_800 = Ey_k_list[80,:,:]
+    Ez_k_900 = Ez_k_list[90,:,:]
+    Ey_k_900 = Ey_k_list[90,:,:]
+    Ez_k_1000 = Ez_k_list[100,:,:]
+    Ey_k_1000 = Ey_k_list[100,:,:]
+    Ez_k_1200 = Ez_k_list[120,:,:]
+    Ey_k_1200 = Ey_k_list[120,:,:]
+    Ez_k_1400 = Ez_k_list[140,:,:]
+    Ey_k_1400 = Ey_k_list[140,:,:]
+    Ez_k_1600 = Ez_k_list[160,:,:]
+    Ey_k_1600 = Ey_k_list[160,:,:]
+    Ez_k_1800 = Ez_k_list[180,:,:]
+    Ey_k_1800 = Ey_k_list[180,:,:]
+    Ez_k_2000 = Ez_k_list[200,:,:]
+    Ey_k_2000 = Ey_k_list[200,:,:]
+    Ek_800 = k_dependence(Ez_k_800,Ey_k_800)
+    Ek_900 = k_dependence(Ez_k_900,Ey_k_900)
+    Ek_1000 = k_dependence(Ez_k_1000,Ey_k_1000)
+    Ek_1200 = k_dependence(Ez_k_1200,Ey_k_1200)
+    Ek_1400 = k_dependence(Ez_k_1400,Ey_k_1400)
+    Ek_1600 = k_dependence(Ez_k_1600,Ey_k_1600)
+    Ek_1800 = k_dependence(Ez_k_1800,Ey_k_1800)
+    Ek_2000 = k_dependence(Ez_k_2000,Ey_k_2000)
+    # k_plot, Ek_750_f = fit(Ek_750)
+
+    k_list = np.arange(0.6,48,0.1)*np.pi*2
+    N_k = 1/(k_list*k_list*k_list) * np.log(1/k_list/0.02) 
+    kf = np.arange(0.0,48,0.01)*np.pi*2
+    krde = kf*0.02
+    N_k_full = 1/(kf*kf*kf)*(1+krde*krde)**(-3/2)*(np.log(np.sqrt(1+krde*krde)/krde)-0.5/(1+krde*krde)-0.25/(1+krde*krde)/(1+krde*krde))
+
+    k_plot_2 = np.arange(49)
+
+    fig = plt.figure(figsize=(9,7))
+    ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
+    ax.plot(k_plot_2,Ek_800,label=r'$\omega_{pe}t=800$',linewidth=3)
+    #ax.plot(k_plot_2,Ek_900,label=r'$\omega_{pe}t=900$',linewidth=3)
+    ax.plot(k_plot_2,Ek_1000,label=r'$\omega_{pe}t=1000$',linewidth=3)
+    ax.plot(k_plot_2,Ek_1200,label=r'$\omega_{pe}t=1200$',linewidth=3)
+    ax.plot(k_plot_2,Ek_1400,label=r'$\omega_{pe}t=1400$',linewidth=3)
+    ax.plot(k_plot_2,Ek_1600,label=r'$\omega_{pe}t=1600$',linewidth=3)
+    ax.plot(k_plot_2,Ek_1800,label=r'$\omega_{pe}t=1800$',linewidth=3)
+    #ax.plot(k_plot_2,Ek_2000,label=r'$\omega_{pe}t=2000$',linewidth=3)
+    ax.plot(k_list,N_k*1700,linewidth=3,linestyle = '--',color='black')
+    ax.legend(fontsize=20)
+    ax.set_xlim(0,20)
+    ax.set_ylim(1e-4,1000)
+    ax.set_xlabel(r'$kd_e / 2\pi $',fontsize=26)
+    ax.set_ylabel(r'$N(k)$',fontsize=26)
+    ax.tick_params(labelsize=22)
+    ax.set_yscale('log')
+    plt.show()
 
 if __name__ == '__main__':
     Ez_k_list, Ey_k_list,Ez_list,Ey_list,_ = load_phi()
-    #k_main( Ez_k_list, Ey_k_list)
-    theta_main(Ez_k_list, Ey_k_list,50)
+    k_main( Ez_k_list, Ey_k_list)
+    #theta_main(Ez_k_list, Ey_k_list,50)
