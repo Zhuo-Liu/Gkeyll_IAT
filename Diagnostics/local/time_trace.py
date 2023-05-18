@@ -31,11 +31,11 @@ for i in range(np.size(current)-1):
 
 def fieldenergy_current():
     fig      = plt.figure(figsize=(14.5,8.5))
-    ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
+    ax      = fig.add_axes([0.12, 0.16, 0.75, 0.75])
     ax2 = ax.twinx()
 
     t1 = np.arange(1000,1900)
-    c1 = 0.019 + 0.000016*(t1-1000) 
+    c1 = 0.018 + 0.000016*(t1-1000) 
     t2 = np.arange(1900,3800)
     c2 = 0.035 + 0.000035*(t2-1900)
     ax.plot(time_current,current/0.02,label='2D',linewidth=5,color='blue')
@@ -48,15 +48,16 @@ def fieldenergy_current():
     #ax2.set_ylim(1e-11,1e-4)
     ax2.tick_params(labelsize = 26,colors='red')
 
-    ax.vlines(240,0,7.0,linestyle='-.',linewidth=2,color='red')
+    ax.vlines(240,0,7.0,linestyle=':',linewidth=4,color='red')
     ax.vlines(500,0,7.0,linestyle='--',linewidth=2,color='black')
     ax.vlines(500,0,7.0,linestyle='--',linewidth=2,color='black')
     ax.vlines(1000,0,7.0,linestyle='--',linewidth=2,color='black')
     ax.vlines(1900,0,7.0,linestyle='--',linewidth=2,color='black')
     ax.vlines(3800,0,7.0,linestyle='--',linewidth=2,color='black')
-    ax.hlines(0.2,0,4500,linestyle='--',linewidth=2,color='black')
+    #ax.hlines(0.2,0,4500,linestyle=':',linewidth=5,color='black')
     ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
     ax.set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32,color='blue')
+    ax2.set_ylabel(r'$\int |E_z|^2+|E_y|^2 dydz/4\pi n_0T_{e0}$',fontsize=32,color='red')
     ax.set_xlim(0,4500)
     ax.set_ylim(0,7.0)
     ax.tick_params(labelsize = 26)
@@ -68,24 +69,25 @@ def fieldenergy_current():
 def temperature_ratio():
     fig      = plt.figure(figsize=(11.0,9.0))
     ax      = fig.add_axes([0.12, 0.16, 0.75, 0.80])
-    ax2 = ax.twinx()
+    
+    #ax2 = ax.twinx()
 
-    ax.plot(time_Elctemp[:],Elctemp[:]/Elctemp[0],label='electron',linewidth=5,color='black',linestyle='-.')
-    ax.plot(time_Iontemp[:],Iontemp[:]/Iontemp[0],label='ion',linewidth=5,color='black',linestyle='--')
+    ax.plot(time_Elctemp[:],Elctemp[:]/Elctemp[0],label='electron',linewidth=12,color='black',linestyle=':')
+    ax.plot(time_Iontemp[:],Iontemp[:]/Iontemp[0],label='ion',linewidth=12,color='black',linestyle='--')
     #ax2.plot(time_Iontemp4[70:95],Elctemp4[70:95]/Iontemp4[70:95],linewidth=5,color='blue')
-    ax2.plot(time_Iontemp[:],Elctemp[:]/Iontemp[:],linewidth=5,color='blue')
+    #ax2.plot(time_Iontemp[:],Elctemp[:]/Iontemp[:],linewidth=5,color='blue')
     ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
     ax.set_ylabel(r'$T/T_{0}$',fontsize=36,color='black')
-    ax2.set_ylabel(r'$T_e/T_i$',fontsize=36,color='blue')
+    #ax2.set_ylabel(r'$T_e/T_i$',fontsize=36,color='blue')
     ax.set_xlim(0,4500)
     ax.set_ylim(0,30)
-    ax2.set_ylim(10,70)
+    #ax2.set_ylim(10,70)
 
-    ax.tick_params(labelsize = 50)
+    ax.tick_params(labelsize = 58)
     ax.tick_params(axis='y',colors='black')
-    ax2.tick_params(labelsize = 24,colors='blue')
+    #ax2.tick_params(labelsize = 28,colors='blue')
     
-    #ax.legend(fontsize=30,loc='center right',bbox_to_anchor=(1.0, 0.2))
+    #ax.legend(fontsize=30,loc='center right',bbox_to_anchor=(1.0, 0.12))
     ax.grid()
     #ax.legend(fontsize=30,loc='lower left')
     #plt.savefig('./Cori/figure_temp/temp.jpg')
@@ -159,7 +161,7 @@ def ion_temp():
 
 
 if __name__ == "__main__":
-    # ion_temp()
+    #ion_temp()
     
     fieldenergy_current()
     
