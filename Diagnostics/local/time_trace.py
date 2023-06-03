@@ -159,10 +159,85 @@ def ion_temp():
     plt.show()
     plt.clf()
 
+def energy():
+
+    lz = 1.0
+    ly = 0.5
+    nz = 96
+    ny = 48
+    dz = lz/nz
+    dy = ly/ny
+
+    W_list = []
+    for i in range(75):
+        fignum = str(i).zfill(4)
+        #phi = np.loadtxt('./massRatio/mass100/E5_H2/field/M100_E5_field_' + fignum + '.txt')
+        phi = np.loadtxt('./massRatio/mass25/E5_switchoff/field/M25_E5_so_field_' + fignum + '.txt')
+
+        E_z, E_y = np.gradient(phi)
+        E_z = E_z/dz
+        E_y = E_y/dy
+
+        W = 0
+        for i in range(96):
+            for j in range(48):
+                W += 0.5*(E_z[i,j]**2 + E_y[i,j]**2)
+        
+        W = W / nz / ny
+        W_list.append(W)
+
+    W_list = np.array(W_list)
+    time = np.arange(75)*10   
+
+    # plt.plot(time, W_list,label='W')
+    # plt.plot(time_fieldEnergy, fieldEnergy,label='Gkeyll')
+    # plt.legend()
+    # plt.show()
+
+    # Ion_thermal = np.load('./massRatio/mass100/E5_H2/saved_data/ion_M2Thermal.npy')*100
+    # Elc_thermal = np.load('./massRatio/mass100/E5_H2/saved_data/elc_M2Thermal.npy')
+    # Ion_kinetic = np.load('./massRatio/mass100/E5_H2/saved_data/ion_M2Flow.npy')*100
+    # Elc_kinetic = np.load('./massRatio/mass100/E5_H2/saved_data/elc_M2Flow.npy')
+
+    Ion_thermal = np.load('./massRatio/mass25/E5_switchoff/saved_data/ion_M2Thermal.npy')*25
+    Elc_thermal = np.load('./massRatio/mass25/E5_switchoff/saved_data/elc_M2Thermal.npy')
+    Ion_kinetic = np.load('./massRatio/mass25/E5_switchoff/saved_data/ion_M2Flow.npy')*25*2
+    Elc_kinetic = np.load('./massRatio/mass25/E5_switchoff/saved_data/elc_M2Flow.npy')*2
+
+
+    def integrate(input):
+        return np.average(input,axis=(1,2,3))*0.5
+    
+    Ion_thermal = integrate(Ion_thermal)
+    Elc_thermal = integrate(Elc_thermal)
+    Ion_kinetic = integrate(Ion_kinetic)
+    Elc_kinetic = integrate(Elc_kinetic)
+
+    plt.plot(time,Ion_thermal,label='Ion_T',color='red')
+    plt.plot(time,Elc_thermal,label='Elc_T',color='blue')
+    plt.plot(time,Ion_kinetic,label='Ion_U',color='red',linestyle='--')
+    plt.plot(time,Elc_kinetic,label='elc_U',color='blue',linestyle='--')
+    plt.plot(time,2*W_list,label='W')
+
+    plt.plot(time, 2*W_list+ Ion_kinetic+Elc_kinetic+Elc_thermal+Ion_thermal,label='total')
+
+    #plt.plot(time_fieldEnergy,fieldEnergy,label='W')
+
+
+    plt.legend()
+    plt.yscale('log')
+    plt.ylim(1e-7,5e-3)
+
+    plt.show()
+
+
+
 
 if __name__ == "__main__":
     #ion_temp()
     
-    fieldenergy_current()
+    # fieldenergy_current()
     
     # temperature_ratio()
+
+    energy()

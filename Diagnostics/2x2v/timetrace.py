@@ -21,6 +21,23 @@ fileName = {'field':'fieldEnergy','ionTemp':'ion_intM2Thermal','elcTemp':'elc_in
 
 #fileName = {'field':'fieldEnergy','ionTemp':'ion_intM2Thermal','elcTemp':'elc_intM2Thermal'}
 
+fileName_2 = {'ionTemp':'ion_M2Thermal', 'ionFlow':'ion_M2Flow','elcTemp':'elc_M2Thermal', 'elcFlow':'elc_M2Flow'}
+
+def new():
+    for name in fileName_2:
+        print(fileName_2[name])
+        datas = []
+        
+        for i in range(0,450):
+            filePath = '../' + simName +'_'+fileName_2[name]+'_'+str(i)+'.bp'
+            data = np.array(pgu.getInterpData(filePath,2,'ms'))
+            datas.append(data)
+
+        datas = np.array(data)
+        savePath = outDir + fileName_2[name] +'.npz'
+        np.save(savePath,datas)
+
+
 def output(fieldEnergyonly=False):
     if fieldEnergyonly:
         filePath = '../' + simName +'_'+'fieldEnergy'+'.bp'
