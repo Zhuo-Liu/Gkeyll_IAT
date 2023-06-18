@@ -354,7 +354,7 @@ def nueff_massratio():
     fig      = plt.figure(figsize=(9.5,7.5))
     ax      = fig.add_axes([0.18, 0.16, 0.75, 0.75])
 
-    ax.plot(time_current25[4:],nu_eff25[3:],label='M25E10',linewidth=4,linestyle='-')
+    ax.plot(time_current25[4:351],nu_eff25[3:350],label='M25E10',linewidth=4,linestyle='-')
     ax.plot(time_current50[4:],nu_eff50[3:],label='M50E10',linewidth=4,linestyle='-')
     ax.plot(time_current100[4:],nu_eff100[3:],label='Main',linewidth=6,linestyle='-')
     ax.plot(time_current200[4:],nu_eff200[3:],label='M200E10',linewidth=4,linestyle='-')
@@ -381,8 +381,8 @@ def nueff_massratio():
             new_Elctemp200.append(t)
         i += 1
     new_Elctemp200 = np.array(new_Elctemp200)
-    ax.plot(time_fieldEnergy25[:103],0.5*fieldEnergy25[:103]/new_Elctemp25[:103],label=r'$(W/nT_e)_{25}$',linewidth=3,linestyle='--')
-    ax.plot(time_fieldEnergy100,0.5*fieldEnergy100/new_Elctemp100,label=r'$\frac{1}{2}(W/nT_e)_{100}$',linewidth=4,linestyle=':',color='black')
+    #ax.plot(time_fieldEnergy25[:103],0.5*fieldEnergy25[:103]/new_Elctemp25[:103],label=r'$(W/nT_e)_{25}$',linewidth=3,linestyle='--')
+    ax.plot(time_fieldEnergy100,0.5*fieldEnergy100/new_Elctemp100,label=r'$0.5(W/nT_e)_{100}$',linewidth=4,linestyle=':',color='black')
     #ax.plot(time_fieldEnergy400,fieldEnergy400/new_Elctemp400,label=r'$(W/nTe)_{400}$',linewidth=3,linestyle='--')
 
     ax.hlines(0.0118*0.12,0,2000, linestyles='--',color='black',linewidth=4,label=r'$0.1\nu_{eff_{100}}^{QL}$')
@@ -399,8 +399,8 @@ def nueff_massratio():
     ax.legend(fontsize=22)
     ax.grid()
     ax.set_xlim(300,2000)
-    #plt.savefig('./Figures/paper_figures/dependence/nu_eff_mass.jpeg')
-    plt.show()
+    plt.savefig('./Figures/paper_figures/dependence/nu_eff_mass.jpeg')
+    #plt.show()
     plt.cla()
 
 def nueff_electricfield():
@@ -519,8 +519,8 @@ def ionheating():
     popt2, pcov2 = curve_fit(linear_model, E_ext_, Ti_E_)
     constructed_2 = linear_model(Ee,*popt2)
 
-    ax2.scatter(mass_ratio, Ti_mass, marker='x',s = 500, color='red')
-    ax.scatter(E_ext, Ti_E, marker='x',s = 500, color='blue')
+    ax2.scatter(mass_ratio, Ti_mass, marker='^',s = 350, color='red')
+    ax.scatter(E_ext, Ti_E, marker='s',s = 300, color='blue')
     ax2.plot(mass, constructed_1, color='red', linestyle='--',linewidth=3)
     ax.plot(Ee, constructed_2, color='blue', linestyle='--',linewidth=3)
 
@@ -533,7 +533,7 @@ def ionheating():
 
     ax2.set_xlabel(r'$\sqrt{m_i/m_e}$',fontsize=32,color='red')
     ax.set_ylabel(r'$T_{if}/T_{i0}$',fontsize=32)
-    ax.set_xlabel(r'$E_{ext}/(4\pi en_0 \lambda_{De0})$',fontsize=32, color='blue')
+    ax.set_xlabel(r'$E_{ext}/(4\pi en_0 \lambda_{De})$',fontsize=32, color='blue')
 
     ax.set_xlim(1e-4, 2.7e-3)
     ax.ticklabel_format(axis='x',style='sci',scilimits=(0,0))
@@ -713,12 +713,12 @@ if __name__ == '__main__':
 
     # ionheatingtrace()
 
-    # ionheating()
+    ionheating()
 
     # elcheatingtrace_mass()
     # elcheatingtrace_E()
 
-    elcheating_rate()
+    # elcheating_rate()
 
     # current_electricfield()
 
