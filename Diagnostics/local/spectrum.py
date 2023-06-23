@@ -108,7 +108,9 @@ def k_main(Ez_k_list,Ey_k_list):
     ax.plot(k_plot_2,Ek_3500,label=r'$\omega_{pe}t=3500$',linewidth=3)
     ax.plot(k_plot_2,Ek_4300,label=r'$\omega_{pe}t=4300$',linewidth=3)
     # plt.plot(k_plot_2,Ek_2400,label=r'$\omega_{pe}t=2400$',linewidth=3)
-    ax.plot(k_list,0.004*N_k,linewidth=3,linestyle = '--',color='black')
+    
+    #ax.plot(k_list,0.004*N_k,linewidth=3,linestyle = '--',color='black')
+    ax.plot(k_list,0.0008*N_k,linewidth=3,linestyle = '--',color='black')
     #plt.plot(k_list,N_k*700,label='theory2',linewidth=3,linestyle = '--',color='black')
     #plt.plot(k_list,N_k*200,label='theory2')
     #plt.plot(kf,N_k_full*900,label='theory2')

@@ -143,8 +143,8 @@ def mass25():
     axs[1,1].legend(fontsize=24)
 
     plt.tight_layout()
-    #plt.show()
-    plt.savefig('./mass25_nonlinear_test.pdf')
+    plt.show()
+    #plt.savefig('./mass25_nonlinear_test.pdf')
 
 if __name__ == '__main__':
     mass25()

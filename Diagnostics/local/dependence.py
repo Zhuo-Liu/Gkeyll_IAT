@@ -519,8 +519,8 @@ def ionheating():
     popt2, pcov2 = curve_fit(linear_model, E_ext_, Ti_E_)
     constructed_2 = linear_model(Ee,*popt2)
 
-    ax2.scatter(mass_ratio, Ti_mass, marker='x',s = 500, color='red')
-    ax.scatter(E_ext, Ti_E, marker='x',s = 500, color='blue')
+    ax2.scatter(mass_ratio, Ti_mass, marker='^',s = 350, color='red')
+    ax.scatter(E_ext, Ti_E, marker='s',s = 300, color='blue')
     ax2.plot(mass, constructed_1, color='red', linestyle='--',linewidth=3)
     ax.plot(Ee, constructed_2, color='blue', linestyle='--',linewidth=3)
 
@@ -539,7 +539,7 @@ def ionheating():
     ax.grid(axis='y',linestyle='--')
     ax2.grid(color='red',linestyle='--')
 
-    plt.savefig('./Figures/figures_temp/dependence/Ti_dependence.jpeg')
+    plt.savefig('./Figures/paper_figures/dependence/Ti_dependence.jpeg')
     #plt.show()
 
 
@@ -703,13 +703,13 @@ if __name__ == '__main__':
 
     
     # nueff_massratio()
-    nueff_electricfield()
+    # nueff_electricfield()
 
     # tempratio_ratio()
 
     # ionheatingtrace()
 
-    # ionheating()
+    ionheating()
 
     # elcheatingtrace_mass()
     # elcheatingtrace_E()
