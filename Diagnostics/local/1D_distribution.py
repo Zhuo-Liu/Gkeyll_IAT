@@ -342,8 +342,8 @@ def eaw():
 
 
 if __name__ == '__main__':
-    # ion_main()
-    # elc_main()
+    ion_main()
+    elc_main()
 
     ######### Fitting 
     #fit_1d_numerical('./massRatio/mass100/E5_H2/dist_function_save/1600.0_elc_1d.txt', ElcGridPath)
@@ -363,4 +363,4 @@ if __name__ == '__main__':
     #fit_1d_numerical('./Cori/mass25/rescheck/4/dist_function_save/1900.0_elc_1d.txt', ElcGridPath_E1)
     #eaw()
     #print(1/5.6)
-    justification()
+    # justification()
