@@ -4039,7 +4039,7 @@ In[106]:=",ExpressionUUID->"1a058cd5-863c-4907-a973-b3ecea9367ae"]
 }, Open  ]]
 }, Open  ]]
 },
-WindowSize->{1904, 981},
+WindowSize->{1904, 988},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
 FrontEndVersion->"12.2 for Microsoft Windows (64-bit) (December 12, 2020)",
 StyleDefinitions->"Default.nb",
