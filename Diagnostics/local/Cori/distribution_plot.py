@@ -192,7 +192,7 @@ def fit_1d(fName,GridFile):
     plt.tick_params(labelsize = 24)
     plt.show()
 
-    print(popt)
+    #print(popt)
 
     #maxw3 = np.array([maxw(x,popt[3],popt[4],popt[5]+0.005) for x in v_z])
 
@@ -349,9 +349,9 @@ if __name__ == '__main__':
     #elc_main()
 
     #popt = fit_1d('./Cori/mass25/rescheck/4/dist_function/650.0_elc_1d.txt',ElcGridPath)
-    #fit_1d('./Cori/mass25/rescheck/4/dist_function_save/1700.0_elc_1d.txt',ElcGridPath)
+    fit_1d_t('./Cori/mass25/rescheck/4/dist_function_save/1800.0_elc_1d.txt',ElcGridPath)
     # fit_1d_t('./Cori/mass25/rescheck/4/dist_function_save/1800.0_elc_1d.txt',ElcGridPath)
-    fit_1d_t('./Cori/mass25/rescheck/4/dist_function_save/650.0_elc_1d.txt',ElcGridPath)
+    #fit_1d_t('./Cori/mass25/rescheck/4/dist_function_save/650.0_elc_1d.txt',ElcGridPath)
     # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/750.0_elc_1d.txt',ElcGridPath)
     # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/900.0_elc_1d.txt',ElcGridPath)
     # fit_1d('./Cori/mass25/rescheck/4/dist_function/1000.0_elc_1d.txt',ElcGridPath)

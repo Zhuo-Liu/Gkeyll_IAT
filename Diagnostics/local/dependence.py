@@ -354,7 +354,7 @@ def nueff_massratio():
     fig      = plt.figure(figsize=(9.5,7.5))
     ax      = fig.add_axes([0.18, 0.16, 0.75, 0.75])
 
-    ax.plot(time_current25[4:],nu_eff25[3:],label='M25E10',linewidth=4,linestyle='-')
+    ax.plot(time_current25[4:351],nu_eff25[3:350],label='M25E10',linewidth=4,linestyle='-')
     ax.plot(time_current50[4:],nu_eff50[3:],label='M50E10',linewidth=4,linestyle='-')
     ax.plot(time_current100[4:],nu_eff100[3:],label='Main',linewidth=6,linestyle='-')
     ax.plot(time_current200[4:],nu_eff200[3:],label='M200E10',linewidth=4,linestyle='-')
@@ -381,8 +381,8 @@ def nueff_massratio():
             new_Elctemp200.append(t)
         i += 1
     new_Elctemp200 = np.array(new_Elctemp200)
-    ax.plot(time_fieldEnergy25[:103],0.5*fieldEnergy25[:103]/new_Elctemp25[:103],label=r'$(W/nT_e)_{25}$',linewidth=3,linestyle='--')
-    ax.plot(time_fieldEnergy100,0.5*fieldEnergy100/new_Elctemp100,label=r'$\frac{1}{2}(W/nT_e)_{100}$',linewidth=4,linestyle=':',color='black')
+    #ax.plot(time_fieldEnergy25[:103],0.5*fieldEnergy25[:103]/new_Elctemp25[:103],label=r'$(W/nT_e)_{25}$',linewidth=3,linestyle='--')
+    ax.plot(time_fieldEnergy100,0.5*fieldEnergy100/new_Elctemp100,label=r'$0.5(W/nT_e)_{100}$',linewidth=4,linestyle=':',color='black')
     #ax.plot(time_fieldEnergy400,fieldEnergy400/new_Elctemp400,label=r'$(W/nTe)_{400}$',linewidth=3,linestyle='--')
 
     ax.hlines(0.0118*0.12,0,2000, linestyles='--',color='black',linewidth=4,label=r'$0.1\nu_{eff_{100}}^{QL}$')
@@ -399,8 +399,8 @@ def nueff_massratio():
     ax.legend(fontsize=22)
     ax.grid()
     ax.set_xlim(300,2000)
-    #plt.savefig('./Figures/paper_figures/dependence/nu_eff_mass.jpeg')
-    plt.show()
+    plt.savefig('./Figures/paper_figures/dependence/nu_eff_mass.jpeg')
+    #plt.show()
     plt.cla()
 
 def nueff_electricfield():
@@ -502,10 +502,10 @@ def ionheating():
     mass_ratio = np.sqrt(np.array([25,50,100,200]))
     Ti_mass = np.array([16,21,28,41])
 
-    E_ext = np.array([0.5,1,2,3,4,5]) * 1e-5
+    E_ext = np.array([0.5,1,2,3,4,5]) * 1e-5 * 50
     Ti_E = np.array([7.6,8.9,8.1,11.3,13.8,15.3])
 
-    E_ext_ = np.array([2,3,4,5]) * 1e-5
+    E_ext_ = np.array([2,3,4,5]) * 1e-5 * 50
     Ti_E_ = np.array([8.1,11.3,13.8,15.3])
 
     def linear_model(x,a,b):
@@ -515,7 +515,7 @@ def ionheating():
     popt1, pcov1 = curve_fit(linear_model, mass_ratio, Ti_mass)
     constructed_1 = linear_model(mass,*popt1)
 
-    Ee = np.arange(0.5,6,0.5) * 1e-5
+    Ee = np.arange(0.5,6,0.5) * 1e-5 * 50
     popt2, pcov2 = curve_fit(linear_model, E_ext_, Ti_E_)
     constructed_2 = linear_model(Ee,*popt2)
 
@@ -533,7 +533,10 @@ def ionheating():
 
     ax2.set_xlabel(r'$\sqrt{m_i/m_e}$',fontsize=32,color='red')
     ax.set_ylabel(r'$T_{if}/T_{i0}$',fontsize=32)
-    ax.set_xlabel(r'$E_{ext}/(en_0d_e/\epsilon_0)$',fontsize=32, color='blue')
+    ax.set_xlabel(r'$E_{ext}/(4\pi en_0 \lambda_{De})$',fontsize=32, color='blue')
+
+    ax.set_xlim(1e-4, 2.7e-3)
+    ax.ticklabel_format(axis='x',style='sci',scilimits=(0,0))
 
     ax.grid(axis='x',color='blue',linestyle='--')
     ax.grid(axis='y',linestyle='--')
@@ -674,30 +677,31 @@ def elcheating_rate():
     ax      = fig.add_axes([0.18, 0.15, 0.75, 0.75])
 
     #ax.plot(time_Elctemp400[1:],dTedt400_/0.0004,linewidth=5,label=r'$400,E5$')
-    #ax.plot(time_Elctemp200[0:300],dTedt200_[0:300]/0.0004,linewidth=5,label=r'M200')
+    #ax.plot(time_Elctemp200[0:300],dTedt200_[0:300]/0.0004,linewidth=5,label=r'M200E10')
 
     ax.plot(time_Elctemp100[1:],dTedt100_[0:]/0.0004,linewidth=5,label=r'Main')
 
     #ax.plot(time_Elctemp100[0:300],dTedt100_[0:300]/0.0004,linewidth=5,label=r'Main')   
-    ax.plot(time_Elctemp50[0:220],dTedt50_[0:220]/0.0004,linewidth=5,label=r'M50')
+    ax.plot(time_Elctemp50[0:220],dTedt50_[0:220]/0.0004,linewidth=5,label=r'M50E10')
 
-    ax.plot(time_Elctemp25[1:390],dTedt25_[1:390]/0.0004,linewidth=5,label=r'M25E5')
+    ax.plot(time_Elctemp25[1:390],dTedt25_[1:390]/0.0004,linewidth=5,label=r'M25E10')
     #ax.plot(time_Elctemp25_E4[1:200],dTedtE4_[1:200]/0.0004,linewidth=5,label=r'E4')
     #ax.plot(time_Elctemp25_E3[1:200],dTedtE3_[1:200]/0.0004,linewidth=5,label=r'$25,E3$')
-    ax.plot(time_Elctemp25_E2[1:240],dTedtE2_[1:240]/0.0004,linewidth=5,label=r'E2')
-    ax.plot(time_Elctemp25_E1[1:280],dTedtE1_[1:280]/0.0004,linewidth=5,label=r'E1')
+    ax.plot(time_Elctemp25_E2[1:240],dTedtE2_[1:240]/0.0004,linewidth=5,label=r'M25E4')
+    ax.plot(time_Elctemp25_E1[1:280],dTedtE1_[1:280]/0.0004,linewidth=5,label=r'M25E2')
 
     # ax.plot(time_Elctemp25_temp100[2:],dTedtT100_[1:]/0.0004,linewidth=5,label=r'T100')
     # ax.plot(time_Elctemp25_temp20[2:],dTedtT20_[1:]/0.0004,linewidth=5,label=r'T20')
 
-    ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
+    ax.set_xlabel(r'$t \quad [\omega_{pe}]$',fontsize=32)
     ax.set_ylabel(r'$ (1/T_{e0}) d T_e / d t \quad [\omega_{pe}^-1]$',fontsize=32,color='black')
-    ax.set_xlim(500,5000)
+    ax.set_xlim(500,2500)
+    ax.set_ylim(-0.0001,0.0032)
     ax.grid()
     ax.tick_params(labelsize = 24)
-    ax.legend(fontsize=28, loc='center right')
-    plt.savefig('./Figures/figures_temp/dependence/Te_heatingrate.jpeg')
-    plt.show()
+    ax.legend(fontsize=32, loc='center right',bbox_to_anchor=(1.0, 0.38))
+    plt.savefig('./Figures/paper_figures/dependence/Te_heatingrate.jpeg')
+    #plt.show()
 
 if __name__ == '__main__':
 

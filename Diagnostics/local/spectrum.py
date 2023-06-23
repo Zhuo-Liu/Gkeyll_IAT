@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 from matplotlib import colors, ticker, cm
 from scipy.optimize import curve_fit
 from scipy.interpolate import interp1d
+matplotlib.use('TkAgg')
 
 lz = 1.0
 ly = 0.5
@@ -117,11 +118,12 @@ def k_main(Ez_k_list,Ey_k_list):
     ax.legend(fontsize=18)
     ax.set_xlim(0,0.35)
     ax.set_ylim(1e-4,1000)
-    ax.set_xlabel(r'$k\lambda_{De0} / 2\pi $',fontsize=26)
+    ax.set_xlabel(r'$k\lambda_{De} / 2\pi $',fontsize=26)
     ax.set_ylabel(r'$N(k)$',fontsize=26)
     ax.tick_params(labelsize=22)
     ax.set_yscale('log')
-    plt.show()
+    #plt.show()
+    plt.savefig('./Figures/figures_temp/k_spectrum.jpeg')
 
 
 def theta_main(Ez_k_list,Ey_k_list, N=6):
@@ -132,7 +134,7 @@ def theta_main(Ez_k_list,Ey_k_list, N=6):
 
         def inline_function(x,a,b, c,d,e,f,g):
             #return  a*x**6 + b*x**5 +c*x**4 +d*x**3 + e*x**2 + f*x +g
-            return c*x**4 +d*x**3 + e*x**2 + f*x +g
+            return d*x**3 + e*x**2 + f*x +g
         popt, pcov = curve_fit(inline_function, x, Ek)
 
         newek = inline_function(x,*popt)
@@ -166,20 +168,24 @@ def theta_main(Ez_k_list,Ey_k_list, N=6):
     N_theta = np.array([phi(cos) for cos in cos_theta])
     Ezk_500 = Ez_k_list[40,:,:]
     Eyk_500 = Ey_k_list[40,:,:]
-    Ezk_1000 = Ez_k_list[100,:,:]
-    Eyk_1000 = Ey_k_list[100,:,:]
+    Ezk_750 = Ez_k_list[75,:,:]
+    Eyk_750 = Ey_k_list[75,:,:]
+    Ezk_1000 = Ez_k_list[70,:,:]
+    Eyk_1000 = Ey_k_list[70,:,:]
     Ezk_3500 = Ez_k_list[340,:,:]
     Eyk_3500 = Ey_k_list[340,:,:]
     Ezk_4300 = Ez_k_list[430,:,:]
     Eyk_4300 = Ey_k_list[430,:,:]
 
     E_500 = theta_dependence(Ezk_500,Eyk_500,N)
+    E_750 = theta_dependence(Ezk_750,Eyk_750,N)
     E_1000 = theta_dependence(Ezk_1000,Eyk_1000,N)
     E_3500 = theta_dependence(Ezk_3500,Eyk_3500,N)
     E_4300 = theta_dependence(Ezk_4300,Eyk_4300,N)
     #E_2400 = theta_dependence(Ezk_2400,Eyk_2400,N)
 
     E_500_f = fit(E_500,np.arange(51)*90/50)
+    E_750_f = fit(E_750,np.arange(51)*90/50)
     E_1000_f = fit(E_1000,np.arange(51)*90/50)
     E_3500_f = fit(E_3500,np.arange(51)*90/50)
     E_4300_f = fit(E_4300,np.arange(51)*90/50)
@@ -194,7 +200,8 @@ def theta_main(Ez_k_list,Ey_k_list, N=6):
     # plt.plot(theta_plot,E_3500/E_3500[0],label=r'$\omega_{pe}t=3500$',linewidth=3)
     # plt.plot(theta_plot,E_4300/E_4300[0],label=r'$\omega_{pe}t=4300$',linewidth=3)
     ax.plot(theta_plot,E_500_f/E_500_f[0],label=r'$\omega_{pe}t=500$',linewidth=3)
-    ax.plot(theta_plot,E_1000_f/E_1000_f[0],label=r'$\omega_{pe}t=1000$',linewidth=3)
+    ax.plot(theta_plot,E_750_f/E_750_f[0],label=r'$\omega_{pe}t=750$',linewidth=3)
+    ax.plot(theta_plot,E_1000/E_1000[0],label=r'$\omega_{pe}t=1000$',linewidth=3)
     ax.plot(theta_plot,E_3500/E_3500[0],label=r'$\omega_{pe}t=3500$',linewidth=3)
     ax.plot(theta_plot,E_4300_f/E_4300_f[0],label=r'$\omega_{pe}t=4300$',linewidth=3)
 
@@ -277,7 +284,20 @@ def k_main_2(Ez_k_list,Ey_k_list):
     ax.set_yscale('log')
     plt.show()
 
+def theta():
+    x = np.linspace(0,np.pi/2,100)
+    cosx = np.cos(x)
+
+    def fun(t):
+        return (4*(1+0.23)*t**3-3*t**4)/t/(1-t+0.23)**2
+    
+    plt.plot(x/2/np.pi * 360,fun(cosx)/fun(1))
+    #plt.ylim(0,10)
+    plt.show()
+
 if __name__ == '__main__':
     Ez_k_list, Ey_k_list,Ez_list,Ey_list,_ = load_phi()
-    k_main( Ez_k_list, Ey_k_list)
-    #theta_main(Ez_k_list, Ey_k_list,50)
+    #k_main( Ez_k_list, Ey_k_list)
+    theta_main(Ez_k_list, Ey_k_list,50)
+
+    #theta()

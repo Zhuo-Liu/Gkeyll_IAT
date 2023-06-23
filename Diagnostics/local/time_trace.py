@@ -51,7 +51,7 @@ def fieldenergy_current():
     ax.vlines(240,0,7.0,linestyle=':',linewidth=4,color='red')
     ax.vlines(500,0,7.0,linestyle='--',linewidth=2,color='black')
     ax.vlines(500,0,7.0,linestyle='--',linewidth=2,color='black')
-    ax.vlines(1000,0,7.0,linestyle='--',linewidth=2,color='black')
+    ax.vlines(900,0,7.0,linestyle='--',linewidth=2,color='black')
     ax.vlines(1900,0,7.0,linestyle='--',linewidth=2,color='black')
     ax.vlines(3800,0,7.0,linestyle='--',linewidth=2,color='black')
     #ax.hlines(0.2,0,4500,linestyle=':',linewidth=5,color='black')
@@ -62,38 +62,39 @@ def fieldenergy_current():
     ax.set_ylim(0,7.0)
     ax.tick_params(labelsize = 26)
     ax.tick_params(axis='y',colors = 'blue')
-    plt.show()
-    #plt.savefig('./Figures/figures_temp/current_and_fieldenergy.jpg')
+    #plt.show()
+    plt.savefig('./Figures/figures_temp/current_and_fieldenergy.jpg')
     plt.clf()
 
 def temperature_ratio():
     fig      = plt.figure(figsize=(11.0,9.0))
     ax      = fig.add_axes([0.12, 0.16, 0.75, 0.80])
     
-    #ax2 = ax.twinx()
+    ax2 = ax.twinx()
 
-    ax.plot(time_Elctemp[:],Elctemp[:]/Elctemp[0],label='electron',linewidth=12,color='black',linestyle=':')
-    ax.plot(time_Iontemp[:],Iontemp[:]/Iontemp[0],label='ion',linewidth=12,color='black',linestyle='--')
+    ax.plot(time_Elctemp[:],Elctemp[:]/Elctemp[0],label='electron',linewidth=5,color='black',linestyle=':')
+    ax.plot(time_Iontemp[:],Iontemp[:]/Iontemp[0],label='ion',linewidth=5,color='black',linestyle='--')
     #ax2.plot(time_Iontemp4[70:95],Elctemp4[70:95]/Iontemp4[70:95],linewidth=5,color='blue')
-    #ax2.plot(time_Iontemp[:],Elctemp[:]/Iontemp[:],linewidth=5,color='blue')
+    ax2.plot(time_Iontemp[:],Elctemp[:]/Iontemp[:],linewidth=5,color='blue')
     ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
     ax.set_ylabel(r'$T/T_{0}$',fontsize=36,color='black')
-    #ax2.set_ylabel(r'$T_e/T_i$',fontsize=36,color='blue')
+    ax2.set_ylabel(r'$T_e/T_i$',fontsize=36,color='blue')
     ax.set_xlim(0,4500)
     ax.set_ylim(0,30)
-    #ax2.set_ylim(10,70)
+    ax2.set_ylim(10,70)
 
-    ax.tick_params(labelsize = 58)
+    ax.tick_params(labelsize = 28)
     ax.tick_params(axis='y',colors='black')
-    #ax2.tick_params(labelsize = 28,colors='blue')
+    ax2.tick_params(labelsize = 28,colors='blue')
     
     #ax.legend(fontsize=30,loc='center right',bbox_to_anchor=(1.0, 0.12))
+    ax.legend(fontsize=30,loc='upper center',bbox_to_anchor=(0.4, 1.0))
     ax.grid()
     #ax.legend(fontsize=30,loc='lower left')
     #plt.savefig('./Cori/figure_temp/temp.jpg')
-    plt.show()
+    #plt.show()
     
-    #plt.savefig('./Figures/figures_temp/tempratio.jpg')
+    plt.savefig('./Figures/figures_temp/tempratio.jpg')
     plt.clf()
 
 
@@ -159,10 +160,85 @@ def ion_temp():
     plt.show()
     plt.clf()
 
+def energy():
+
+    lz = 1.0
+    ly = 0.5
+    nz = 96
+    ny = 48
+    dz = lz/nz
+    dy = ly/ny
+
+    W_list = []
+    for i in range(75):
+        fignum = str(i).zfill(4)
+        #phi = np.loadtxt('./massRatio/mass100/E5_H2/field/M100_E5_field_' + fignum + '.txt')
+        phi = np.loadtxt('./massRatio/mass25/E5_switchoff/field/M25_E5_so_field_' + fignum + '.txt')
+
+        E_z, E_y = np.gradient(phi)
+        E_z = E_z/dz
+        E_y = E_y/dy
+
+        W = 0
+        for i in range(96):
+            for j in range(48):
+                W += 0.5*(E_z[i,j]**2 + E_y[i,j]**2)
+        
+        W = W / nz / ny
+        W_list.append(W)
+
+    W_list = np.array(W_list)
+    time = np.arange(75)*10   
+
+    # plt.plot(time, W_list,label='W')
+    # plt.plot(time_fieldEnergy, fieldEnergy,label='Gkeyll')
+    # plt.legend()
+    # plt.show()
+
+    # Ion_thermal = np.load('./massRatio/mass100/E5_H2/saved_data/ion_M2Thermal.npy')*100
+    # Elc_thermal = np.load('./massRatio/mass100/E5_H2/saved_data/elc_M2Thermal.npy')
+    # Ion_kinetic = np.load('./massRatio/mass100/E5_H2/saved_data/ion_M2Flow.npy')*100
+    # Elc_kinetic = np.load('./massRatio/mass100/E5_H2/saved_data/elc_M2Flow.npy')
+
+    Ion_thermal = np.load('./massRatio/mass25/E5_switchoff/saved_data/ion_M2Thermal.npy')*25
+    Elc_thermal = np.load('./massRatio/mass25/E5_switchoff/saved_data/elc_M2Thermal.npy')
+    Ion_kinetic = np.load('./massRatio/mass25/E5_switchoff/saved_data/ion_M2Flow.npy')*25*2
+    Elc_kinetic = np.load('./massRatio/mass25/E5_switchoff/saved_data/elc_M2Flow.npy')*2
+
+
+    def integrate(input):
+        return np.average(input,axis=(1,2,3))*0.5
+    
+    Ion_thermal = integrate(Ion_thermal)
+    Elc_thermal = integrate(Elc_thermal)
+    Ion_kinetic = integrate(Ion_kinetic)
+    Elc_kinetic = integrate(Elc_kinetic)
+
+    plt.plot(time,Ion_thermal,label='Ion_T',color='red')
+    plt.plot(time,Elc_thermal,label='Elc_T',color='blue')
+    plt.plot(time,Ion_kinetic,label='Ion_U',color='red',linestyle='--')
+    plt.plot(time,Elc_kinetic,label='elc_U',color='blue',linestyle='--')
+    plt.plot(time,2*W_list,label='W')
+
+    plt.plot(time, 2*W_list+ Ion_kinetic+Elc_kinetic+Elc_thermal+Ion_thermal,label='total')
+
+    #plt.plot(time_fieldEnergy,fieldEnergy,label='W')
+
+
+    plt.legend()
+    plt.yscale('log')
+    plt.ylim(1e-7,5e-3)
+
+    plt.show()
+
+
+
 
 if __name__ == "__main__":
-    #ion_temp()
+    # ion_temp()
     
-    fieldenergy_current()
+    # fieldenergy_current()
     
     # temperature_ratio()
+
+    energy()
