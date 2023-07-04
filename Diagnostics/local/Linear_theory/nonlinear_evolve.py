@@ -86,7 +86,7 @@ def mass25():
     for i in range(np.size(current4)-1):
         nu_eff4[i] = (0.00005 - dJdt4[i]) / current4[i]
 
-    axs[0,0].set_title("perturbed electric field energy",fontsize=28)
+    #axs[0,0].set_title("perturbed electric field energy",fontsize=28)
     axs[0,0].plot(time_fieldEnergy1[:],fieldEnergy1[:]/0.0004,label='#1',linewidth=5)
     axs[0,0].plot(time_fieldEnergy2[:],fieldEnergy2[:]/0.0004,label='#2',linewidth=5)
     axs[0,0].plot(time_fieldEnergy3[:],fieldEnergy3[:]/0.0004,label='#3',linewidth=5)
@@ -94,14 +94,14 @@ def mass25():
     axs[0,0].plot(time_fieldEnergy3_2[:],fieldEnergy3_2[:]/0.0004,label='#3-1',linewidth=5)
     axs[0,0].plot(time_fieldEnergy4[:],fieldEnergy4[:]/0.0004,label='#4',linewidth=5)
     axs[0,0].set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
-    axs[0,0].set_ylabel(r'$\int dydz |\delta E_z|^2 + |\delta E_y|^2/4\pi n_o T_{e0}$',fontsize=24)
+    axs[0,0].set_ylabel(r'$\int (|\delta E_z|^2 + |\delta E_y|^2)dydz/(4\pi T_{e0})$',fontsize=24)
     axs[0,0].set_yscale('log')
     axs[0,0].set_xlim(0,1800)
     axs[0,0].tick_params(labelsize = 28)
     axs[0,0].legend(fontsize=24)
 
 
-    axs[0,1].set_title("ion temperature",fontsize=28)
+    #axs[0,1].set_title("ion temperature",fontsize=28)
     axs[0,1].plot(time_Iontemp1[:400],Iontemp1[:400]/Iontemp1[0],label='#1',linewidth=5)
     axs[0,1].plot(time_Iontemp2[:400],Iontemp2[:400]/Iontemp1[0],label='#2',linewidth=5)
     axs[0,1].plot(time_Iontemp3[:400],Iontemp3[:400]/Iontemp3[0],label='#3',linewidth=5)
@@ -115,7 +115,7 @@ def mass25():
     axs[0,1].tick_params(labelsize = 28)
     axs[0,1].legend(fontsize=24)
 
-    axs[1,0].set_title("current",fontsize=28)
+    #axs[1,0].set_title("current",fontsize=28)
     axs[1,0].plot(time_current1[:400],current1[:400]/0.02,label='#1',linewidth=5)
     axs[1,0].plot(time_current2[:400],current2[:400]/0.02,label='#2',linewidth=5)
     axs[1,0].plot(time_current3[:400],current3[:400]/0.02,label='#3',linewidth=5)
@@ -123,12 +123,12 @@ def mass25():
     axs[1,0].plot(time_current3_2[:400],current3_2[:400]/0.02,label='#3-1',linewidth=5)
     axs[1,0].plot(time_current4[:400],current4[:400]/0.02,label='#4',linewidth=5)
     axs[1,0].set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
-    axs[1,0].set_ylabel(r'$<J_z> [en_0 v_{te0}]$',fontsize=32)
+    axs[1,0].set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32)
     axs[1,0].set_xlim(0,1800)
     axs[1,0].tick_params(labelsize = 28)
     axs[1,0].legend(fontsize=24)
 
-    axs[1,1].set_title("effective collision frequency",fontsize=28)
+    #axs[1,1].set_title("effective collision frequency",fontsize=28)
     axs[1,1].plot(time_current1[9:401],nu_eff1[8:400],label='#1',linewidth=5)
     axs[1,1].plot(time_current2[9:401],nu_eff2[8:400],label='#2',linewidth=5)
     axs[1,1].plot(time_current3[9:401],nu_eff3[8:400],label='#3',linewidth=5)
@@ -146,7 +146,7 @@ def mass25():
 
     plt.tight_layout()
     #plt.show()
-    plt.savefig('./Linear_theory/mass25_nonlinear_test.pdf')
+    plt.savefig('./Linear_theory/mass25_nonlinear_test.jpg')
 
 if __name__ == '__main__':
     mass25()

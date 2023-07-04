@@ -322,21 +322,22 @@ def eaw():
     maxw1 = np.array([maxw(x,0.502,0.0251,-0.0027) for x in velocities_z])
     maxw2 = np.array([maxw(x,2.315,0.0511,0.0778) for x in velocities_z])
 
-    fig = plt.figure(figsize=(12,10),facecolor='w', edgecolor='k')
+    fig = plt.figure(figsize=(8,6))
+    ax = fig.add_axes([0.12, 0.16, 0.8, 0.8])
 
-    plt.plot(velocities_z/0.02, df,label=r'$F_e(v_z)$',linewidth=6)
-    plt.plot(velocities_z/0.02, maxw1,linewidth=5,linestyle='--',label=r'$F_{e1}(v_z)$')
-    plt.plot(velocities_z/0.02, maxw2,linewidth=5,linestyle='--',label=r'$F_{e2}(v_z)$')
-    plt.plot(velocities_z/0.02, maxw1+maxw2,linewidth=5,linestyle='--',label=r'$F_{e1} + F_{e2}$')
+    ax.plot(velocities_z/0.02, df,label=r'$F_e(v_z)$',linewidth=6)
+    ax.plot(velocities_z/0.02, maxw1,linewidth=5,linestyle='--',label=r'$F_{e1}(v_z)$')
+    ax.plot(velocities_z/0.02, maxw2,linewidth=5,linestyle='--',label=r'$F_{e2}(v_z)$')
+    ax.plot(velocities_z/0.02, maxw1+maxw2,linewidth=5,linestyle='--',label=r'$F_{e1} + F_{e2}$')
 
 
-    plt.xlabel(r'$v_z/v_{Te0}$', fontsize=36)
-    plt.ylabel(r'$F_e (v_z)$', fontsize=36)
-    plt.grid()
-    plt.legend(fontsize=32)
+    ax.set_xlabel(r'$v_z/v_{Te0}$', fontsize=26)
+    ax.set_ylabel(r'$F_e (v_z)$', fontsize=26)
+    #ax.grid()
+    ax.legend(fontsize=26)
     #plt.set_title(r'$<F_e(v_z)>_{z},$' + rf't = {time}'+ r' [$\omega_{pe}^{-1}$]', fontsize=26)
-    plt.tick_params(labelsize = 28)
-    plt.xlim(-0.08/0.02,0.24/0.02)
+    ax.tick_params(labelsize = 18)
+    ax.set_xlim(-0.08/0.02,0.24/0.02)
     #plt.show()
     plt.savefig('./Figures/figures_temp/elc_1d_eaw.jpg')    
 
@@ -361,6 +362,6 @@ if __name__ == '__main__':
 
     #ElcGridPath_E1 = './Cori/mass25/rescheck/4/dist_function_save/elc_velocities.npz'
     #fit_1d_numerical('./Cori/mass25/rescheck/4/dist_function_save/1900.0_elc_1d.txt', ElcGridPath_E1)
-    #eaw()
+    eaw()
     #print(1/5.6)
-    justification()
+    #justification()
