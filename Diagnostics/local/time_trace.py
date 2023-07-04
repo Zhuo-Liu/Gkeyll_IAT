@@ -70,31 +70,31 @@ def temperature_ratio():
     fig      = plt.figure(figsize=(11.0,9.0))
     ax      = fig.add_axes([0.12, 0.16, 0.75, 0.80])
     
-    ax2 = ax.twinx()
+    #ax2 = ax.twinx()
 
-    ax.plot(time_Elctemp[:],Elctemp[:]/Elctemp[0],label='electron',linewidth=5,color='black',linestyle=':')
-    ax.plot(time_Iontemp[:],Iontemp[:]/Iontemp[0],label='ion',linewidth=5,color='black',linestyle='--')
+    ax.plot(time_Elctemp[:],Elctemp[:]/Elctemp[0],label='electron',linewidth=8,color='red',linestyle=':')
+    ax.plot(time_Iontemp[:],Iontemp[:]/Iontemp[0],label='ion',linewidth=8,color='red',linestyle='--')
     #ax2.plot(time_Iontemp4[70:95],Elctemp4[70:95]/Iontemp4[70:95],linewidth=5,color='blue')
-    ax2.plot(time_Iontemp[:],Elctemp[:]/Iontemp[:],linewidth=5,color='blue')
-    ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
-    ax.set_ylabel(r'$T/T_{0}$',fontsize=36,color='black')
-    ax2.set_ylabel(r'$T_e/T_i$',fontsize=36,color='blue')
+    #ax2.plot(time_Iontemp[:],Elctemp[:]/Iontemp[:],linewidth=5,color='blue')
+    #ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
+    #ax.set_ylabel(r'$T/T_{0}$',fontsize=36,color='red')
+    #ax2.set_ylabel(r'$T_e/T_i$',fontsize=36,color='blue')
     ax.set_xlim(0,4500)
     ax.set_ylim(0,30)
-    ax2.set_ylim(10,70)
+    #ax2.set_ylim(10,70)
 
-    ax.tick_params(labelsize = 28)
-    ax.tick_params(axis='y',colors='black')
-    ax2.tick_params(labelsize = 28,colors='blue')
+    ax.tick_params(labelsize = 58)
+    ax.tick_params(axis='y',colors='red')
+    #ax2.tick_params(labelsize = 28,colors='blue')
     
-    #ax.legend(fontsize=30,loc='center right',bbox_to_anchor=(1.0, 0.12))
-    ax.legend(fontsize=30,loc='upper center',bbox_to_anchor=(0.4, 1.0))
+    ##ax.legend(fontsize=30,loc='center right',bbox_to_anchor=(1.0, 0.12))
+    #ax.legend(fontsize=30,loc='upper center',bbox_to_anchor=(0.4, 1.0))
     ax.grid()
     #ax.legend(fontsize=30,loc='lower left')
     #plt.savefig('./Cori/figure_temp/temp.jpg')
-    #plt.show()
+    plt.show()
     
-    plt.savefig('./Figures/figures_temp/tempratio.jpg')
+    #plt.savefig('./Figures/figures_temp/tempratio.jpg')
     plt.clf()
 
 
@@ -239,6 +239,6 @@ if __name__ == "__main__":
     
     # fieldenergy_current()
     
-    # temperature_ratio()
+    temperature_ratio()
 
-    energy()
+    # energy()

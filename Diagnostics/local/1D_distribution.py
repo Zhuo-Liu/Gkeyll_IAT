@@ -193,7 +193,7 @@ def ion_main():
     #plt.vlines(1.0,0,25,linewidth=3,linestyles='--',color='black')
 
 
-    plt.xlabel(r'$v_z/c_{s}$', fontsize=36)
+    plt.xlabel(r'$v_z/c_{s0}$', fontsize=36)
     plt.ylabel(r'$F_i (v_z)$', fontsize=36)
     #plt.grid()
     plt.legend(fontsize=26)
@@ -343,8 +343,8 @@ def eaw():
 
 
 if __name__ == '__main__':
-    # ion_main()
-    # elc_main()
+    ion_main()
+    #elc_main()
 
     ######### Fitting 
     #fit_1d_numerical('./massRatio/mass100/E5_H2/dist_function_save/1600.0_elc_1d.txt', ElcGridPath)
@@ -364,4 +364,4 @@ if __name__ == '__main__':
     #fit_1d_numerical('./Cori/mass25/rescheck/4/dist_function_save/1900.0_elc_1d.txt', ElcGridPath_E1)
     eaw()
     #print(1/5.6)
-    #justification()
+    # justification()
