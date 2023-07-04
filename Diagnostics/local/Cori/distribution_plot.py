@@ -346,10 +346,10 @@ if __name__ == '__main__':
     #new_1d('./Cori/mass25/rescheck/4/dist_function/1800.0_elc_2d.txt',ElcGridPath)
     #plot_1d_distribution('./Cori/mass25/rescheck/4/dist_function_save/1700.0_elc_1d.txt', ElcGridPath)
     #ion_main()
-    #elc_main()
+    elc_main()
 
     #popt = fit_1d('./Cori/mass25/rescheck/4/dist_function/650.0_elc_1d.txt',ElcGridPath)
-    fit_1d_t('./Cori/mass25/rescheck/4/dist_function_save/1800.0_elc_1d.txt',ElcGridPath)
+    #fit_1d_t('./Cori/mass25/rescheck/4/dist_function_save/1800.0_elc_1d.txt',ElcGridPath)
     # fit_1d_t('./Cori/mass25/rescheck/4/dist_function_save/1800.0_elc_1d.txt',ElcGridPath)
     #fit_1d_t('./Cori/mass25/rescheck/4/dist_function_save/650.0_elc_1d.txt',ElcGridPath)
     # fit_1d_t('./Cori/mass25/rescheck/4/dist_function/750.0_elc_1d.txt',ElcGridPath)

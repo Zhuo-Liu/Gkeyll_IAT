@@ -84,19 +84,19 @@ def plot_2d_ion_distribution(fName, GridFile):
     thresh = df.max()/500
     df[df<thresh] = thresh
 
-    ax.pcolormesh(vz_plot/(0.02/np.sqrt(50*100)), vy_plot/(0.02/np.sqrt(50*100)), df,cmap='inferno'
+    ax.pcolormesh(vz_plot/(0.02/np.sqrt(100)), vy_plot/(0.02/np.sqrt(100)), df,cmap='inferno'
                   ,norm=colors.LogNorm(vmin=thresh, vmax=df.max()))
-    ax.set_xlabel(r'$v_z/v_{Ti0}$', fontsize=36)
-    ax.set_ylabel(r'$v_y/v_{Ti0}$', fontsize=36, labelpad=-1)
-    ax.set_xlim(-20,20)
-    ax.set_ylim(-20,20)
+    ax.set_xlabel(r'$v_z/c_{s0}$', fontsize=36)
+    ax.set_ylabel(r'$v_y/c_{s0}$', fontsize=36, labelpad=-1)
+    ax.set_xlim(-3,3)
+    ax.set_ylim(-3,3)
     ax.tick_params(labelsize = 30)
     ax.grid(which='major',color='grey', linestyle='-', linewidth=1)
     # cbar = plt.colorbar()
     # cbar.ax.tick_params(labelsize=26)
 
-    #plt.savefig(r'./paper_figures/2D_ion.jpg', bbox_inches='tight')
-    plt.show()
+    plt.savefig(r'./Figures/figures_temp/ion_2d_4300.jpeg', bbox_inches='tight')
+    #plt.show()
     plt.cla()
 
 def plot_phase_space(fName,GridFile):
@@ -175,8 +175,8 @@ def plot_phi(fName):
     cbar = fig.colorbar(pos,ax=ax)
     cbar.set_label(r"$e\phi/T_{e0}$",fontsize=32)
     cbar.ax.tick_params(labelsize=30)
-    plt.show()
-    #plt.savefig(r'./paper_figures/phi.jpg', bbox_inches='tight')
+    #plt.show()
+    plt.savefig(r'./Figures/figures_temp/phi_1800.jpeg', bbox_inches='tight')
     plt.clf()
 
 def plot_E(fName):
@@ -214,13 +214,13 @@ def plot_E(fName):
 if __name__ == '__main__':
     #plot_phase_space('./massRatio/mass100/E5_H2/dist_function/1000.0_elc_phase.txt', ElcGridPath)
 
-    #plot_phi('./massRatio/mass100/E5_H2/field/M100_E5_field_0180.txt')
+    plot_phi('./massRatio/mass100/E5_H2/field/M100_E5_field_0165.txt')
     #plot_phase_space('./massRatio/mass100/E5_H2/dist_function/1800.0_elc_phase.txt', ElcGridPath)
     #plot_phase_space_ion('./massRatio/mass100/E5_H2/dist_function/1800.0_ion_phase.txt', IonGridPath)
     #plot_2d_elc_distribution('./massRatio/mass100/E5_H2/dist_function/1800.0_elc_2d.txt',ElcGridPath)
     #plot_2d_ion_distribution('./massRatio/mass100/E5_H2/dist_function/1800.0_ion_2d.txt',IonGridPath)
 
-    #plot_phi('./massRatio/mass100/E5_H2/field/M100_E5_field_0356.txt')
+    # plot_phi('./massRatio/mass100/E5_H2/field/M100_E5_field_0376.txt')
     #plot_phi('./massRatio/mass25/E1/field/M25_E1_field_0120.txt')
     #plot_phase_space('./massRatio/mass100/E5_H2/dist_function/1800.0_elc_phase.txt', ElcGridPath)
     #plot_phase_space_ion('./massRatio/mass100/E5_H2/dist_function/3500.0_ion_phase.txt', IonGridPath)
@@ -232,7 +232,7 @@ if __name__ == '__main__':
     #plot_phase_space('./massRatio/mass100/E5_H2/dist_function/4300.0_elc_phase.txt', ElcGridPath)
     #plot_phase_space_ion('./massRatio/mass100/E5_H2/dist_function/4300.0_ion_phase.txt', IonGridPath)
     #plot_2d_elc_distribution('./massRatio/mass100/E5_H2/dist_function/4300.0_elc_2d.txt',ElcGridPath)
-    plot_2d_ion_distribution('./massRatio/mass100/E5_H2/dist_function/4200.0_ion_2d.txt',IonGridPath)
+    #plot_2d_ion_distribution('./massRatio/mass100/E5_H2/dist_function/4200.0_ion_2d.txt',IonGridPath)
 
     #plot_phase_space('./massRatio/mass100/E5_H2/dist_function/4000.0_elc_phase.txt', ElcGridPath)
     # phase_space_loop()
