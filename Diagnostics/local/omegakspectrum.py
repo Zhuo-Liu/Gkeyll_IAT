@@ -9,8 +9,8 @@ from scipy.interpolate import interp1d
 lz = 1.0
 ly = 0.5
 
-nz = 96
-ny = 48
+nz = 48
+ny = 24
 
 dz = lz/nz
 dy = ly/ny
@@ -27,41 +27,15 @@ K_z, K_y = np.meshgrid(kz_plot, ky_plot, indexing = 'xy')
 K_z = np.transpose(K_z)
 K_y = np.transpose(K_y)
 
-# def load_phi():
-#     Ez_k_list=[]
-#     Ey_k_list=[]
-#     Ez_list = []
-#     Ey_list = []
-#     phi_list = []
-#     for i in range(200,3798):
-#         fignum = str(i).zfill(4)
-#         filename = './Cori/mass25/rescheck/1/field/M25_E2_0_field_' + fignum + '.txt'
-#         phi = np.loadtxt(filename)
-#         E_z, E_y = np.gradient(phi)
-#         E_z = E_z/dz
-#         E_y = E_y/dy
-#         Ez_k = np.abs(np.fft.fftshift(np.fft.fftn(E_z)))
-#         Ey_k = np.abs(np.fft.fftshift(np.fft.fftn(E_y)))
-#         Ez_k_list.append(Ez_k)
-#         Ey_k_list.append(Ey_k)
-#         Ez_list.append(E_z)
-#         Ey_list.append(E_y)
-#         phi_list.append(phi)
-
-    
-#     return np.array(Ez_k_list), np.array(Ey_k_list), np.array(Ez_list), np.array(Ey_list), np.array(phi_list)
-
 def load_phi():
     Ez_k_list=[]
     Ey_k_list=[]
     Ez_list = []
     Ey_list = []
     phi_list = []
-    for i in range(0,466):
+    for i in range(200,3798):
         fignum = str(i).zfill(4)
-        #filename = './Cori/mass25/rescheck/1/field/M25_E2_0_field_' + fignum + '.txt'
-        #filename = './massRatio/mass100/more_save/field/M100_E5_field_' + fignum + '.txt'
-        filename = './massRatio/mass100/E5_H2/field/M100_E5_field_' + fignum + '.txt'
+        filename = './Cori/mass25/rescheck/1/field/M25_E2_0_field_' + fignum + '.txt'
         phi = np.loadtxt(filename)
         E_z, E_y = np.gradient(phi)
         E_z = E_z/dz
@@ -76,6 +50,32 @@ def load_phi():
 
     
     return np.array(Ez_k_list), np.array(Ey_k_list), np.array(Ez_list), np.array(Ey_list), np.array(phi_list)
+
+# def load_phi():
+#     Ez_k_list=[]
+#     Ey_k_list=[]
+#     Ez_list = []
+#     Ey_list = []
+#     phi_list = []
+#     for i in range(0,466):
+#         fignum = str(i).zfill(4)
+#         #filename = './Cori/mass25/rescheck/1/field/M25_E2_0_field_' + fignum + '.txt'
+#         #filename = './massRatio/mass100/more_save/field/M100_E5_field_' + fignum + '.txt'
+#         filename = './massRatio/mass100/E5_H2/field/M100_E5_field_' + fignum + '.txt'
+#         phi = np.loadtxt(filename)
+#         E_z, E_y = np.gradient(phi)
+#         E_z = E_z/dz
+#         E_y = E_y/dy
+#         Ez_k = np.abs(np.fft.fftshift(np.fft.fftn(E_z)))
+#         Ey_k = np.abs(np.fft.fftshift(np.fft.fftn(E_y)))
+#         Ez_k_list.append(Ez_k)
+#         Ey_k_list.append(Ey_k)
+#         Ez_list.append(E_z)
+#         Ey_list.append(E_y)
+#         phi_list.append(phi)
+
+    
+#     return np.array(Ez_k_list), np.array(Ey_k_list), np.array(Ez_list), np.array(Ey_list), np.array(phi_list)
 
 def k_omega_iaw():
     _,_,Ez0, Ey, phi = load_phi()
@@ -133,17 +133,23 @@ def k_omega_iaw():
 def k_omega_eaw():
     _,_,Ez0, Ey, phi = load_phi()
 
-    Ez = np.transpose(Ez0[380:460,:,0]) # 48 x 400
+    k_list = 2*np.pi*np.arange(9,29,2)*0.1
+    omega_list = np.array([0.0876485, 0.108983, 0.131577, 0.155846, 0.182402, 0.212296, 0.247897, 0.302664, 0.341438, 0.368753])
+    fw = interp1d(k_list, omega_list, kind='cubic')
+    k_sample = np.arange(9,27,0.1)*2*np.pi*0.1
+    omega_sample = fw(k_sample)
+
+    Ez = np.transpose(Ez0[3000:3600,:,0]) # 48 x 400
     Ezw = np.fft.rfft2(Ez) # 48 x 400
     Ezw2 = np.zeros_like(Ezw)
     for i in range(Ezw.shape[1]):
         Ezw2[:,i] = np.fft.fftshift(Ezw[:,i])
     absEzw = np.power(np.absolute(Ezw2),2)[:,:]  
-    omegas = np.fft.rfftfreq(80,d=(800)/(80-1)) * 2.0 * np.pi
-    #ks = np.linspace(-24,23,48)
-    ks = np.linspace(-48,47,96)
+    omegas = np.fft.rfftfreq(600,d=(300)/(600-1)) * 2.0 * np.pi
+    ks = np.linspace(-24,23,48)
+    #ks = np.linspace(-48,47,96)
 
-    k_sample_25 = np.arange(0.1,36,0.1)
+    k_sample_25 = np.arange(0.1,30,0.1)
 
     zz,yy = np.meshgrid(ks,omegas[:100],indexing='xy')
     zz = np.transpose(zz)
@@ -158,7 +164,8 @@ def k_omega_eaw():
     #plt.clim(vmin=-10,vmax=30)
     levels = np.linspace(-3,3,21)
     pos = ax.contourf(zz,yy,absEzw[:,:100],levels=levels)
-    ax.plot(-k_sample_25/2/np.pi, k_sample_25/2/np.pi * 0.15,linewidth=5, color='red',linestyle='--',label=r'$\omega/k = 1.2 v_{Te0}$')
+    ax.plot(-k_sample_25/2/np.pi, k_sample_25/2/np.pi * 0.15,linewidth=4, color='blue',linestyle='--',label=r'$\omega/k = 1.2 v_{Te0}$')
+    ax.plot(-k_sample/2/np.pi-0.01, omega_sample-0.015,linewidth=4, color='red',linestyle='--',label=r'EAW')
     ax.set_xlabel(r'$kd_e/2\pi$',fontsize=36)
     ax.set_ylabel(r'$\omega/\omega_{pe}$',fontsize=36)
     #ax.text(-2,0.7,r'$\frac{\omega}{k} = 1.2v_{Te}$',fontsize=36,color='white')

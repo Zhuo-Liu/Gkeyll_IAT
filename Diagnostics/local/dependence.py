@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.optimize import curve_fit
+from matplotlib.ticker import FormatStrFormatter
 matplotlib.use('TkAgg')
 
 #The default E is E5
@@ -15,7 +16,7 @@ path_25 = './Cori/mass25/rescheck/4/saved_data/'
 #path_25 = './massRatio/mass25/E5/saved_data/'
 path_50 = './massRatio/mass50/E5_H1/saved_data/'
 path_100 = './massRatio/mass100/E5_H2/saved_data/'
-path_200 = './massRatio/mass200/E5_H1/saved_data/'
+path_200 = './massRatio/mass200/E5_L1/saved_data/'
 path_400 = './massRatio/mass400/E5_L1/saved_data/'
 #path_400 = './massRatio/nouse/mass400_Cori/saved_data/'
 path_25_E0 = './massRatio/mass25/E0/saved_data/'
@@ -382,10 +383,11 @@ def nueff_massratio():
         i += 1
     new_Elctemp200 = np.array(new_Elctemp200)
     #ax.plot(time_fieldEnergy25[:103],0.5*fieldEnergy25[:103]/new_Elctemp25[:103],label=r'$(W/nT_e)_{25}$',linewidth=3,linestyle='--')
+    #ax.plot(time_fieldEnergy100, 0.25*0.01175*np.sqrt(new_Elctemp100[0]/new_Elctemp100),label=r'$0.25\nu_{eff_{100}}^{QL}$',linestyle='--',color='black',linewidth=4)
     ax.plot(time_fieldEnergy100,0.5*fieldEnergy100/new_Elctemp100,label=r'$0.5(W/nT_e)_{100}$',linewidth=4,linestyle=':',color='black')
     #ax.plot(time_fieldEnergy400,fieldEnergy400/new_Elctemp400,label=r'$(W/nTe)_{400}$',linewidth=3,linestyle='--')
 
-    ax.hlines(0.0118*0.12,0,2000, linestyles='--',color='black',linewidth=4,label=r'$0.1\nu_{eff_{100}}^{QL}$')
+    ax.hlines(0.01*0.1175,0,2000, linestyles='--',color='black',linewidth=4,label=r'$0.1\nu_{eff_{100}}^{QL}$')
     # ax.text(650-100,0.0066-0.001,"quasi-linear",fontsize = 18)
     # ax.text(700-100,0.0063-0.001,"estimate",fontsize = 18)
     # ax.text(650-100,0.0060-0.001,"for $m_i/m_e=25$",fontsize = 18)
@@ -394,13 +396,13 @@ def nueff_massratio():
     ax.set_ylabel(r'$\nu_{eff} \quad [\omega_{pe}]$',fontsize=32)
 
     ax.set_ylim(-0.0005,0.006)
-    ax.tick_params(labelsize = 23)
+    ax.tick_params(labelsize = 24)
     ax.tick_params(axis='y')
     ax.legend(fontsize=22)
     ax.grid()
     ax.set_xlim(300,2000)
-    plt.savefig('./Figures/paper_figures/dependence/nu_eff_mass.jpeg')
-    #plt.show()
+    #plt.savefig('./Figures/paper_figures/dependence/nu_eff_mass.jpeg')
+    plt.show()
     plt.cla()
 
 def nueff_electricfield():
@@ -429,14 +431,14 @@ def nueff_electricfield():
     ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
     ax.set_ylabel(r'$\nu_{eff} / \nu_{\rm{eff}}^{\rm{QL}}$',fontsize=32)
     #ax.set_ylim(-0.0005,0.005)
-    ax.tick_params(labelsize = 23)
+    ax.tick_params(labelsize = 24)
     ax.tick_params(axis='y')
     ax.legend(fontsize=22)
     ax.grid()
     ax.set_xlim(300,2500)
     ax.set_ylim(-0.1,1.5)
-    plt.show()
-    #plt.savefig('./Figures/paper_figures/dependence/nu_eff_E.jpeg')
+    #plt.show()
+    plt.savefig('./Figures/paper_figures/dependence/nu_eff_E.jpeg')
     plt.cla()
     
 def ionheatingtrace():
@@ -444,10 +446,10 @@ def ionheatingtrace():
     ax      = fig.add_axes([0.15, 0.15, 0.75, 0.82])
 
     ax.plot(time_Iontemp25[:],Iontemp25[:]/Iontemp25[0],linewidth=5,label=r'$m_i/m_e=25$')
-    ax.plot(time_Iontemp50[:],Iontemp50[:]/Iontemp50[0],linewidth=5,label=r'$m_i/m_e=50$')
-    ax.plot(time_Iontemp100[:],Iontemp100[:]/Iontemp100[0],linewidth=5,label=r'$m_i/m_e=100$')
-    ax.plot(time_Iontemp200[:],Iontemp200[:]/Iontemp200[0],linewidth=5,label=r'$m_i/m_e=200$')
-    ax.plot(time_Iontemp400[:],Iontemp400[:]/Iontemp400[0],linewidth=5,label=r'$m_i/m_e=400$')
+    # ax.plot(time_Iontemp50[:],Iontemp50[:]/Iontemp50[0],linewidth=5,label=r'$m_i/m_e=50$')
+    # ax.plot(time_Iontemp100[:400],Iontemp100[:400]/Iontemp100[0],linewidth=5,label=r'$m_i/m_e=100$')
+    # ax.plot(time_Iontemp200[:],Iontemp200[:]/Iontemp200[0],linewidth=5,label=r'$m_i/m_e=200$')
+
 
     ax.plot(time_Iontemp25_E1[:],Iontemp25_E1[:]/Iontemp25_E1[0],linewidth=5,label=r'$E1$')
     ax.plot(time_Iontemp25_E2[:],Iontemp25_E2[:]/Iontemp25_E2[0],linewidth=5,label=r'$E2$')
@@ -485,9 +487,9 @@ def tempratio_ratio():
     ax.set_ylabel(r'$T_e/T_i$',fontsize=32)
     ax.set_xlim(0,2000)
     ax.set_ylim(0,105)
-    ax.tick_params(labelsize = 26)
+    ax.tick_params(labelsize = 24)
     ax.tick_params(axis='y')
-    ax.legend(fontsize=24)
+    ax.legend(fontsize=22)
     ax.grid()
     plt.savefig('./Figures/paper_figures/dependence/temp_ratio.jpeg')
     #ax.set_xlim(0,2000)
@@ -500,13 +502,13 @@ def ionheating():
     ax2 = ax.twiny()
     
     mass_ratio = np.sqrt(np.array([25,50,100,200]))
-    Ti_mass = np.array([16,21,28,41])
+    Ti_mass = np.array([13.5,18.6,24,37.2])
 
     E_ext = np.array([0.5,1,2,3,4,5]) * 1e-5 * 50
-    Ti_E = np.array([7.6,8.9,8.1,11.3,13.8,15.3])
+    Ti_E = np.array([5.8,6.9,5.8,9.5,11.8,13.5])
 
     E_ext_ = np.array([2,3,4,5]) * 1e-5 * 50
-    Ti_E_ = np.array([8.1,11.3,13.8,15.3])
+    Ti_E_ = np.array([5.8,9.5,11.8,13.5])
 
     def linear_model(x,a,b):
         return a*x + b
@@ -532,8 +534,8 @@ def ionheating():
     ax.xaxis.offsetText.set_color('blue')
 
     ax2.set_xlabel(r'$\sqrt{m_i/m_e}$',fontsize=32,color='red')
-    ax.set_ylabel(r'$T_{if}/T_{i0}$',fontsize=32)
-    ax.set_xlabel(r'$E_{ext}/(4\pi en_0 \lambda_{De})$',fontsize=32, color='blue')
+    ax.set_ylabel(r'$T_{i,f}/T_{i0}$',fontsize=32)
+    ax.set_xlabel(r'$\tilde{E}_{ext}$',fontsize=32, color='blue')
 
     ax.set_xlim(1e-4, 2.7e-3)
     ax.ticklabel_format(axis='x',style='sci',scilimits=(0,0))
@@ -542,9 +544,62 @@ def ionheating():
     ax.grid(axis='y',linestyle='--')
     ax2.grid(color='red',linestyle='--')
 
-    plt.savefig('./Figures/paper_figures/dependence/Ti_dependence.jpeg')
-    #plt.show()
+    #plt.savefig('./Figures/paper_figures/dependence/Ti_dependence.jpeg')
+    plt.show()
 
+
+def ionheating_rate():
+    dTidt25 = np.zeros(np.size(Iontemp25)-1)
+    for i in range(np.size(Iontemp25)-1):
+        dTidt25[i] = (Iontemp25[i+1] - Iontemp25[i]) / (time_Iontemp25[i+1] - time_Iontemp25[i])
+
+    dTidt50 = np.zeros(np.size(Iontemp50)-1)
+    for i in range(np.size(Iontemp50)-1):
+        dTidt50[i] = (Iontemp50[i+1] - Iontemp50[i]) / (time_Iontemp50[i+1] - time_Iontemp50[i])
+
+    dTidt100 = np.zeros(np.size(Iontemp100)-1)
+    for i in range(np.size(Iontemp100)-1):
+        dTidt100[i] = (Iontemp100[i+1] - Iontemp100[i]) / (time_Iontemp100[i+1] - time_Iontemp100[i])
+
+    dTidt200 = np.zeros(np.size(Iontemp200)-1)
+    for i in range(np.size(Iontemp200)-1):
+        dTidt200[i] = (Iontemp200[i+1] - Iontemp200[i]) / (time_Iontemp200[i+1] - time_Iontemp200[i])
+
+    dTidt25_pd = pd.Series(dTidt25)
+    windows_25 = dTidt25_pd.rolling(30)
+    dTidt25_ = np.array(windows_25.mean().tolist())
+
+    dTidt50_pd = pd.Series(dTidt50)
+    windows_50 = dTidt50_pd.rolling(30)
+    dTidt50_ = np.array(windows_50.mean().tolist())
+
+    dTidt100_pd = pd.Series(dTidt100)
+    windows_100 = dTidt100_pd.rolling(30)
+    dTidt100_ = np.array(windows_100.mean().tolist())
+
+    dTidt200_pd = pd.Series(dTidt200)
+    windows_200 = dTidt200_pd.rolling(30)
+    dTidt200_ = np.array(windows_200.mean().tolist())
+
+    fig     = plt.figure(figsize=(9.5,7.5))
+    ax      = fig.add_axes([0.18, 0.16, 0.75, 0.75])
+
+
+    ax.plot(time_Iontemp200[1:],dTidt200_[0:],linewidth=5,label=r'M200E10')
+    ax.plot(time_Iontemp100[1:400],dTidt100_[1:400],linewidth=5,label=r'Main')
+    ax.plot(time_Iontemp50[0:210],dTidt50_[0:210],linewidth=5,label=r'M50E10')
+    ax.plot(time_Iontemp25[1:390],dTidt25_[1:390],linewidth=5,label=r'M25E10')
+
+    ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
+    ax.set_xlim(300,8000)
+    #ax.set_ylim(-0.0001,0.004)
+
+    # major_ticks = np.array([0,0.001,0.002,0.003,0.004])
+    #ax.set_yticks(major_ticks)
+    ax.grid()
+    plt.legend()
+
+    plt.show()
 
 def elcheatingtrace_mass():
     fig     = plt.figure(figsize=(11.0,10.0))
@@ -557,7 +612,8 @@ def elcheatingtrace_mass():
     ax.plot(time_Elctemp200[:],Elctemp200[:]/Elctemp200[0],linewidth=5,label=r'$m_i/m_e=200$')
     ax.plot(time_Elctemp400[:],Elctemp400[:]/Elctemp400[0],linewidth=5,label=r'$m_i/m_e=400$')
 
-    ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
+
+    ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
     ax.set_ylabel(r'$T_e/T_{e0}$',fontsize=36,color='black')
     ax.set_xlim(0,2500)
     ax.set_ylim(0,8)
@@ -576,7 +632,7 @@ def elcheatingtrace_E():
     ax.plot(time_Elctemp25_E4[:130],Elctemp25_E4[:130]/Elctemp25_E4[0],linewidth=5,label=r'$E4$') #220
     ax.plot(time_Elctemp25[:220],Elctemp25[:220]/Elctemp25[0],linewidth=5,label=r'$E5$')
 
-    ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
+    ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
     ax.set_ylabel(r'$T_e/T_{e0}$',fontsize=36,color='black')
     #ax.set_xlim(0,8000)
     ax.grid()
@@ -630,31 +686,31 @@ def elcheating_rate():
         dTedtT20[i] = (Elctemp25_temp20[i+1] - Elctemp25_temp20[i]) / (time_Elctemp25_temp20[i+1] - time_Elctemp25_temp20[i])
 
     dTedt25_pd = pd.Series(dTedt25)
-    windows_25 = dTedt25_pd.rolling(100)
+    windows_25 = dTedt25_pd.rolling(30)
     dTedt25_ = np.array(windows_25.mean().tolist())
 
     dTedt50_pd = pd.Series(dTedt50)
-    windows_50 = dTedt50_pd.rolling(50)
+    windows_50 = dTedt50_pd.rolling(30)
     dTedt50_ = np.array(windows_50.mean().tolist())
 
     dTedt100_pd = pd.Series(dTedt100)
-    windows_100 = dTedt100_pd.rolling(50)
+    windows_100 = dTedt100_pd.rolling(30)
     dTedt100_ = np.array(windows_100.mean().tolist())
 
     dTedt200_pd = pd.Series(dTedt200)
-    windows_200 = dTedt200_pd.rolling(50)
+    windows_200 = dTedt200_pd.rolling(30)
     dTedt200_ = np.array(windows_200.mean().tolist())
 
-    dTedt400_pd = pd.Series(dTedt400)
-    windows_400 = dTedt400_pd.rolling(50)
-    dTedt400_ = np.array(windows_400.mean().tolist())
+    # dTedt400_pd = pd.Series(dTedt400)
+    # windows_400 = dTedt400_pd.rolling(50)
+    # dTedt400_ = np.array(windows_400.mean().tolist())
 
     dTedtE1_pd = pd.Series(dTedtE1)
-    windows_1 = dTedtE1_pd.rolling(50)
+    windows_1 = dTedtE1_pd.rolling(30)
     dTedtE1_ = np.array(windows_1.mean().tolist())
 
     dTedtE2_pd = pd.Series(dTedtE2)
-    windows_2 = dTedtE2_pd.rolling(50)
+    windows_2 = dTedtE2_pd.rolling(30)
     dTedtE2_ = np.array(windows_2.mean().tolist())
 
     dTedtE3_pd = pd.Series(dTedtE3)
@@ -665,16 +721,16 @@ def elcheating_rate():
     windows_4 = dTedtE4_pd.rolling(50)
     dTedtE4_ = np.array(windows_4.mean().tolist())
 
-    dTedtT100_pd = pd.Series(dTedtT100)
-    windows_T100 = dTedtT100_pd.rolling(50)
-    dTedtT100_ = np.array(windows_T100.mean().tolist())
+    # dTedtT100_pd = pd.Series(dTedtT100)
+    # windows_T100 = dTedtT100_pd.rolling(50)
+    # dTedtT100_ = np.array(windows_T100.mean().tolist())
 
-    dTedtT20_pd = pd.Series(dTedtT20)
-    windows_T20 = dTedtT20_pd.rolling(50)
-    dTedtT20_ = np.array(windows_T20.mean().tolist())
+    # dTedtT20_pd = pd.Series(dTedtT20)
+    # windows_T20 = dTedtT20_pd.rolling(50)
+    # dTedtT20_ = np.array(windows_T20.mean().tolist())
 
-    fig     = plt.figure(figsize=(12.0,9.0))
-    ax      = fig.add_axes([0.18, 0.15, 0.75, 0.75])
+    fig     = plt.figure(figsize=(9.5,7.5))
+    ax      = fig.add_axes([0.18, 0.16, 0.75, 0.75])
 
     #ax.plot(time_Elctemp400[1:],dTedt400_/0.0004,linewidth=5,label=r'$400,E5$')
     #ax.plot(time_Elctemp200[0:300],dTedt200_[0:300]/0.0004,linewidth=5,label=r'M200E10')
@@ -682,7 +738,7 @@ def elcheating_rate():
     ax.plot(time_Elctemp100[1:],dTedt100_[0:]/0.0004,linewidth=5,label=r'Main')
 
     #ax.plot(time_Elctemp100[0:300],dTedt100_[0:300]/0.0004,linewidth=5,label=r'Main')   
-    ax.plot(time_Elctemp50[0:220],dTedt50_[0:220]/0.0004,linewidth=5,label=r'M50E10')
+    ax.plot(time_Elctemp50[0:210],dTedt50_[0:210]/0.0004,linewidth=5,label=r'M50E10')
 
     ax.plot(time_Elctemp25[1:390],dTedt25_[1:390]/0.0004,linewidth=5,label=r'M25E10')
     #ax.plot(time_Elctemp25_E4[1:200],dTedtE4_[1:200]/0.0004,linewidth=5,label=r'E4')
@@ -693,15 +749,42 @@ def elcheating_rate():
     # ax.plot(time_Elctemp25_temp100[2:],dTedtT100_[1:]/0.0004,linewidth=5,label=r'T100')
     # ax.plot(time_Elctemp25_temp20[2:],dTedtT20_[1:]/0.0004,linewidth=5,label=r'T20')
 
-    ax.set_xlabel(r'$t \quad [\omega_{pe}]$',fontsize=32)
-    ax.set_ylabel(r'$ (1/T_{e0}) d T_e / d t \quad [\omega_{pe}^-1]$',fontsize=32,color='black')
-    ax.set_xlim(500,2500)
-    ax.set_ylim(-0.0001,0.0032)
+    ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
+    ax.set_ylabel(r'$ (1/T_{e0}) (d T_e / d t) \quad [\omega_{pe}]$',fontsize=32,color='black')
+    ax.set_xlim(300,2000)
+    ax.set_ylim(-0.0001,0.004)
+
+    major_ticks = np.array([0,0.001,0.002,0.003,0.004])
+    ax.set_yticks(major_ticks)
     ax.grid()
     ax.tick_params(labelsize = 24)
-    ax.legend(fontsize=32, loc='center right',bbox_to_anchor=(1.0, 0.38))
+    ax.legend(fontsize = 22, loc='center right',bbox_to_anchor=(1.0, 0.78))
+    ax.yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
     plt.savefig('./Figures/paper_figures/dependence/Te_heatingrate.jpeg')
     #plt.show()
+
+def field_energy():
+    fig      = plt.figure(figsize=(10.5,7.5))
+    ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
+
+    ax.plot(time_fieldEnergy25_E1[:],fieldEnergy25_E1/0.0004,label='M25E2',linewidth=5)
+    ax.plot(time_fieldEnergy25_E2[:],fieldEnergy25_E2/0.0004,label='M25E4',linewidth=5)
+    ax.plot(time_fieldEnergy25[:],fieldEnergy25/0.0004,label='M25E10',linewidth=5)
+    ax.plot(time_fieldEnergy100[:],fieldEnergy100/0.0004,label='Main',linewidth=5)
+    ax.plot(time_fieldEnergy200[:],fieldEnergy200/0.0004,label='M200E10',linewidth=5)
+
+
+
+    ax.set_xlabel(r'$t \quad [\omega_{pe}^-1]$',fontsize=32)
+
+    #ax.set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32,color='blue')
+    # ax.set_xlim(0,2700)
+    # ax.set_ylim(0,5.0)
+    ax.set_yscale('log')
+    ax.tick_params(labelsize = 26)
+    ax.legend()
+    ax.grid()
+    plt.show()    
 
 if __name__ == '__main__':
 
@@ -711,15 +794,17 @@ if __name__ == '__main__':
 
     # tempratio_ratio()
 
+    # elcheating_rate()
     # ionheatingtrace()
 
     ionheating()
+    #ionheating_rate()
 
     # elcheatingtrace_mass()
     # elcheatingtrace_E()
 
-    # elcheating_rate()
-
     # current_electricfield()
 
     # current_massratio()
+
+    #field_energy()

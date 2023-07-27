@@ -102,8 +102,8 @@ def fieldenergy_plot():
 
     ax.legend(fontsize=36)
 
-    plt.savefig(r'./Figures/figures_temp/1D/field_energy.jpg', bbox_inches='tight')
-    #plt.show()
+    #plt.savefig(r'./Figures/figures_temp/1D/field_energy.jpg', bbox_inches='tight')
+    plt.show()
     plt.clf()
 
 def temp_plot():
@@ -131,7 +131,7 @@ def temp_plot():
 def plot_all():
     fig, axs = plt.subplots(2, 2, figsize=(16,12))
 
-    axs[0,0].set_title("perturbed electric field energy",fontsize=28)
+    #axs[0,0].set_title("perturbed electric field energy",fontsize=28)
     axs[0,0].plot(time_fieldEnergy[:],fieldEnergy[:],label='2D',linewidth=5)
     axs[0,0].plot(time_fieldEnergy_1D[:],fieldEnergy_1D[:],label='1D',linewidth=5)
     axs[0,0].set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
@@ -142,7 +142,7 @@ def plot_all():
     axs[0,0].legend(fontsize=24)
 
 
-    axs[0,1].set_title("ion temperature",fontsize=28)
+    #axs[0,1].set_title("ion temperature",fontsize=28)
     axs[0,1].plot(time_Iontemp[:],Iontemp[:]/Iontemp[0],label='2D',linewidth=5)
     axs[0,1].plot(time_Iontemp_1D[:],Iontemp_1D[:]/Iontemp_1D[0],label='1D',linewidth=5)
     axs[0,1].set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
@@ -152,7 +152,7 @@ def plot_all():
     axs[0,1].tick_params(labelsize = 28)
     axs[0,1].legend(fontsize=24)
 
-    axs[1,0].set_title("current",fontsize=28)
+    #axs[1,0].set_title("current",fontsize=28)
     axs[1,0].plot(time_current[:],current/0.02,label='2D',linewidth=5)
     axs[1,0].plot(time_current_1D[:],current_1D/0.02,label='1D',linewidth=5)
     axs[1,0].set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
@@ -161,7 +161,7 @@ def plot_all():
     axs[1,0].tick_params(labelsize = 28)
     axs[1,0].legend(fontsize=24)
 
-    axs[1,1].set_title("effective collision frequency",fontsize=28)
+    #axs[1,1].set_title("effective collision frequency",fontsize=28)
     axs[1,1].plot(time_current[11:],nu_eff[10:],label='2D',linewidth=5)
     axs[1,1].plot(time_current_1D[11:],nu_eff_1D[10:],label='1D',linewidth=5)
     axs[1,1].set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
@@ -209,11 +209,55 @@ def distribution():
     plt.savefig('elc_1d.jpg')
     plt.show()
 
+def justification():
+    ElcGridPath = './massRatio/mass100/1D/dist_function/elc_velocities.npz'
+    IonGridPath = './massRatio/mass100/1D/dist_function/ion_velocities.npz'
+
+    IonGridPath_2D = './massRatio/mass100/E5_H2/dist_function/ion_velocities.npz'
+
+    df_1000_elc = np.loadtxt('./massRatio/mass100/1D/dist_function/1000.0_elc_1d.txt')
+    df_1900_elc = np.loadtxt('./massRatio/mass100/1D/dist_function/1900.0_elc_1d.txt')
+
+    df_1000_ion = np.loadtxt('./massRatio/mass100/1D/dist_function/1000.0_ion_1d.txt')
+    df_2000_ion = np.loadtxt('./massRatio/mass100/1D/dist_function/2000.0_ion_1d.txt')
+    df_3000_ion = np.loadtxt('./massRatio/mass100/1D/dist_function/3000.0_ion_1d.txt')
+    df_4000_ion = np.loadtxt('./massRatio/mass100/1D/dist_function/4000.0_ion_1d.txt')
+
+    df_1000_ion_2D = np.loadtxt('./massRatio/mass100/E5_H2/dist_function/1000.0_ion_1d.txt')
+    df_2000_ion_2D = np.loadtxt('./massRatio/mass100/E5_H2/dist_function/2000.0_ion_1d.txt')
+    df_3000_ion_2D = np.loadtxt('./massRatio/mass100/E5_H2/dist_function/3000.0_ion_1d.txt')
+    df_4000_ion_2D = np.loadtxt('./massRatio/mass100/E5_H2/dist_function/4000.0_ion_1d.txt')
+
+    grid_elc = np.load(ElcGridPath)
+    grid_ion = np.load(IonGridPath)
+    velocities_elc = grid_elc['arr_0']
+    velocities_ion = grid_ion['arr_0'][1:]
+
+    grid_ion_2d = np.load(IonGridPath_2D)
+    velocities_ion_2d = grid_ion_2d['arr_0']
+
+    fig = plt.figure(figsize=(16,10),facecolor='w', edgecolor='k')
+    plt.plot(velocities_ion/0.0002, df_1000_ion, label='1000')
+    plt.plot(velocities_ion/0.0002, df_2000_ion, label='2000') 
+    #plt.plot(velocities_ion/0.0002, df_3000_ion, label='3000') 
+    #plt.plot(velocities_ion/0.0002, df_4000_ion, label='4000')    
+
+    plt.plot(velocities_ion_2d/0.0002, df_1000_ion_2D/96, label='1000_2D')
+    plt.plot(velocities_ion_2d/0.0002, df_2000_ion_2D/96, label='2000_2D') 
+    #plt.plot(velocities_ion_2d/0.0002, df_3000_ion_2D/96, label='3000_2D') 
+    plt.plot(velocities_ion_2d/0.0002, df_4000_ion_2D/96, label='4000_2D') 
+
+    plt.legend()
+    plt.show()
+
+
 if __name__ == '__main__':
     #current_plot()
     # resistivity_plot()
-    # fieldenergy_plot()
+    #fieldenergy_plot()
     # temp_plot()
-    plot_all()
+    #plot_all()
 
     #distribution()
+
+    justification()

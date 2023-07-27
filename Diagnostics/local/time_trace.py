@@ -35,9 +35,9 @@ def fieldenergy_current():
     ax2 = ax.twinx()
 
     t1 = np.arange(1000,1900)
-    c1 = 0.018 + 0.000016*(t1-1000) 
+    c1 = 0.016 + 0.000016*(t1-1000) 
     t2 = np.arange(1900,3800)
-    c2 = 0.035 + 0.000035*(t2-1900)
+    c2 = 0.033 + 0.000035*(t2-1900)
     ax.plot(time_current,current/0.02,label='2D',linewidth=5,color='blue')
     #ax.plot(time_current_1d,current_1d/0.02,label='1D',linewidth=4)
     ax.plot(t1,c1/0.02,linewidth=6,linestyle='dashed',color='green')
@@ -57,7 +57,7 @@ def fieldenergy_current():
     #ax.hlines(0.2,0,4500,linestyle=':',linewidth=5,color='black')
     ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
     ax.set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32,color='blue')
-    ax2.set_ylabel(r'$\int |E_z|^2+|E_y|^2 dydz/4\pi n_0T_{e0}$',fontsize=32,color='red')
+    ax2.set_ylabel(r'$\int |E_z|^2+|E_y|^2 dydz/8\pi T_{e0}$',fontsize=32,color='red')
     ax.set_xlim(0,4500)
     ax.set_ylim(0,7.0)
     ax.tick_params(labelsize = 26)
@@ -237,8 +237,8 @@ def energy():
 if __name__ == "__main__":
     # ion_temp()
     
-    # fieldenergy_current()
+    fieldenergy_current()
     
-    temperature_ratio()
+    # temperature_ratio()
 
     # energy()

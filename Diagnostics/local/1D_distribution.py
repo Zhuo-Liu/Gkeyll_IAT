@@ -6,7 +6,7 @@ from scipy.interpolate import interp1d
 from scipy.optimize import curve_fit
 from scipy.special import gamma
 import matplotlib.ticker as ticker
-matplotlib.use('TkAgg')
+#matplotlib.use('TkAgg')
 
 ElcGridPath = './massRatio/mass100/E5_H2/dist_function_save/elc_velocities.npz'
 IonGridPath = './massRatio/mass100/E5_H2/dist_function_save/ion_velocities.npz'
@@ -343,7 +343,7 @@ def eaw():
 
 
 if __name__ == '__main__':
-    ion_main()
+    #ion_main()
     #elc_main()
 
     ######### Fitting 
@@ -360,8 +360,8 @@ if __name__ == '__main__':
 
     # compare_dist()
 
-    #ElcGridPath_E1 = './Cori/mass25/rescheck/4/dist_function_save/elc_velocities.npz'
-    #fit_1d_numerical('./Cori/mass25/rescheck/4/dist_function_save/1900.0_elc_1d.txt', ElcGridPath_E1)
-    eaw()
+    ElcGridPath_E1 = './Cori/mass25/rescheck/4/dist_function_save/elc_velocities.npz'
+    fit_1d_numerical('./Cori/mass25/rescheck/4/dist_function_save/2000.0_elc_1d.txt', ElcGridPath_E1)
+    #eaw()
     #print(1/5.6)
     # justification()

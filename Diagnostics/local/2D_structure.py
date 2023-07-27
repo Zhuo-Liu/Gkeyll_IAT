@@ -111,22 +111,22 @@ def plot_phase_space(fName,GridFile):
     ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
 
     df[df<5] = 0
-    ax.pcolormesh(zz, vv/0.02, df,cmap='inferno')
+    ax.pcolormesh(zz*50, vv/0.02, df,cmap='inferno')
     #ax.pcolormesh(zz, vv/0.02, df)
-    ax.set_xlabel(r'$z /d_e$', fontsize=32)
-    ax.set_ylabel(r'$v_z /v_{Te0}$', fontsize=32, labelpad=-1)
+    ax.set_xlabel(r'$z /\lambda_{De}$', fontsize=36)
+    ax.set_ylabel(r'$v_z /v_{Te0}$', fontsize=36, labelpad=-1)
 
     ax.set_ylim(-4,13)
-    ax.tick_params(labelsize = 32)
+    ax.tick_params(labelsize = 30)
     time_middle = fName.rsplit("/")[-1]
     time = float(time_middle.rsplit("_")[0])
-    ax.set_title(r'$\omega_{pe}t=$' + f"{time:04}",fontsize=26)
+    #ax.set_title(r'$\omega_{pe}t=$' + f"{time:04}",fontsize=26)
     #ax.grid(which='major')
 
     #plt.show()
-    savename = './massRatio/mass100/E5_H2/phase_plots/'+f'{time:04}'+'.jpg'
-    plt.savefig(savename)
-    #plt.savefig(r'./paper_figures/phase.jpg', bbox_inches='tight')
+    #savename = './massRatio/mass100/E5_H2/phase_plots/'+f'{time:04}'+'.jpg'
+    #plt.savefig(savename)
+    plt.savefig(r'./Figures/figures_temp/phase.jpg', bbox_inches='tight')
     plt.cla()
 
 def phase_space_loop():
@@ -214,7 +214,7 @@ def plot_E(fName):
 if __name__ == '__main__':
     #plot_phase_space('./massRatio/mass100/E5_H2/dist_function/1000.0_elc_phase.txt', ElcGridPath)
 
-    plot_phi('./massRatio/mass100/E5_H2/field/M100_E5_field_0165.txt')
+    #plot_phi('./massRatio/mass100/E5_H2/field/M100_E5_field_0165.txt')
     #plot_phase_space('./massRatio/mass100/E5_H2/dist_function/1800.0_elc_phase.txt', ElcGridPath)
     #plot_phase_space_ion('./massRatio/mass100/E5_H2/dist_function/1800.0_ion_phase.txt', IonGridPath)
     #plot_2d_elc_distribution('./massRatio/mass100/E5_H2/dist_function/1800.0_elc_2d.txt',ElcGridPath)
@@ -222,7 +222,7 @@ if __name__ == '__main__':
 
     # plot_phi('./massRatio/mass100/E5_H2/field/M100_E5_field_0376.txt')
     #plot_phi('./massRatio/mass25/E1/field/M25_E1_field_0120.txt')
-    #plot_phase_space('./massRatio/mass100/E5_H2/dist_function/1800.0_elc_phase.txt', ElcGridPath)
+    plot_phase_space('./massRatio/mass100/E5_H2/dist_function/3500.0_elc_phase.txt', ElcGridPath)
     #plot_phase_space_ion('./massRatio/mass100/E5_H2/dist_function/3500.0_ion_phase.txt', IonGridPath)
     #plot_2d_elc_distribution('./massRatio/mass100/E5_H2/dist_function/3200.0_elc_2d.txt',ElcGridPath)
     #plot_2d_ion_distribution('./massRatio/mass100/E5_H2/dist_function/3500.0_ion_2d.txt',IonGridPath)
