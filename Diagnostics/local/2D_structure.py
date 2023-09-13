@@ -11,7 +11,7 @@ from scipy.optimize import curve_fit
 from scipy.special import gamma
 import matplotlib.ticker as ticker
 import matplotlib.colors as colors
-matplotlib.use('TkAgg')
+#matplotlib.use('TkAgg')
 
 ElcGridPath = './massRatio/mass100/E5_H2/dist_function_save/elc_velocities.npz'
 IonGridPath = './massRatio/mass100/E5_H2/dist_function_save/ion_velocities.npz'
@@ -169,6 +169,8 @@ def plot_phi(fName):
     ax.set_xlabel(r'$z/\lambda_{De}$',fontsize=36)
     ax.set_ylabel(r'$y/\lambda_{De}$',fontsize=36)
     ax.tick_params(labelsize = 32)
+    major_ticks = np.array([0,10,20,30,40,50])
+    ax.set_xticks(major_ticks)
     #ax.grid()
     #ax.contourf(ZZ, YY, phi, 30,  zdir='z', cmap=matplotlib.cm.coolwarm)
     pos = ax.contourf(ZZ*50, YY*50, phi/0.0004, 30,  zdir='z', cmap='inferno')
@@ -176,7 +178,7 @@ def plot_phi(fName):
     cbar.set_label(r"$e\phi/T_{e0}$",fontsize=32)
     cbar.ax.tick_params(labelsize=30)
     #plt.show()
-    plt.savefig(r'./Figures/figures_temp/phi_1800.jpeg', bbox_inches='tight')
+    plt.savefig(r'./Figures/figures_temp/phi_4300.jpeg', bbox_inches='tight')
     plt.clf()
 
 def plot_E(fName):
@@ -220,14 +222,14 @@ if __name__ == '__main__':
     #plot_2d_elc_distribution('./massRatio/mass100/E5_H2/dist_function/1800.0_elc_2d.txt',ElcGridPath)
     #plot_2d_ion_distribution('./massRatio/mass100/E5_H2/dist_function/1800.0_ion_2d.txt',IonGridPath)
 
-    # plot_phi('./massRatio/mass100/E5_H2/field/M100_E5_field_0376.txt')
+    #plot_phi('./massRatio/mass100/E5_H2/field/M100_E5_field_0376.txt')
     #plot_phi('./massRatio/mass25/E1/field/M25_E1_field_0120.txt')
-    plot_phase_space('./massRatio/mass100/E5_H2/dist_function/3500.0_elc_phase.txt', ElcGridPath)
+    #plot_phase_space('./massRatio/mass100/E5_H2/dist_function/3500.0_elc_phase.txt', ElcGridPath)
     #plot_phase_space_ion('./massRatio/mass100/E5_H2/dist_function/3500.0_ion_phase.txt', IonGridPath)
     #plot_2d_elc_distribution('./massRatio/mass100/E5_H2/dist_function/3200.0_elc_2d.txt',ElcGridPath)
-    #plot_2d_ion_distribution('./massRatio/mass100/E5_H2/dist_function/3500.0_ion_2d.txt',IonGridPath)
+    plot_2d_ion_distribution('./massRatio/mass100/E5_H2/dist_function/3500.0_ion_2d.txt',IonGridPath)
 
-    #plot_phi('./massRatio/mass100/E5_H2/field/M100_E5_field_0432.txt')
+    # plot_phi('./massRatio/mass100/E5_H2/field/M100_E5_field_0432.txt')
     #plot_phi('./Cori/mass25/rescheck/4/field/M25_E2_3_field_0430.txt')
     #plot_phase_space('./massRatio/mass100/E5_H2/dist_function/4300.0_elc_phase.txt', ElcGridPath)
     #plot_phase_space_ion('./massRatio/mass100/E5_H2/dist_function/4300.0_ion_phase.txt', IonGridPath)

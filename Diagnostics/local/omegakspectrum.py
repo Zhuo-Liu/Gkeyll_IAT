@@ -161,7 +161,7 @@ def k_omega_eaw():
     fig     = plt.figure(figsize=(10.0,9.0))
     ax      = fig.add_axes([0.15, 0.15, 0.80, 0.76])
     ax.set_ylim(0,1.0)
-    #plt.clim(vmin=-10,vmax=30)
+    #plt.clim(vmin=-10,vmax=30)``
     levels = np.linspace(-3,3,21)
     pos = ax.contourf(zz,yy,absEzw[:,:100],levels=levels)
     ax.plot(-k_sample_25/2/np.pi, k_sample_25/2/np.pi * 0.15,linewidth=4, color='blue',linestyle='--',label=r'$\omega/k = 1.2 v_{Te0}$')

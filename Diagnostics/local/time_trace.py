@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib
-matplotlib.use('TkAgg')
+#matplotlib.use('TkAgg')
 
 ####### Load Data ########
 
@@ -237,8 +237,8 @@ def energy():
 if __name__ == "__main__":
     # ion_temp()
     
-    fieldenergy_current()
+    # fieldenergy_current()
     
-    # temperature_ratio()
+    temperature_ratio()
 
     # energy()
