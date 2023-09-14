@@ -259,7 +259,7 @@ def justification():
     ax.plot(k_list,gamma_list_1000_artifical,label='$\omega_{pe} t = 1000$ artificial',linewidth=5,color=u'#ff7f0e',linestyle='--')
 
     ax.hlines(0.0,0.9/50,16/50,linestyles='--',linewidth=7,colors='black')
-    ax.hlines(-0.01,0.9/50,16/50,linestyles=':',linewidth=7,colors='black')
+    ax.hlines(-0.00333,0.9/50,16/50,linestyles=':',linewidth=7,colors='black')
     
     
     ax.ticklabel_format(axis='y',style='sci',scilimits=(0,0))
@@ -268,7 +268,7 @@ def justification():
     #ax.legend(fontsize=22,loc='center right',bbox_to_anchor=(1.0, 0.3))
 
     ax.set_xlim(0.9/50,12/50)
-    ax.set_ylim(-0.05,)
+    ax.set_ylim(-0.03,)
 
     ax.set_xlabel(r'$k_z \lambda_{De}/2\pi$',fontsize=32)
     ax.set_ylabel(r'$\gamma \quad [\omega_{pe}]$',fontsize=32)
@@ -360,8 +360,8 @@ if __name__ == '__main__':
 
     # compare_dist()
 
-    ElcGridPath_E1 = './Cori/mass25/rescheck/4/dist_function_save/elc_velocities.npz'
-    fit_1d_numerical('./Cori/mass25/rescheck/4/dist_function_save/2000.0_elc_1d.txt', ElcGridPath_E1)
+    # ElcGridPath_E1 = './Cori/mass25/rescheck/4/dist_function_save/elc_velocities.npz'
+    # fit_1d_numerical('./Cori/mass25/rescheck/4/dist_function_save/2000.0_elc_1d.txt', ElcGridPath_E1)
     #eaw()
     #print(1/5.6)
-    # justification()
+    justification()

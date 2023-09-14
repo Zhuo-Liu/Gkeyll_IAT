@@ -94,7 +94,7 @@ def mass25():
     axs[0,0].plot(time_fieldEnergy3_2[:],fieldEnergy3_2[:]/0.0004,label='#3-1',linewidth=5)
     axs[0,0].plot(time_fieldEnergy4[:],fieldEnergy4[:]/0.0004,label='#4',linewidth=5)
     axs[0,0].set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
-    axs[0,0].set_ylabel(r'$\int (|\delta E_z|^2 + |\delta E_y|^2)dydz/(4\pi T_{e0})$',fontsize=24)
+    axs[0,0].set_ylabel(r'$\int (|\delta E_z|^2 + |\delta E_y|^2)dydz/8\pi T_{e0}$',fontsize=24)
     axs[0,0].set_yscale('log')
     axs[0,0].set_xlim(0,1800)
     axs[0,0].tick_params(labelsize = 28)

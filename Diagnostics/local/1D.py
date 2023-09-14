@@ -135,7 +135,7 @@ def plot_all():
     axs[0,0].plot(time_fieldEnergy[:],fieldEnergy[:],label='2D',linewidth=5)
     axs[0,0].plot(time_fieldEnergy_1D[:],fieldEnergy_1D[:],label='1D',linewidth=5)
     axs[0,0].set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
-    axs[0,0].set_ylabel(r'$\int dydz |\delta E_z|^2 + |\delta E_y|^2/4\pi n_o T_{e0}$',fontsize=24)
+    axs[0,0].set_ylabel(r'$\int (|\delta E_z|^2 + |\delta E_y|^2) dydz/8\pi T_{e0}$',fontsize=24)
     axs[0,0].set_yscale('log')
     axs[0,0].set_xlim(0,4000)
     axs[0,0].tick_params(labelsize = 28)
@@ -150,7 +150,7 @@ def plot_all():
     axs[0,1].set_xlim(0,4000)
     axs[0,1].set_ylim(-3,40)
     axs[0,1].tick_params(labelsize = 28)
-    axs[0,1].legend(fontsize=24)
+    axs[0,1].legend(fontsize=24,loc='lower right')
 
     #axs[1,0].set_title("current",fontsize=28)
     axs[1,0].plot(time_current[:],current/0.02,label='2D',linewidth=5)
@@ -171,7 +171,7 @@ def plot_all():
     axs[1,1].legend(fontsize=24)
 
     plt.tight_layout()
-    plt.savefig(r'./Figures/figures_temp/1D/1D.pdf', bbox_inches='tight')
+    plt.savefig(r'./Figures/figures_temp/1D/1D.jpg', bbox_inches='tight')
 
 def distribution():
     ElcGridPath = './massRatio/mass100/E5_H2/dist_function/elc_velocities.npz'
@@ -256,8 +256,8 @@ if __name__ == '__main__':
     # resistivity_plot()
     #fieldenergy_plot()
     # temp_plot()
-    #plot_all()
+    plot_all()
 
     #distribution()
 
-    justification()
+    #justification()

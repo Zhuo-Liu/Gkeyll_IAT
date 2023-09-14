@@ -51,6 +51,9 @@ time_fieldEnergy200 = np.loadtxt(path_200 + 'fieldEnergy_time.txt')
 fieldEnergy400 = np.loadtxt(path_400 + 'fieldEnergy.txt')
 time_fieldEnergy400 = np.loadtxt(path_400 + 'fieldEnergy_time.txt')
 
+fieldEnergy25_E0 = np.loadtxt(path_25_E0 + 'fieldEnergy.txt')
+time_fieldEnergy25_E0 = np.loadtxt(path_25_E0 + 'fieldEnergy_time.txt')
+
 fieldEnergy25_E1 = np.loadtxt(path_25_E1 + 'fieldEnergy.txt')
 time_fieldEnergy25_E1 = np.loadtxt(path_25_E1 + 'fieldEnergy_time.txt')
 
@@ -68,6 +71,7 @@ time_fieldEnergy25_temp100 = np.loadtxt(path_25_temp100 + 'fieldEnergy_time.txt'
 
 fieldEnergy25 = np.loadtxt(path_25 + 'fieldEnergy.txt')
 time_fieldEnergy25 = np.loadtxt(path_25 + 'fieldEnergy_time.txt')
+
 ######### Temperature ############
 Iontemp25 = np.loadtxt(path_25 + 'ion_intM2Thermal.txt')*25
 time_Iontemp25 = np.loadtxt(path_25 + 'ion_intM2Thermal_time.txt')
@@ -93,6 +97,11 @@ Iontemp400 = np.loadtxt(path_400 + 'ion_intM2Thermal.txt')*400
 time_Iontemp400 = np.loadtxt(path_400 + 'ion_intM2Thermal_time.txt')
 Elctemp400 = np.loadtxt(path_400 + 'elc_intM2Thermal.txt')
 time_Elctemp400 = np.loadtxt(path_400 + 'elc_intM2Thermal_time.txt')
+
+Iontemp25_E0 = np.loadtxt(path_25_E0 + 'ion_intM2Thermal.txt')*25
+time_Iontemp25_E0 = np.loadtxt(path_25_E0 + 'ion_intM2Thermal_time.txt')
+Elctemp25_E0 = np.loadtxt(path_25_E0 + 'elc_intM2Thermal.txt')
+time_Elctemp25_E0 = np.loadtxt(path_25_E0 + 'elc_intM2Thermal_time.txt')
 
 Iontemp25_E1 = np.loadtxt(path_25_E1 + 'ion_intM2Thermal.txt')*25
 time_Iontemp25_E1 = np.loadtxt(path_25_E1 + 'ion_intM2Thermal_time.txt')
@@ -401,8 +410,8 @@ def nueff_massratio():
     ax.legend(fontsize=22)
     ax.grid()
     ax.set_xlim(300,2000)
-    #plt.savefig('./Figures/paper_figures/dependence/nu_eff_mass.jpeg')
-    plt.show()
+    plt.savefig('./Figures/paper_figures/dependence/nu_eff_mass.jpeg')
+    #plt.show()
     plt.cla()
 
 def nueff_electricfield():
@@ -786,9 +795,64 @@ def field_energy():
     ax.grid()
     plt.show()    
 
-if __name__ == '__main__':
 
-    
+def plot_all_ewf():
+    fig, axs = plt.subplots(2, 2, figsize=(16,12))
+
+    #axs[0,0].plot(time_fieldEnergy25_E0[:],fieldEnergy25_E0[:]/0.0004,label='M25E1',linewidth=5)
+    axs[0,0].plot(time_fieldEnergy25_E1[:],fieldEnergy25_E1[:]/0.0004,label='M25E2',linewidth=5)
+    #axs[0,0].plot(time_fieldEnergy25_E2[:],fieldEnergy25_E2[:]/0.0004,label='M25E4',linewidth=5)
+    axs[0,0].set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
+    axs[0,0].set_ylabel(r'$\int (|\delta E_z|^2 + |\delta E_y|^2)dydz/8\pi T_{e0}$',fontsize=24)
+    axs[0,0].set_yscale('log')
+    #axs[0,0].set_xlim(0,1800)
+    axs[0,0].tick_params(labelsize = 28)
+    axs[0,0].legend(fontsize=24, loc='lower right')
+    axs[0,0].set_xlim(300,4000)
+
+
+    #axs[0,1].set_title("ion temperature",fontsize=28)
+    #axs[0,1].plot(time_Iontemp25_E0[:],Iontemp25_E0[:]/Iontemp25_E0[0],label='M25E1',linewidth=5)
+    axs[0,1].plot(time_Iontemp25_E1[:],Iontemp25_E1[:]/Iontemp25_E1[0],label='M25E2',linewidth=5)
+    #axs[0,1].plot(time_Iontemp25_E2[:],Iontemp25_E2[:]/Iontemp25_E2[0],label='M25E4',linewidth=5)
+    axs[0,1].set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
+    axs[0,1].set_ylabel(r'$T_i/T_{i0}$',fontsize=32)
+    #axs[0,1].set_xlim(0,1800)
+    #axs[0,1].set_ylim(0,25)
+    axs[0,1].tick_params(labelsize = 28)
+    axs[0,1].legend(fontsize=24,loc='lower right')
+    axs[0,1].set_xlim(300,4000)
+
+    #axs[1,0].set_title("current",fontsize=28)
+    #axs[1,0].plot(time_current25_E0[:],current25_E0[:]/0.02,label='M25E1',linewidth=5)
+    axs[1,0].plot(time_current25_E1[:],current25_E1[:]/0.02,label='M25E2',linewidth=5)
+    #axs[1,0].plot(time_current25_E2[:],current25_E2[:]/0.02,label='M25E4',linewidth=5)
+    axs[1,0].set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
+    axs[1,0].set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32)
+    #axs[1,0].set_xlim(0,1800)
+    axs[1,0].tick_params(labelsize = 28)
+    axs[1,0].legend(fontsize=24, loc='lower right')
+    axs[1,0].set_xlim(300,4000)
+
+    #axs[1,1].set_title("effective collision frequency",fontsize=28)
+    #axs[1,1].plot(time_current250_E0[9:401],nu_eff25_E0[8:400],label='M25E1',linewidth=5)
+    axs[1,1].plot(time_current25_E1[9:401],nu_eff25_E1[8:400],label='M25E2',linewidth=5)
+    #axs[1,1].plot(time_current25_E2[9:401],nu_eff25_E2[8:400],label='M25E4',linewidth=5)
+    axs[1,1].set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
+    axs[1,1].set_ylabel(r'$\nu_{eff} \quad [\omega_{pe}]$',fontsize=32)
+    # axs[1,1].hlines(0.0006,0,2000,linestyle='--')
+    # axs[1,1].text(1200,0.0007,'quasi-linear \n estimation',fontsize=24)
+    #axs[1,1].set_xlim(0,1800)
+    #axs[1,1].set_ylim(-0.001,0.006)
+    axs[1,1].tick_params(labelsize = 28)
+    axs[1,1].legend(fontsize=24)
+    axs[1,1].set_xlim(300,4000)
+
+    plt.tight_layout()
+    #plt.show()
+    plt.savefig('./Figures/figures_temp/extreme.jpg')
+
+if __name__ == '__main__':
     # nueff_massratio()
     # nueff_electricfield()
 
@@ -797,7 +861,7 @@ if __name__ == '__main__':
     # elcheating_rate()
     # ionheatingtrace()
 
-    ionheating()
+    # ionheating()
     #ionheating_rate()
 
     # elcheatingtrace_mass()
@@ -808,3 +872,5 @@ if __name__ == '__main__':
     # current_massratio()
 
     #field_energy()
+
+    plot_all_ewf()
