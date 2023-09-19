@@ -102,12 +102,14 @@ def k_main(Ez_k_list,Ey_k_list):
 
     fig = plt.figure(figsize=(9,7))
     ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
-    ax.plot(k_plot_2,Ek_500,label=r'$\omega_{pe}t=500$',linewidth=3)
-    ax.plot(k_plot_2,Ek_1000,label=r'$\omega_{pe}t=1000$',linewidth=3)
-    ax.plot(k_plot_2,Ek_1800,label=r'$\omega_{pe}t=1600$',linewidth=3)
-    ax.plot(k_plot_2,Ek_2000,label=r'$\omega_{pe}t=2000$',linewidth=3)
-    ax.plot(k_plot_2,Ek_3500,label=r'$\omega_{pe}t=3500$',linewidth=3)
-    ax.plot(k_plot_2,Ek_4300,label=r'$\omega_{pe}t=4300$',linewidth=3)
+    n = 6
+    colors = plt.cm.jet(np.linspace(0.02,0.8,n))
+    ax.plot(k_plot_2,Ek_500,label=r'$\omega_{pe}t=500$',linewidth=3,color=colors[0])
+    ax.plot(k_plot_2,Ek_1000,label=r'$\omega_{pe}t=1000$',linewidth=3,color=colors[1])
+    ax.plot(k_plot_2,Ek_1800,label=r'$\omega_{pe}t=1600$',linewidth=3,color=colors[2])
+    ax.plot(k_plot_2,Ek_2000,label=r'$\omega_{pe}t=2000$',linewidth=3,color=colors[3])
+    ax.plot(k_plot_2,Ek_3500,label=r'$\omega_{pe}t=3500$',linewidth=3,color=colors[4])
+    ax.plot(k_plot_2,Ek_4300,label=r'$\omega_{pe}t=4300$',linewidth=3,color=colors[5])
     # plt.plot(k_plot_2,Ek_2400,label=r'$\omega_{pe}t=2400$',linewidth=3)
     
     #ax.plot(k_list,0.004*N_k,linewidth=3,linestyle = '--',color='black')
@@ -195,15 +197,17 @@ def theta_main(Ez_k_list,Ey_k_list, N=6):
 
     fig = plt.figure(figsize=(9,7))
     ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
+    n = 6
+    colors = plt.cm.jet(np.linspace(0.02,0.8,n))
     # plt.plot(theta_plot,E_500/E_500[0],label=r'$\omega_{pe}t=500$',linewidth=3)x
     # plt.plot(theta_plot,E_1000/E_1000[0],label=r'$\omega_{pe}t=1000$',linewidth=3)
     # plt.plot(theta_plot,E_3500/E_3500[0],label=r'$\omega_{pe}t=3500$',linewidth=3)
     # plt.plot(theta_plot,E_4300/E_4300[0],label=r'$\omega_{pe}t=4300$',linewidth=3)
-    ax.plot(theta_plot,E_500_f/E_500_f[0],label=r'$\omega_{pe}t=500$',linewidth=3)
-    ax.plot(theta_plot,E_750_f/E_750_f[0],label=r'$\omega_{pe}t=750$',linewidth=3)
-    ax.plot(theta_plot,E_1000/E_1000[0],label=r'$\omega_{pe}t=1000$',linewidth=3)
-    ax.plot(theta_plot,E_3500/E_3500[0],label=r'$\omega_{pe}t=3500$',linewidth=3)
-    ax.plot(theta_plot,E_4300_f/E_4300_f[0],label=r'$\omega_{pe}t=4300$',linewidth=3)
+    ax.plot(theta_plot,E_500_f/E_500_f[0],label=r'$\omega_{pe}t=500$',linewidth=3,color=colors[0])
+    ax.plot(theta_plot,E_750_f/E_750_f[0],label=r'$\omega_{pe}t=750$',linewidth=3,color=colors[1])
+    ax.plot(theta_plot,E_1000/E_1000[0],label=r'$\omega_{pe}t=1000$',linewidth=3,color=colors[2])
+    ax.plot(theta_plot,E_3500/E_3500[0],label=r'$\omega_{pe}t=3500$',linewidth=3,color=colors[3])
+    #ax.plot(theta_plot,E_4300_f/E_4300_f[0],label=r'$\omega_{pe}t=4300$',linewidth=3)
 
     ax.legend(fontsize=20)
     ax.set_xlim(0,80)
@@ -211,7 +215,7 @@ def theta_main(Ez_k_list,Ey_k_list, N=6):
     ax.set_xlabel(r'$\theta ^\circ$',fontsize=26)
     ax.set_ylabel(r'$N(\theta) / N(0)$',fontsize=26)
     ax.tick_params(labelsize=20)
-    plt.show()
+    plt.savefig('./Figures/figures_temp/theta_spectrum.jpeg')
 
 def k_main_2(Ez_k_list,Ey_k_list):
     def k_dependence(Ez_k,Ey_k):
@@ -297,7 +301,7 @@ def theta():
 
 if __name__ == '__main__':
     Ez_k_list, Ey_k_list,Ez_list,Ey_list,_ = load_phi()
-    #k_main( Ez_k_list, Ey_k_list)
+    k_main( Ez_k_list, Ey_k_list)
     theta_main(Ez_k_list, Ey_k_list,50)
 
     #theta()

@@ -40,16 +40,19 @@ def elc_main():
 
     fig = plt.figure(figsize=(16,10),facecolor='w', edgecolor='k')
 
-    plt.plot(velocities_z/0.02, df_500,label=r'$\omega_{pe}t=500$',linewidth=6)
-    plt.plot(velocities_z/0.02, df_750,label=r'$\omega_{pe}t=750$',linewidth=6)
-    plt.plot(velocities_z/0.02, df_1000,label=r'$\omega_{pe}t=1000$',linewidth=6)
-    plt.plot(velocities_z/0.02, df_1600,label=r'$\omega_{pe}t=1600$',linewidth=6)
+    n = 5
+    colors = plt.cm.jet(np.linspace(0.02,0.66,n))
+
+    plt.plot(velocities_z/0.02, df_500,label=r'$\omega_{pe}t=500$',linewidth=6,color=colors[0])
+    plt.plot(velocities_z/0.02, df_750,label=r'$\omega_{pe}t=750$',linewidth=6,color=colors[1])
+    plt.plot(velocities_z/0.02, df_1000,label=r'$\omega_{pe}t=1000$',linewidth=6,color=colors[2])
+    plt.plot(velocities_z/0.02, df_1600,label=r'$\omega_{pe}t=1600$',linewidth=6,color=colors[3])
+    plt.plot(velocities_z/0.02, df_3500,label=r'$\omega_{pe}t=3500$',linewidth=6,color=colors[4])
     plt.plot(velocities_z/0.02, maxw1,linewidth=5,linestyle='--',label=r'bulk',color='black')
-    plt.plot(velocities_z/0.02, maxw2,linewidth=5,linestyle='--',label=r'tail at $\omega_{pe}t=750$',color=u'#ff7f0e')
+    plt.plot(velocities_z/0.02, maxw2,linewidth=5,linestyle='--',label=r'tail at $\omega_{pe}t=750$',color=colors[1])
     #plt.plot(velocities_z/0.02, maxw3,linewidth=5,linestyle='--',label=r'tail at $\omega_{pe}t=1000$',color=u'#2ca02c')
-    plt.plot(velocities_z/0.02, maxw4,linewidth=5,linestyle='--',label=r'tail at $\omega_{pe}t=1600$',color=u'#d62728')
+    plt.plot(velocities_z/0.02, maxw4,linewidth=5,linestyle='--',label=r'tail at $\omega_{pe}t=1600$',color=colors[3])
     #plt.plot(velocities_z/0.02, df_2200,label=r'$\omega_{pe}t=2200$',linewidth=6)
-    plt.plot(velocities_z/0.02, df_3500,label=r'$\omega_{pe}t=3500$',linewidth=6)
     #plt.plot(velocities_z/0.02, df_4000,label=r'$\omega_{pe}t=4000$',linewidth=6)
 
     resonance = np.arange(-1.4,1.5,0.1)
@@ -183,12 +186,15 @@ def ion_main():
 
     plt.figure(figsize=(10.5,10))
 
-    plt.plot(velocities_z/0.002, df_500,label=r'$\omega_{pe}t=500$',linewidth=6)
-    plt.plot(velocities_z/0.002, df_750,label=r'$\omega_{pe}t=750$',linewidth=6)
-    plt.plot(velocities_z/0.002, df_1000,label=r'$\omega_{pe}t=1000$',linewidth=6)
-    plt.plot(velocities_z/0.002, df_1600,label=r'$\omega_{pe}t=1600$',linewidth=6)
+    n = 5
+    colors = plt.cm.jet(np.linspace(0.02,0.66,n))
+
+    plt.plot(velocities_z/0.002, df_500,label=r'$\omega_{pe}t=500$',linewidth=6,color=colors[0])
+    plt.plot(velocities_z/0.002, df_750,label=r'$\omega_{pe}t=750$',linewidth=6,color=colors[1])
+    plt.plot(velocities_z/0.002, df_1000,label=r'$\omega_{pe}t=1000$',linewidth=6,color=colors[2])
+    plt.plot(velocities_z/0.002, df_1600,label=r'$\omega_{pe}t=1600$',linewidth=6,color=colors[3])
     #plt.plot(velocities_z/0.002, df_2500,label=r'$\omega_{pe}t=2500$',linewidth=6)
-    plt.plot(velocities_z/0.002, df_3500,label=r'$\omega_{pe}t=3500$',linewidth=6)
+    plt.plot(velocities_z/0.002, df_3500,label=r'$\omega_{pe}t=3500$',linewidth=6,color=colors[4])
     #plt.plot(velocities_z/0.002, df_4000,label=r'$\omega_{pe}t=4000$',linewidth=6)
     #plt.vlines(1.0,0,25,linewidth=3,linestyles='--',color='black')
 
@@ -343,8 +349,8 @@ def eaw():
 
 
 if __name__ == '__main__':
-    #ion_main()
-    #elc_main()
+    ion_main()
+    elc_main()
 
     ######### Fitting 
     #fit_1d_numerical('./massRatio/mass100/E5_H2/dist_function_save/1600.0_elc_1d.txt', ElcGridPath)
@@ -360,8 +366,8 @@ if __name__ == '__main__':
 
     # compare_dist()
 
-    ElcGridPath_E1 = './Cori/mass25/rescheck/4/dist_function_save/elc_velocities.npz'
-    fit_1d_numerical('./Cori/mass25/rescheck/4/dist_function_save/2000.0_elc_1d.txt', ElcGridPath_E1)
+    # ElcGridPath_E1 = './Cori/mass25/rescheck/4/dist_function_save/elc_velocities.npz'
+    # fit_1d_numerical('./Cori/mass25/rescheck/4/dist_function_save/2000.0_elc_1d.txt', ElcGridPath_E1)
     #eaw()
     #print(1/5.6)
     # justification()
