@@ -135,7 +135,7 @@ def plot_all():
     axs[0,0].plot(time_fieldEnergy[:],fieldEnergy[:],label='2D',linewidth=5)
     axs[0,0].plot(time_fieldEnergy_1D[:],fieldEnergy_1D[:],label='1D',linewidth=5)
     axs[0,0].set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
-    axs[0,0].set_ylabel(r'$\int dydz (|\delta E_z|^2 + |\delta E_y|^2)/8\pi T_{e0}$',fontsize=24)
+    axs[0,0].set_ylabel(r'$\int (|\delta E_z|^2 + |\delta E_y|^2) dydz/8\pi T_{e0}$',fontsize=24)
     axs[0,0].set_yscale('log')
     axs[0,0].set_xlim(0,4000)
     axs[0,0].tick_params(labelsize = 28)
@@ -171,7 +171,7 @@ def plot_all():
     axs[1,1].legend(fontsize=24)
 
     plt.tight_layout()
-    plt.savefig(r'./Figures/figures_temp/1D/1D.pdf', bbox_inches='tight')
+    plt.savefig(r'./Figures/figures_temp/1D/1D.jpg', bbox_inches='tight')
 
 def distribution():
     ElcGridPath = './massRatio/mass100/E5_H2/dist_function/elc_velocities.npz'

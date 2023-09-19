@@ -57,7 +57,7 @@ def fieldenergy_current():
     #ax.hlines(0.2,0,4500,linestyle=':',linewidth=5,color='black')
     ax.set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
     ax.set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32,color='blue')
-    ax2.set_ylabel(r'$\int |E_z|^2+|E_y|^2 dydz/8\pi T_{e0}$',fontsize=32,color='red')
+    ax2.set_ylabel(r'$\int (|\delta E_z|^2+|\delta E_y|^2) dydz/8\pi T_{e0}$',fontsize=32,color='red')
     ax.set_xlim(0,4500)
     ax.set_ylim(0,7.0)
     ax.tick_params(labelsize = 26)
