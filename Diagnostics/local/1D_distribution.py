@@ -41,7 +41,7 @@ def elc_main():
     fig = plt.figure(figsize=(16,10),facecolor='w', edgecolor='k')
 
     n = 5
-    colors = plt.cm.jet(np.linspace(0.02,0.66,n))
+    colors = plt.cm.jet(np.linspace(0.02,0.68,n))
 
     plt.plot(velocities_z/0.02, df_500,label=r'$\omega_{pe}t=500$',linewidth=6,color=colors[0])
     plt.plot(velocities_z/0.02, df_750,label=r'$\omega_{pe}t=750$',linewidth=6,color=colors[1])
@@ -187,7 +187,7 @@ def ion_main():
     plt.figure(figsize=(10.5,10))
 
     n = 5
-    colors = plt.cm.jet(np.linspace(0.02,0.66,n))
+    colors = plt.cm.jet(np.linspace(0.02,0.68,n))
 
     plt.plot(velocities_z/0.002, df_500,label=r'$\omega_{pe}t=500$',linewidth=6,color=colors[0])
     plt.plot(velocities_z/0.002, df_750,label=r'$\omega_{pe}t=750$',linewidth=6,color=colors[1])
@@ -258,11 +258,14 @@ def justification():
     fig      = plt.figure(figsize=(11.5,9.5))
     ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
 
-    ax.plot(k_list,gamma_list_750,label='$\omega_{pe} t = 750$',linewidth=5)
-    ax.plot(k_list,gamma_list_1000,label='$\omega_{pe} t = 1000$',linewidth=5)
-    ax.plot(k_list,gamma_list_1600,label='$\omega_{pe} t = 1600$',linewidth=5)
-    ax.plot(k_list,gamma_list_1900,label='$\omega_{pe} t = 1900$',linewidth=5)
-    ax.plot(k_list,gamma_list_1000_artifical,label='$\omega_{pe} t = 1000$ artificial',linewidth=5,color=u'#ff7f0e',linestyle='--')
+    n = 5
+    colors = plt.cm.jet(np.linspace(0.02,0.68,n))
+
+    ax.plot(k_list,gamma_list_750,label='$\omega_{pe} t = 750$',linewidth=5,color=colors[0])
+    ax.plot(k_list,gamma_list_1000,label='$\omega_{pe} t = 1000$',linewidth=5,color=colors[1])
+    ax.plot(k_list,gamma_list_1600,label='$\omega_{pe} t = 1600$',linewidth=5,color=colors[2])
+    ax.plot(k_list,gamma_list_1900,label='$\omega_{pe} t = 1900$',linewidth=5,color=colors[3])
+    ax.plot(k_list,gamma_list_1000_artifical,label='$\omega_{pe} t = 1000$ artificial',linewidth=5,color=colors[1],linestyle='--')
 
     ax.hlines(0.0,0.9/50,16/50,linestyles='--',linewidth=7,colors='black')
     ax.hlines(-0.00333,0.9/50,16/50,linestyles=':',linewidth=7,colors='black')
@@ -282,6 +285,7 @@ def justification():
     ax.yaxis.get_offset_text().set_fontsize(22)
 
     #plt.show()
+    plt.tight_layout()
     plt.savefig('./Figures/figures_temp/omega_k_time.jpg')
 
 def compare_dist():
@@ -349,8 +353,8 @@ def eaw():
 
 
 if __name__ == '__main__':
-    ion_main()
-    elc_main()
+    # ion_main()
+    # elc_main()
 
     ######### Fitting 
     #fit_1d_numerical('./massRatio/mass100/E5_H2/dist_function_save/1600.0_elc_1d.txt', ElcGridPath)
