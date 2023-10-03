@@ -132,8 +132,8 @@ def plot_all():
     fig, axs = plt.subplots(2, 2, figsize=(16,12))
 
     #axs[0,0].set_title("perturbed electric field energy",fontsize=28)
-    axs[0,0].plot(time_fieldEnergy[:],fieldEnergy[:],label='2D',linewidth=5)
-    axs[0,0].plot(time_fieldEnergy_1D[:],fieldEnergy_1D[:],label='1D',linewidth=5)
+    axs[0,0].plot(time_fieldEnergy[:],fieldEnergy[:],label='2D',linewidth=5,color='red')
+    axs[0,0].plot(time_fieldEnergy_1D[:],fieldEnergy_1D[:],label='1D',linewidth=5,color='blue')
     axs[0,0].set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
     axs[0,0].set_ylabel(r'$\int (|\delta E_z|^2 + |\delta E_y|^2) dydz/8\pi T_{e0}$',fontsize=24)
     axs[0,0].set_yscale('log')
@@ -143,8 +143,8 @@ def plot_all():
 
 
     #axs[0,1].set_title("ion temperature",fontsize=28)
-    axs[0,1].plot(time_Iontemp[:],Iontemp[:]/Iontemp[0],label='2D',linewidth=5)
-    axs[0,1].plot(time_Iontemp_1D[:],Iontemp_1D[:]/Iontemp_1D[0],label='1D',linewidth=5)
+    axs[0,1].plot(time_Iontemp[:],Iontemp[:]/Iontemp[0],label='2D',linewidth=5,color='red')
+    axs[0,1].plot(time_Iontemp_1D[:],Iontemp_1D[:]/Iontemp_1D[0],label='1D',linewidth=5,color='blue')
     axs[0,1].set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
     axs[0,1].set_ylabel(r'$T_i/T_{i0}$',fontsize=32)
     axs[0,1].set_xlim(0,4000)
@@ -153,8 +153,8 @@ def plot_all():
     axs[0,1].legend(fontsize=24,loc='lower right')
 
     #axs[1,0].set_title("current",fontsize=28)
-    axs[1,0].plot(time_current[:],current/0.02,label='2D',linewidth=5)
-    axs[1,0].plot(time_current_1D[:],current_1D/0.02,label='1D',linewidth=5)
+    axs[1,0].plot(time_current[:],current/0.02,label='2D',linewidth=5,color='red')
+    axs[1,0].plot(time_current_1D[:],current_1D/0.02,label='1D',linewidth=5,color='blue')
     axs[1,0].set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
     axs[1,0].set_ylabel(r'$<J_z> [en_0 v_{Te0}]$',fontsize=32)
     axs[1,0].set_xlim(0,4000)
@@ -162,8 +162,8 @@ def plot_all():
     axs[1,0].legend(fontsize=24)
 
     #axs[1,1].set_title("effective collision frequency",fontsize=28)
-    axs[1,1].plot(time_current[11:],nu_eff[10:],label='2D',linewidth=5)
-    axs[1,1].plot(time_current_1D[11:],nu_eff_1D[10:],label='1D',linewidth=5)
+    axs[1,1].plot(time_current[11:],nu_eff[10:],label='2D',linewidth=5,color='red')
+    axs[1,1].plot(time_current_1D[11:],nu_eff_1D[10:],label='1D',linewidth=5,color='blue')
     axs[1,1].set_xlabel(r'$t \quad [\omega_{pe}^{-1}]$',fontsize=32)
     axs[1,1].set_ylabel(r'$\nu_{eff} \quad [\omega_{pe}]$',fontsize=32)
     axs[1,1].set_xlim(0,4000)
@@ -191,10 +191,10 @@ def distribution():
 
     fig = plt.figure(figsize=(16,10),facecolor='w', edgecolor='k')
 
-    plt.plot(velocities_z_1D[1:]/0.02, df_1000_1d,label=r'$\omega_{pe}t=1000$ 1D',linewidth=6,color = u'#1f77b4',linestyle='--')
-    plt.plot(velocities_z[:]/0.02, df_1000/2.8,label=r'$\omega_{pe}t=1000$',linewidth=6,color = u'#1f77b4')
-    plt.plot(velocities_z_1D[1:]/0.02, df_1900_1d,label=r'$\omega_{pe}t=1900$ 1D',linewidth=6,color = u'#ff7f0e',linestyle='--')
-    plt.plot(velocities_z[:]/0.02, df_1900/2.8,label=r'$\omega_{pe}t=1900$',linewidth=6, color = u'#ff7f0e')
+    plt.plot(velocities_z_1D[1:]/0.02, df_1000_1d,label=r'$\omega_{pe}t=1000$ 1D',linewidth=6,color = 'red',linestyle='--')
+    plt.plot(velocities_z[:]/0.02, df_1000/2.8,label=r'$\omega_{pe}t=1000$ 2D',linewidth=6,color = 'red')
+    plt.plot(velocities_z_1D[1:]/0.02, df_1900_1d,label=r'$\omega_{pe}t=1900$ 1D',linewidth=6,color = 'blue',linestyle='--')
+    plt.plot(velocities_z[:]/0.02, df_1900/2.8,label=r'$\omega_{pe}t=1900$ 2D',linewidth=6, color = 'blue')
     #plt.plot(velocities_z/0.02, df_700,label=r'$\omega_{pe}t=700$',linewidth=6)
 
 
@@ -206,8 +206,9 @@ def distribution():
     plt.tick_params(labelsize = 28)
     plt.xlim(-0.10/0.02,0.26/0.02)
     plt.ylim(-0.5,14)
-    plt.savefig('elc_1d.jpg')
-    plt.show()
+    plt.tight_layout()
+    plt.savefig('./Figures/figures_temp/1D/elc_for1D.jpg')
+    #plt.show()
 
 def justification():
     ElcGridPath = './massRatio/mass100/1D/dist_function/elc_velocities.npz'
@@ -256,8 +257,8 @@ if __name__ == '__main__':
     # resistivity_plot()
     #fieldenergy_plot()
     # temp_plot()
-    plot_all()
+    # plot_all()
 
     #distribution()
 
-    #justification()
+    justification()
