@@ -1,6 +1,7 @@
 -- Gkyl ------------------------------------------------------------------------
 -- Z.Liu 6/25/2022
 -- Mass=25, Temp=50
+
 local Plasma = require("App.PlasmaOnCartGrid").VlasovMaxwell()
 
 -- electron parameters
@@ -30,6 +31,8 @@ lx = {1.0,0.5}
 nx = {16,8}
 
 pOrder = 2
+
+accion = -2.0e-6
 
 local function maxwellian2v(v, vDrift, vt)
     if v[1]-vDrift[1] > 4.0*vtElc then	
@@ -69,20 +72,16 @@ local function sponEmissionSource(x_table, t, lx_table, ncells_table, p)
     return {fIon}
  end
 
-local function phi_profile(x, Eext)
-   return -Eext*x
-end
-
 plasmaApp = Plasma.App {
     logToFile = true,
  
-    tEnd        = 50,          -- End time. RLW: I changed this, but didn't change nFrame below.  So we might get more frames.
-    nFrame      = 10,             -- Number of output frames.  This is 0.5 frames in unit time --> 3 frames every Langmuir period. 
-    nDistFuncFrame = 10,           -- Number of distribution function output frames 
+    tEnd        = 2400,          -- End time. RLW: I changed this, but didn't change nFrame below.  So we might get more frames.
+    nFrame      = 240,             -- Number of output frames.  This is 0.5 frames in unit time --> 3 frames every Langmuir period. 
+    nDistFuncFrame = 100,           -- Number of distribution function output frames 
 
     lower       = {0.0,0.0},             -- Configuration space lower left.
-    upper       = lx,             -- Configuration space upper right.
-    cells       = nx,               -- Configuration space cells.
+    upper       = {1.0,0.5},             -- Configuration space upper right.
+    cells       = {16,8},               -- Configuration space cells.
     basis       = "serendipity",    -- One of "serendipity" or "maximal-order".
     polyOrder   = pOrder,           -- Polynomial order.
     timeStepper = "rk3",            -- one of "rk2" or "rk3".
@@ -99,7 +98,7 @@ plasmaApp = Plasma.App {
     restartFrameEvery = 0.1, 
  
     -- Electrons.
-    elc = Plasma.GenSpecies.VlasovPoissonA {
+    elc = Plasma.Species {
        charge = -1.0, mass = 1.0,
        -- Velocity space grid.
        lower = {-6.0*vtElc,-9.0*vtElc},
@@ -123,7 +122,7 @@ plasmaApp = Plasma.App {
     },
  
     -- Ions.
-    ion = Plasma.GenSpecies.VlasovPoissonA {
+    ion = Plasma.Species {
        charge = 1.0, mass = massRatio,
        -- Velocity space grid.
        lower = {-24.0*vtIon,-24.0*vtIon},
@@ -140,7 +139,7 @@ plasmaApp = Plasma.App {
        source = Plasma.Source{
 	 profile = function (t,xn)
          local x, y, vx, vy = xn[1], xn[2], xn[3], xn[4]
-         local dfv = sponEmissionSource({x,y,vx,vy},t, lx, nx, pOrder)[1]*maxwellian2v({vx,vy},vDriftIon, vtIon) 
+         local dfv = sponEmissionSource({x,y,vx,vy},t, lx, nx, pOrder)[1]*maxwellian2v({vx,vy},{accion*t,0.0}, vtIon) 
          return noise*dfv
        end,        
        },
@@ -164,9 +163,8 @@ plasmaApp = Plasma.App {
     externalField = Plasma.ExternalField {
       hasMagneticField = false,
       emFunc = function(t, xn)
-         local x = xn[1]
-         local phi_ext = phi_profile(x, -0.00005)
-         return phi_ext
+         local extE_x, extE_y, extE_z = -0.00005, 0., 0.
+         return extE_x, extE_y, extE_z
       end,
       evolve = false, -- Evolve field?
    }, 
