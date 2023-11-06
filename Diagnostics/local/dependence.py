@@ -12,7 +12,7 @@ matplotlib.use('TkAgg')
 #The default E is E5
 #The default resolution is H1
 
-path_25 = './Cori/mass25/rescheck/4/saved_data/'
+path_25 = './python_file_unitility/Cori/mass25/rescheck/4/saved_data/'
 #path_25 = './massRatio/mass25/E5/saved_data/'
 path_50 = './massRatio/mass50/E5_H1/saved_data/'
 path_100 = './massRatio/mass100/E5_H2/saved_data/'
@@ -364,11 +364,11 @@ def nueff_massratio():
     fig      = plt.figure(figsize=(9.5,7.5))
     ax      = fig.add_axes([0.18, 0.16, 0.75, 0.75])
 
-    ax.plot(time_current25[4:351],nu_eff25[3:350],label='M25E10',linewidth=4,linestyle='-')
-    ax.plot(time_current50[4:],nu_eff50[3:],label='M50E10',linewidth=4,linestyle='-')
-    ax.plot(time_current100[4:],nu_eff100[3:],label='Main',linewidth=6,linestyle='-')
-    ax.plot(time_current200[4:],nu_eff200[3:],label='M200E10',linewidth=4,linestyle='-')
-    #ax.plot(time_current400[4:],nu_eff400[3:],label='$m_i/m_e = 400$',linewidth=4,linestyle='-')
+    # ax.plot(time_current25[4:351],nu_eff25[3:350],label='M25E10',linewidth=4,linestyle='-')
+    # ax.plot(time_current50[4:],nu_eff50[3:],label='M50E10',linewidth=4,linestyle='-')
+    ax.plot(time_current100[4:],nu_eff100[3:],label=r'$\nu_{eff}$',linewidth=6,linestyle='-')
+    # ax.plot(time_current200[4:],nu_eff200[3:],label='M200E10',linewidth=4,linestyle='-')
+    # #ax.plot(time_current400[4:],nu_eff400[3:],label='$m_i/m_e = 400$',linewidth=4,linestyle='-')
 
     i = 0
     new_Elctemp25 = []
@@ -393,10 +393,10 @@ def nueff_massratio():
     new_Elctemp200 = np.array(new_Elctemp200)
     #ax.plot(time_fieldEnergy25[:103],0.5*fieldEnergy25[:103]/new_Elctemp25[:103],label=r'$(W/nT_e)_{25}$',linewidth=3,linestyle='--')
     #ax.plot(time_fieldEnergy100, 0.25*0.01175*np.sqrt(new_Elctemp100[0]/new_Elctemp100),label=r'$0.25\nu_{eff_{100}}^{QL}$',linestyle='--',color='black',linewidth=4)
-    ax.plot(time_fieldEnergy100,0.5*fieldEnergy100/new_Elctemp100,label=r'$0.5(W/nT_e)_{100}$',linewidth=4,linestyle=':',color='black')
+    ax.plot(time_fieldEnergy100,0.5*fieldEnergy100/new_Elctemp100,label=r'$0.5\omega_{pe} (W/nT_e)_{100}$',linewidth=4,linestyle=':',color='black')
     #ax.plot(time_fieldEnergy400,fieldEnergy400/new_Elctemp400,label=r'$(W/nTe)_{400}$',linewidth=3,linestyle='--')
 
-    ax.hlines(0.01*0.1175,0,2000, linestyles='--',color='black',linewidth=4,label=r'$0.1\nu_{eff_{100}}^{QL}$')
+    # ax.hlines(0.01*0.1175,0,2000, linestyles='--',color='black',linewidth=4,label=r'$0.1\nu_{eff_{100}}^{QL}$')
     # ax.text(650-100,0.0066-0.001,"quasi-linear",fontsize = 18)
     # ax.text(700-100,0.0063-0.001,"estimate",fontsize = 18)
     # ax.text(650-100,0.0060-0.001,"for $m_i/m_e=25$",fontsize = 18)
@@ -410,7 +410,7 @@ def nueff_massratio():
     ax.legend(fontsize=22)
     ax.grid()
     ax.set_xlim(300,2000)
-    plt.savefig('./Figures/paper_figures/dependence/nu_eff_mass.jpeg')
+    plt.savefig('./Figures/paper_figures/dependence/nu_eff_mass_pre.jpeg')
     #plt.show()
     plt.cla()
 
@@ -853,7 +853,7 @@ def plot_all_ewf():
     plt.savefig('./Figures/figures_temp/extreme.jpg')
 
 if __name__ == '__main__':
-    # nueff_massratio()
+    nueff_massratio()
     # nueff_electricfield()
 
     # tempratio_ratio()
@@ -873,4 +873,4 @@ if __name__ == '__main__':
 
     #field_energy()
 
-    plot_all_ewf()
+    # plot_all_ewf()

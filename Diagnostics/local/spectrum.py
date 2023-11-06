@@ -104,28 +104,28 @@ def k_main(Ez_k_list,Ey_k_list):
     ax      = fig.add_axes([0.16, 0.16, 0.75, 0.75])
     n = 6
     colors = plt.cm.jet(np.linspace(0.02,0.845,n))
-    ax.plot(k_plot_2,Ek_500,label=r'$\omega_{pe}t=500$',linewidth=3,color=colors[0])
+    #ax.plot(k_plot_2,Ek_500,label=r'$\omega_{pe}t=500$',linewidth=3,color=colors[0])
     ax.plot(k_plot_2,Ek_1000,label=r'$\omega_{pe}t=1000$',linewidth=3,color=colors[1])
     ax.plot(k_plot_2,Ek_1800,label=r'$\omega_{pe}t=1600$',linewidth=3,color=colors[2])
-    ax.plot(k_plot_2,Ek_2000,label=r'$\omega_{pe}t=2000$',linewidth=3,color=colors[3])
-    ax.plot(k_plot_2,Ek_3500,label=r'$\omega_{pe}t=3500$',linewidth=3,color=colors[4])
-    ax.plot(k_plot_2,Ek_4300,label=r'$\omega_{pe}t=4300$',linewidth=3,color=colors[5])
+    ax.plot(k_plot_2,Ek_2000,label=r'$\omega_{pe}t=1900$',linewidth=3,color=colors[3])
+    # ax.plot(k_plot_2,Ek_3500,label=r'$\omega_{pe}t=3500$',linewidth=3,color=colors[4])
+    # ax.plot(k_plot_2,Ek_4300,label=r'$\omega_{pe}t=4300$',linewidth=3,color=colors[5])
     # plt.plot(k_plot_2,Ek_2400,label=r'$\omega_{pe}t=2400$',linewidth=3)
     
     #ax.plot(k_list,0.004*N_k,linewidth=3,linestyle = '--',color='black')
-    ax.plot(k_list,0.0008*N_k,linewidth=3,linestyle = '--',color='black')
+    ax.plot(k_list,0.004*N_k,linewidth=3,linestyle = '--',color='black')
     #plt.plot(k_list,N_k*700,label='theory2',linewidth=3,linestyle = '--',color='black')
     #plt.plot(k_list,N_k*200,label='theory2')
     #plt.plot(kf,N_k_full*900,label='theory2')
     ax.legend(fontsize=18)
     ax.set_xlim(0,0.35)
-    ax.set_ylim(1e-4,1000)
+    ax.set_ylim(1e-2,1000)
     ax.set_xlabel(r'$k\lambda_{De} / 2\pi $',fontsize=26)
     ax.set_ylabel(r'$N(k)$',fontsize=26)
     ax.tick_params(labelsize=22)
     ax.set_yscale('log')
     #plt.show()
-    plt.savefig('./Figures/figures_temp/k_spectrum.jpeg')
+    plt.savefig('./Figures/figures_temp/k_spectrum_pre.jpeg')
 
 
 def theta_main(Ez_k_list,Ey_k_list, N=6):
@@ -307,7 +307,7 @@ def theta():
 
 if __name__ == '__main__':
     Ez_k_list, Ey_k_list,Ez_list,Ey_list,_ = load_phi()
-    #k_main( Ez_k_list, Ey_k_list)
-    theta_main(Ez_k_list, Ey_k_list,50)
+    k_main( Ez_k_list, Ey_k_list)
+    #theta_main(Ez_k_list, Ey_k_list,50)
 
     #theta()

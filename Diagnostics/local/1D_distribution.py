@@ -45,13 +45,13 @@ def elc_main():
 
     plt.plot(velocities_z/0.02, df_500,label=r'$\omega_{pe}t=500$',linewidth=6,color=colors[0])
     plt.plot(velocities_z/0.02, df_750,label=r'$\omega_{pe}t=750$',linewidth=6,color=colors[1])
-    plt.plot(velocities_z/0.02, df_1000,label=r'$\omega_{pe}t=1000$',linewidth=6,color=colors[2])
-    plt.plot(velocities_z/0.02, df_1600,label=r'$\omega_{pe}t=1600$',linewidth=6,color=colors[3])
-    plt.plot(velocities_z/0.02, df_3500,label=r'$\omega_{pe}t=3500$',linewidth=6,color=colors[4])
+    # plt.plot(velocities_z/0.02, df_1000,label=r'$\omega_{pe}t=1000$',linewidth=6,color=colors[2])
+    # plt.plot(velocities_z/0.02, df_1600,label=r'$\omega_{pe}t=1600$',linewidth=6,color=colors[3])
+    # plt.plot(velocities_z/0.02, df_3500,label=r'$\omega_{pe}t=3500$',linewidth=6,color=colors[4])
     plt.plot(velocities_z/0.02, maxw1,linewidth=5,linestyle='--',label=r'bulk',color='black')
     plt.plot(velocities_z/0.02, maxw2,linewidth=5,linestyle='--',label=r'tail at $\omega_{pe}t=750$',color=colors[1])
     #plt.plot(velocities_z/0.02, maxw3,linewidth=5,linestyle='--',label=r'tail at $\omega_{pe}t=1000$',color=u'#2ca02c')
-    plt.plot(velocities_z/0.02, maxw4,linewidth=5,linestyle='--',label=r'tail at $\omega_{pe}t=1600$',color=colors[3])
+    #plt.plot(velocities_z/0.02, maxw4,linewidth=5,linestyle='--',label=r'tail at $\omega_{pe}t=1600$',color=colors[3])
     #plt.plot(velocities_z/0.02, df_2200,label=r'$\omega_{pe}t=2200$',linewidth=6)
     #plt.plot(velocities_z/0.02, df_4000,label=r'$\omega_{pe}t=4000$',linewidth=6)
 
@@ -66,9 +66,10 @@ def elc_main():
     plt.legend(fontsize=26)
     #plt.set_title(r'$<F_e(v_z)>_{z},$' + rf't = {time}'+ r' [$\omega_{pe}^{-1}$]', fontsize=26)
     plt.tick_params(labelsize = 36)
-    plt.xlim(-0.08/0.02,0.30/0.02)
+    #plt.xlim(-0.08/0.02,0.30/0.02)
+    plt.xlim(-0.06/0.02,0.12/0.02)
     plt.ylim(-3,56)
-    plt.savefig('./Figures/figures_temp/elc_1d.jpg')
+    plt.savefig('./Figures/figures_temp/elc_1d_pre.jpg')
     #plt.show()
 
 
@@ -354,7 +355,7 @@ def eaw():
 
 if __name__ == '__main__':
     # ion_main()
-    # elc_main()
+    elc_main()
 
     ######### Fitting 
     #fit_1d_numerical('./massRatio/mass100/E5_H2/dist_function_save/1600.0_elc_1d.txt', ElcGridPath)
@@ -374,4 +375,4 @@ if __name__ == '__main__':
     # fit_1d_numerical('./Cori/mass25/rescheck/4/dist_function_save/2000.0_elc_1d.txt', ElcGridPath_E1)
     #eaw()
     #print(1/5.6)
-    justification()
+    #justification()

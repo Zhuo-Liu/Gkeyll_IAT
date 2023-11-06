@@ -140,6 +140,7 @@ def plot_all():
     axs[0,0].set_xlim(0,4000)
     axs[0,0].tick_params(labelsize = 28)
     axs[0,0].legend(fontsize=24)
+    axs[0,0].set_ylim(1e-8,1e-4)
 
 
     #axs[0,1].set_title("ion temperature",fontsize=28)
@@ -171,7 +172,8 @@ def plot_all():
     axs[1,1].legend(fontsize=24)
 
     plt.tight_layout()
-    plt.savefig(r'./Figures/figures_temp/1D/1D.jpg', bbox_inches='tight')
+    #plt.show()
+    plt.savefig(r'./Figures/figures_temp/1D/1D_pre.jpg', bbox_inches='tight')
 
 def distribution():
     ElcGridPath = './massRatio/mass100/E5_H2/dist_function/elc_velocities.npz'
@@ -257,8 +259,8 @@ if __name__ == '__main__':
     # resistivity_plot()
     #fieldenergy_plot()
     # temp_plot()
-    # plot_all()
+    plot_all()
 
     #distribution()
 
-    justification()
+    #justification()
