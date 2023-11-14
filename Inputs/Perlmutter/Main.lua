@@ -44,6 +44,9 @@ local function maxwellian2v(v, vDrift, vt)
     end
 end
 
+local function phi_profile(x, Eext)
+   return -Eext*x
+end
 
 local function sponEmissionSource(x_table, t, lx_table, ncells_table, p)
     -- x_table = {x, y} are independent variables.
@@ -81,7 +84,7 @@ plasmaApp = Plasma.App {
 
     lower       = {0.0,0.0},             -- Configuration space lower left.
     upper       = {1.0,0.5},             -- Configuration space upper right.
-    cells       = {32,16},               -- Configuration space cells.
+    cells       = nx,               -- Configuration space cells.
     basis       = "serendipity",    -- One of "serendipity" or "maximal-order".
     polyOrder   = pOrder,           -- Polynomial order.
     timeStepper = "rk3",            -- one of "rk2" or "rk3".
@@ -98,7 +101,7 @@ plasmaApp = Plasma.App {
     restartFrameEvery = 0.02, 
  
     -- Electrons.
-    elc = Plasma.Species {
+    elc = Plasma.GenSpecies.VlasovPoissonA {
        charge = -1.0, mass = 1.0,
        -- Velocity space grid.
        lower = {-6.0*vtElc,-9.0*vtElc},
@@ -122,7 +125,7 @@ plasmaApp = Plasma.App {
     },
  
     -- Ions.
-    ion = Plasma.Species {
+    ion = Plasma.GenSpecies.VlasovPoissonA {
        charge = 1.0, mass = massRatio,
        -- Velocity space grid.
        lower = {-48.0*vtIon,-24.0*vtIon},
@@ -163,8 +166,9 @@ plasmaApp = Plasma.App {
     externalField = Plasma.ExternalField {
       hasMagneticField = false,
       emFunc = function(t, xn)
-         local extE_x, extE_y, extE_z = -0.00005, 0., 0.
-         return extE_x, extE_y, extE_z
+         local x = xn[1]
+         local phi_ext = phi_profile(x, -0.00005)
+         return phi_ext
       end,
       evolve = false, -- Evolve field?
    }, 
